@@ -7,7 +7,7 @@ function InputComponent({ type, placeholder, id, className }) {
         type={type}
         placeholder={placeholder}
         id={id}
-        className={`outline-none ${className}`}
+        className={`outline-none p-2 rounded ${className}`}
       />
     </div>
   );
