@@ -1,9 +1,12 @@
 import express from "express";
-import { postFeedback } from "../controllers/InstructorReviewController.js";
+import {
+  postFeedback,
+  editFeedback,
+} from "../controllers/InstructorReviewController.js";
 
 const router = express.Router();
 
 router.post("/instructorReview", postFeedback);
-router.post("/editInstructorReview", postFeedback);
+router.get("/editInstructorReview", editFeedback);
 
 export default router;

@@ -16,7 +16,7 @@ const errorHandlerMiddleware = async (err, req, res, next) => {
   }
   return res
     .status(defaultError.errorStatusCode)
-    .send({ msg: defaultErrorMessage });
+    .send({ msg: defaultError.errorMessage });
 };
 
 export default errorHandlerMiddleware;

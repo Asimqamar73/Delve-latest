@@ -21,7 +21,7 @@ const fun = (req, res) => {
         res.send("hasnain route.")
     }
 }
-app.use("/", fun)
+// app.use("/", fun)
 
 app.use("/api/v1", StudentRouter);
 app.use("/api/v1", InstructorRouter);

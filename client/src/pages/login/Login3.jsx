@@ -8,19 +8,21 @@ import { FaFacebook, FaLinkedinIn } from "react-icons/fa";
 import { IoLockClosedOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
+import { login, logout } from "../../services/store/user/userSlice";
+import { loginUser } from "../../services/store/user/userSlice";
+import axios from "axios";
 
 function Login3() {
-  const user = useSelector((state)=>state.user)
-
+  const user = useSelector((state) => state.user.user);
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-  useEffect(()=>{
-console.log(user)
-  },[])
+
+  useEffect(() => {}, []);
   const onMutate = (event) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -29,15 +31,23 @@ console.log(user)
   };
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(formData);
+    dispatch(loginUser(formData));
   };
-
 
   return (
     <div className="h-screen">
       {/* <div className="sticky w-full px-16 py-4">
         <Logo />
       </div> */}
+      <div>
+        {user && (
+          <div>
+            <button className="btn" onClick={() => dispatch(logout())}>
+              {user.name}
+            </button>
+          </div>
+        )}
+      </div>
       <div className="grid grid-cols-3 h-full">
         <div className="col-span-1 flex flex-col items-center justify-center ">
           <div>
