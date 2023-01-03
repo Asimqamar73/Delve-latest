@@ -18,6 +18,8 @@ function AppRoutes() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/" element={<AppLayout />}>
           <Route index element={<Home />} />
+        {/* <Route path="login3" element={<Login3 />} /> */}
+
         </Route>
       </Routes>
     </BrowserRouter>

@@ -1,6 +1,6 @@
 import React from "react";
 
-function InputComponent({ type, placeholder, id, className }) {
+function InputComponent({ type, placeholder, id, className, handleChange }) {
   return (
     <div>
       <input
@@ -8,6 +8,7 @@ function InputComponent({ type, placeholder, id, className }) {
         placeholder={placeholder}
         id={id}
         className={`outline-none p-2 rounded ${className}`}
+        onChange={handleChange}
       />
     </div>
   );

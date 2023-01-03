@@ -1,23 +1,43 @@
-import React from "react";
 import InputComponent from "../../components/commonComponents/InputComponent";
 import ButtonComponent from "../../components/commonComponents/ButtonComponent";
 import Logo from "../../components/commonComponents/Logo";
 import loginPageImg from "../../assets/images/loginPageImg.svg";
-import { TfiEmail } from "react-icons/tfi";
 import { MdMail, MdAlternateEmail } from "react-icons/md";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook, FaLinkedinIn } from "react-icons/fa";
-import { BsLock } from "react-icons/bs";
 import { IoLockClosedOutline } from "react-icons/io5";
-import { HiOutlineLockClosed } from "react-icons/hi";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useSelector, useDispatch } from 'react-redux'
+import { useEffect } from "react";
 
 function Login3() {
+  const user = useSelector((state)=>state.user)
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  useEffect(()=>{
+console.log(user)
+  },[])
+  const onMutate = (event) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [event.target.id]: event.target.value,
+    }));
+  };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(formData);
+  };
+
+
   return (
     <div className="h-screen">
-      <div className="fixed w-full px-16 py-4">
+      {/* <div className="sticky w-full px-16 py-4">
         <Logo />
-      </div>
+      </div> */}
       <div className="grid grid-cols-3 h-full">
         <div className="col-span-1 flex flex-col items-center justify-center ">
           <div>
@@ -46,35 +66,43 @@ function Login3() {
             {/* <div className="divider before:bg-base-300 before:h-[1px] after:bg-base-300 after:h-[1px] text-slate-600 text-sm  "> */}
             {/* Or continue with */}
             {/* </div> */}
-            <div className="my-4 relative">
-              <InputComponent
-                type="email"
-                placeholder="Email"
-                className="bg-base-200"
-              />
-              <div className="absolute right-0 top-0 bg-green-400 h-full flex items-center w-10 justify-center rounded-md ">
-                <MdAlternateEmail className="text-white text-xl" />
+            <form onSubmit={handleSubmit}>
+              <div className="my-4 relative">
+                <InputComponent
+                  type="email"
+                  placeholder="Email"
+                  className="bg-base-200"
+                  id="email"
+                  value={formData.email}
+                  handleChange={onMutate}
+                />
+                <div className="absolute right-0 top-0 bg-green-400 h-full flex items-center w-10 justify-center rounded-md ">
+                  <MdAlternateEmail className="text-white text-xl" />
+                </div>
               </div>
-            </div>
-            <div className="my-4 relative">
-              <InputComponent
-                type="password"
-                placeholder="Password"
-                className="bg-base-200"
-              />
-              <div className="absolute right-0 top-0 bg-green-400 h-full flex items-center w-10 justify-center rounded-md ">
-                <IoLockClosedOutline className=" text-white text-xl" />
+              <div className="my-4 relative">
+                <InputComponent
+                  type="password"
+                  placeholder="Password"
+                  className="bg-base-200"
+                  id="password"
+                  value={formData.password}
+                  handleChange={onMutate}
+                />
+                <div className="absolute right-0 top-0 bg-green-400 h-full flex items-center w-10 justify-center rounded-md ">
+                  <IoLockClosedOutline className=" text-white text-xl" />
+                </div>
               </div>
-            </div>
-            <div className="flex justify-end text-xs">
-              <p>Forgot password?</p>
-            </div>
-            <div className="my-4">
-              <ButtonComponent
-                name="Login"
-                className="btn-wide bg-green-500 hover:bg-green-600 border-none text-white"
-              />
-            </div>
+              <div className="flex justify-end text-xs">
+                <p>Forgot password?</p>
+              </div>
+              <div className="my-4 flex justify-center">
+                <ButtonComponent
+                  name="Login"
+                  className="btn-wide bg-green-500 hover:bg-green-600 border-none text-white"
+                />
+              </div>
+            </form>
             <div className="divider before:bg-base-300 before:h-[1px] after:bg-base-300 after:h-[1px] text-slate-600 text-sm  ">
               Or continue with
             </div>

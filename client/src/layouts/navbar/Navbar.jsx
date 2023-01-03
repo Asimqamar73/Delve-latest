@@ -7,7 +7,7 @@ import { BsCart4 } from "react-icons/bs";
 function Navbar() {
   return (
     <header>
-      <nav className="sticky top-0 flex items-center px-8 py-2 bg-base-300 ">
+      <nav className="fixed w-full top-0 flex items-center px-8 py-2 bg-base-300  ">
         <div>
           <Logo />
         </div>
