@@ -6,6 +6,6 @@ import { login, register } from "../controllers/StudentController.js"
 const router = express.Router();
 
 router.post("/student/login", login);
-router.post("/student/register", register);
+router.post("/student/createAccount", register);
 
 export default router

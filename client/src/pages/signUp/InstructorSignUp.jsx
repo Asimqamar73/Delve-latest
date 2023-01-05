@@ -1,25 +1,27 @@
 import InputComponent from "../../components/commonComponents/InputComponent";
 import ButtonComponent from "../../components/commonComponents/ButtonComponent";
 import Logo from "../../components/commonComponents/Logo";
-import loginPageImg from "../../assets/images/loginPageImg.svg";
+import signUpPageImg from "../../assets/images/instructorSignupImg.svg";
 import { MdAlternateEmail } from "react-icons/md";
 import { FcGoogle } from "react-icons/fc";
+import { BiUser } from "react-icons/bi";
 import { FaFacebook, FaLinkedinIn } from "react-icons/fa";
 import { IoLockClosedOutline } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { logout, loginUser } from "../../services/store/user/userSlice";
+import { logout } from "../../services/store/user/userSlice";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 
-function Login3() {
+function InstructorSignUp() {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.user);
   const error = useSelector((state) => state.user.error);
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
+    name: "",
     email: "",
     password: "",
   });
@@ -28,7 +30,7 @@ function Login3() {
     if (user) {
       navigate("/");
     }
-    if (error != "") {
+    if (error !== "") {
       toast.error(error);
     }
   }, [user, error]);
@@ -40,7 +42,7 @@ function Login3() {
   };
   const handleSubmit = (event) => {
     event.preventDefault();
-    dispatch(loginUser(formData));
+    // dispatch(createAccount(formData));
   };
 
   return (
@@ -58,34 +60,26 @@ function Login3() {
         )}
       </div>
       <div className="grid grid-cols-3 h-full">
-        <div className="col-span-1 flex flex-col items-center justify-center ">
+        <div className="col-span-1 flex flex-col items-center justify-center order-1">
           <div>
             <div className="my-4 text-slate-700">
-              <p className="font-bold text-3xl  font-sans">Login</p>
-              <p className="text-sm">Login into your account</p>
+              <p className="font-bold text-3xl font-sans">Sign up</p>
+              <p className="text-sm">To become a Delve instructor.</p>
             </div>
-            {/* <div className="flex justify-center gap-2"> */}
-            {/* <div> */}
-            {/* <button className="btn btn-ghost border-slate-400 border-[1px] rounded-md"> */}
-            {/* <FaFacebook size={24} color="#3b5999" /> */}
-            {/* </button> */}
-            {/* </div> */}
-            {/* <div> */}
-            {/* <button className="btn btn-ghost border-slate-400 border-[1px] rounded-md"> */}
-            {/* <FcGoogle size={24} /> */}
-            {/* </button> */}
-            {/* </div> */}
-            {/*  */}
-            {/* <div> */}
-            {/* <button className="btn btn-ghost border-slate-400 border-[1px] rounded-md"> */}
-            {/* <FaLinkedinIn size={24} color="#0072b1" /> */}
-            {/* </button> */}
-            {/* </div> */}
-            {/* </div> */}
-            {/* <div className="divider before:bg-base-300 before:h-[1px] after:bg-base-300 after:h-[1px] text-slate-600 text-sm  "> */}
-            {/* Or continue with */}
-            {/* </div> */}
             <form onSubmit={handleSubmit}>
+              <div className="my-4 relative">
+                <InputComponent
+                  type="email"
+                  placeholder="Name"
+                  className="bg-base-200"
+                  id="name"
+                  value={formData.name}
+                  handleChange={onMutate}
+                />
+                <div className="absolute right-0 top-0 bg-green-400 h-full flex items-center w-10 justify-center rounded-md ">
+                  <BiUser className="text-white text-xl" />
+                </div>
+              </div>
               <div className="my-4 relative">
                 <InputComponent
                   type="email"
@@ -112,12 +106,10 @@ function Login3() {
                   <IoLockClosedOutline className=" text-white text-xl" />
                 </div>
               </div>
-              <div className="flex justify-end text-xs">
-                <p>Forgot password?</p>
-              </div>
+
               <div className="my-4 flex justify-center">
                 <ButtonComponent
-                  name="Login"
+                  name="Create account"
                   className="btn-wide bg-green-500 hover:bg-green-600 border-none text-white"
                 />
               </div>
@@ -125,12 +117,6 @@ function Login3() {
             <div className="divider before:bg-base-300 before:h-[1px] after:bg-base-300 after:h-[1px] text-slate-600 text-sm  ">
               Or continue with
             </div>
-            {/* <div className="my-4">
-              <ButtonComponent
-                name="Sign up"
-                className="btn-wide bg-transparent border-green-500 text-green-500 border-[1px] transition-colors ease-in-out hover:bg-green-100/70 hover:border-green-500"
-              />
-            </div> */}
             <div className="flex justify-center gap-2">
               <div>
                 <button className="btn btn-ghost border-slate-400 border-[1px] rounded-md">
@@ -158,8 +144,8 @@ function Login3() {
           </div>
         </div>
         <div className="col-span-2  ">
-          <div className="flex justify-center items-center bg-base-200 h-full">
-            <img src={loginPageImg} alt="Login Page Image" className="h-1/2" />
+          <div className="flex justify-center items-center bg-base-300 h-full">
+            <img src={signUpPageImg} alt="Login Page Image" className="h-1/2" />
           </div>
         </div>
       </div>
@@ -167,4 +153,4 @@ function Login3() {
   );
 }
 
-export default Login3;
+export default InstructorSignUp;

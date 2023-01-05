@@ -1,25 +1,26 @@
 import InputComponent from "../../components/commonComponents/InputComponent";
 import ButtonComponent from "../../components/commonComponents/ButtonComponent";
 import Logo from "../../components/commonComponents/Logo";
-import loginPageImg from "../../assets/images/loginPageImg.svg";
+import loginPageImg from "../../assets/images/signupPageImg3.svg";
 import { MdAlternateEmail } from "react-icons/md";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook, FaLinkedinIn } from "react-icons/fa";
 import { IoLockClosedOutline } from "react-icons/io5";
+import { BiUser } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { logout, loginUser } from "../../services/store/user/userSlice";
-import "react-toastify/dist/ReactToastify.css";
+import { createAccount } from "../../services/store/user/userSlice";
 import { toast } from "react-toastify";
 
-function Login3() {
+function SignUp2() {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.user);
   const error = useSelector((state) => state.user.error);
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
+    name: "",
     email: "",
     password: "",
   });
@@ -28,10 +29,10 @@ function Login3() {
     if (user) {
       navigate("/");
     }
-    if (error != "") {
-      toast.error(error);
+    if(error!==""){
+      toast.error(error)
     }
-  }, [user, error]);
+  }, [user,error]);
   const onMutate = (event) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -40,7 +41,7 @@ function Login3() {
   };
   const handleSubmit = (event) => {
     event.preventDefault();
-    dispatch(loginUser(formData));
+    dispatch(createAccount(formData));
   };
 
   return (
@@ -48,7 +49,7 @@ function Login3() {
       <div className="fixed w-full px-16 py-4">
         <Logo />
       </div>
-      <div>
+      {/* <div>
         {user && (
           <div>
             <button className="btn" onClick={() => dispatch(logout())}>
@@ -56,13 +57,13 @@ function Login3() {
             </button>
           </div>
         )}
-      </div>
+      </div> */}
       <div className="grid grid-cols-3 h-full">
         <div className="col-span-1 flex flex-col items-center justify-center ">
           <div>
             <div className="my-4 text-slate-700">
-              <p className="font-bold text-3xl  font-sans">Login</p>
-              <p className="text-sm">Login into your account</p>
+              <p className="font-bold text-3xl  font-sans">Sign up</p>
+              <p className="text-sm">Get started by creating your account.</p>
             </div>
             {/* <div className="flex justify-center gap-2"> */}
             {/* <div> */}
@@ -86,6 +87,19 @@ function Login3() {
             {/* Or continue with */}
             {/* </div> */}
             <form onSubmit={handleSubmit}>
+              <div className="my-4 relative">
+                <InputComponent
+                  type="text"
+                  placeholder="Name"
+                  className="bg-base-200"
+                  id="name"
+                  value={formData.name}
+                  handleChange={onMutate}
+                />
+                <div className="absolute right-0 top-0 bg-green-400 h-full flex items-center w-10 justify-center rounded-md ">
+                  <BiUser className="text-white text-xl" />
+                </div>
+              </div>
               <div className="my-4 relative">
                 <InputComponent
                   type="email"
@@ -112,12 +126,23 @@ function Login3() {
                   <IoLockClosedOutline className=" text-white text-xl" />
                 </div>
               </div>
-              <div className="flex justify-end text-xs">
-                <p>Forgot password?</p>
-              </div>
+
+              {/* <div className="my-4 relative">
+                <InputComponent
+                  type="password"
+                  placeholder="Retype password"
+                  className="bg-base-200"
+                  id="password"
+                  value={formData.password}
+                  handleChange={onMutate}
+                />
+                <div className="absolute right-0 top-0 bg-green-400 h-full flex items-center w-10 justify-center rounded-md ">
+                  <IoLockClosedOutline className=" text-white text-xl" />
+                </div>
+              </div> */}
               <div className="my-4 flex justify-center">
                 <ButtonComponent
-                  name="Login"
+                  name="Sign up"
                   className="btn-wide bg-green-500 hover:bg-green-600 border-none text-white"
                 />
               </div>
@@ -150,9 +175,9 @@ function Login3() {
               </div>
             </div>
             <div className=" flex gap-2 my-4 text-sm ">
-              <p>Not a member yet?</p>
-              <Link to="/signup2">
-                <p className="text-green-500 font-bold">Sign up</p>
+              <p>Already having an account?</p>
+              <Link to="/login3">
+                <p className="text-green-500 font-bold">Login</p>
               </Link>
             </div>
           </div>
@@ -167,4 +192,4 @@ function Login3() {
   );
 }
 
-export default Login3;
+export default SignUp2;

@@ -13,14 +13,13 @@ const app = express();
 app.use(express.json());
 
 const fun = (req, res) => {
-    const name = "Asim"
-    if (name == "Asim") {
-        res.send("Asim route.")
-    }
-    else if (name == "hasnain") {
-        res.send("hasnain route.")
-    }
-}
+  const name = "Asim";
+  if (name == "Asim") {
+    res.send("Asim route.");
+  } else if (name == "hasnain") {
+    res.send("hasnain route.");
+  }
+};
 // app.use("/", fun)
 
 app.use("/api/v1", StudentRouter);
@@ -34,10 +33,14 @@ app.use(errorHandlerMiddleware);
 const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
-  await connectDB(process.env.MONGODB_URI);
-  app.listen(PORT, () => {
-    console.log(`Server is listening on port ${PORT}`);
-  });
+  try {
+    await connectDB(process.env.MONGODB_URI);
+    app.listen(PORT, () => {
+      console.log(`Server is listening on port ${PORT}`);
+    });
+  } catch (error) {
+    console.log(error)
+  }
 };
 
 startServer();

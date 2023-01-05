@@ -29,8 +29,8 @@ const instructorSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      max: 25,
-      min: 5,
+      maxLength: 25,
+      minLength: 5,
       required: [true, "Please provide name."],
     },
     email: {
@@ -41,7 +41,7 @@ const instructorSchema = new mongoose.Schema(
     // feedback: [reviewSchema],
     password: {
       type: String,
-      min: 8,
+      minLength: 8,
       required: [true, "Please provide password."],
       select: false,
     },
