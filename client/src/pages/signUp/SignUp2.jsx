@@ -27,12 +27,12 @@ function SignUp2() {
 
   useEffect(() => {
     if (user) {
-      navigate("/");
+      navigate("/instructor/dashboard");
     }
-    if(error!==""){
-      toast.error(error)
+    if (error !== "") {
+      toast.error(error);
     }
-  }, [user,error]);
+  }, [user, error]);
   const onMutate = (event) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -91,7 +91,6 @@ function SignUp2() {
                 <InputComponent
                   type="text"
                   placeholder="Name"
-                  className="bg-base-200"
                   id="name"
                   value={formData.name}
                   handleChange={onMutate}
@@ -104,7 +103,6 @@ function SignUp2() {
                 <InputComponent
                   type="email"
                   placeholder="Email"
-                  className="bg-base-200"
                   id="email"
                   value={formData.email}
                   handleChange={onMutate}
@@ -117,7 +115,6 @@ function SignUp2() {
                 <InputComponent
                   type="password"
                   placeholder="Password"
-                  className="bg-base-200"
                   id="password"
                   value={formData.password}
                   handleChange={onMutate}
@@ -126,20 +123,6 @@ function SignUp2() {
                   <IoLockClosedOutline className=" text-white text-xl" />
                 </div>
               </div>
-
-              {/* <div className="my-4 relative">
-                <InputComponent
-                  type="password"
-                  placeholder="Retype password"
-                  className="bg-base-200"
-                  id="password"
-                  value={formData.password}
-                  handleChange={onMutate}
-                />
-                <div className="absolute right-0 top-0 bg-green-400 h-full flex items-center w-10 justify-center rounded-md ">
-                  <IoLockClosedOutline className=" text-white text-xl" />
-                </div>
-              </div> */}
               <div className="my-4 flex justify-center">
                 <ButtonComponent
                   name="Sign up"
@@ -150,12 +133,6 @@ function SignUp2() {
             <div className="divider before:bg-base-300 before:h-[1px] after:bg-base-300 after:h-[1px] text-slate-600 text-sm  ">
               Or continue with
             </div>
-            {/* <div className="my-4">
-              <ButtonComponent
-                name="Sign up"
-                className="btn-wide bg-transparent border-green-500 text-green-500 border-[1px] transition-colors ease-in-out hover:bg-green-100/70 hover:border-green-500"
-              />
-            </div> */}
             <div className="flex justify-center gap-2">
               <div>
                 <button className="btn btn-ghost border-slate-400 border-[1px] rounded-md">

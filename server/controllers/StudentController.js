@@ -16,7 +16,9 @@ const login = async (req, res, err) => {
     throw new BadRequest("Invalid credentials.");
   }
   student.password = undefined;
-  res.status(StatusCodes.OK).json(student);
+
+  const token = student.createJWT();
+  res.status(StatusCodes.OK).json({student,token});
 };
 
 const register = async (req, res) => {

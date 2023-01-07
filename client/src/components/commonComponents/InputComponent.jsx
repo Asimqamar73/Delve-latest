@@ -7,7 +7,7 @@ function InputComponent({ type, placeholder, id, className, handleChange }) {
         type={type}
         placeholder={placeholder}
         id={id}
-        className={`outline-none p-2 rounded ${className}`}
+        className={`bg-base-200 outline-none focus:outline-green-400 outline-[1px] p-2 rounded ${className}`}
         onChange={handleChange}
       />
     </div>

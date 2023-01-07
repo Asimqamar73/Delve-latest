@@ -45,7 +45,7 @@ function Login3() {
 
   return (
     <div className="h-screen">
-      <div className="fixed w-full px-16 py-4">
+      <div className="fixed px-16 py-4">
         <Logo />
       </div>
       <div>
@@ -64,33 +64,11 @@ function Login3() {
               <p className="font-bold text-3xl  font-sans">Login</p>
               <p className="text-sm">Login into your account</p>
             </div>
-            {/* <div className="flex justify-center gap-2"> */}
-            {/* <div> */}
-            {/* <button className="btn btn-ghost border-slate-400 border-[1px] rounded-md"> */}
-            {/* <FaFacebook size={24} color="#3b5999" /> */}
-            {/* </button> */}
-            {/* </div> */}
-            {/* <div> */}
-            {/* <button className="btn btn-ghost border-slate-400 border-[1px] rounded-md"> */}
-            {/* <FcGoogle size={24} /> */}
-            {/* </button> */}
-            {/* </div> */}
-            {/*  */}
-            {/* <div> */}
-            {/* <button className="btn btn-ghost border-slate-400 border-[1px] rounded-md"> */}
-            {/* <FaLinkedinIn size={24} color="#0072b1" /> */}
-            {/* </button> */}
-            {/* </div> */}
-            {/* </div> */}
-            {/* <div className="divider before:bg-base-300 before:h-[1px] after:bg-base-300 after:h-[1px] text-slate-600 text-sm  "> */}
-            {/* Or continue with */}
-            {/* </div> */}
             <form onSubmit={handleSubmit}>
               <div className="my-4 relative">
                 <InputComponent
                   type="email"
                   placeholder="Email"
-                  className="bg-base-200"
                   id="email"
                   value={formData.email}
                   handleChange={onMutate}
@@ -103,7 +81,6 @@ function Login3() {
                 <InputComponent
                   type="password"
                   placeholder="Password"
-                  className="bg-base-200"
                   id="password"
                   value={formData.password}
                   handleChange={onMutate}

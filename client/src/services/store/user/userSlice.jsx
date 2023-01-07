@@ -2,21 +2,27 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const userInfo = localStorage.getItem("user");
+const JWToken = localStorage.getItem("token");
+
 export const userSlice = createSlice({
   name: "user",
   initialState: {
     user: userInfo ? JSON.parse(userInfo) : null,
+    token: JWToken ? JWToken : null,
     loading: false,
     error: "",
   },
   reducers: {
     setUser: (state, action) => {
-      state.user = action.payload;
-      localStorage.setItem("user", JSON.stringify(action.payload));
+      state.user = action.payload.student;
+      localStorage.setItem("user", JSON.stringify(action.payload.student));
+      localStorage.setItem("token", JSON.stringify(action.payload.token));
     },
     logout: (state) => {
       state.user = null;
+      state.token = null;
       localStorage.removeItem("user");
+      localStorage.removeItem("token");
     },
     setError: (state, action) => {
       state.error = action.payload;
@@ -39,10 +45,13 @@ export function loginUser(userCredentials) {
         "api/v1/student/login",
         userCredentials
       );
+      console.log(data);
       dispatch(setUser(data));
     } catch (error) {
       dispatch(setError(error.response.data.msg));
-      // dispatch(setLoading(false));
+      setTimeout(() => {
+        dispatch(setError(""));
+      }, 1000);
     }
   };
 }

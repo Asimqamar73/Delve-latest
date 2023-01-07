@@ -71,7 +71,6 @@ function InstructorSignUp() {
                 <InputComponent
                   type="email"
                   placeholder="Name"
-                  className="bg-base-200"
                   id="name"
                   value={formData.name}
                   handleChange={onMutate}
@@ -84,7 +83,6 @@ function InstructorSignUp() {
                 <InputComponent
                   type="email"
                   placeholder="Email"
-                  className="bg-base-200"
                   id="email"
                   value={formData.email}
                   handleChange={onMutate}
@@ -97,7 +95,6 @@ function InstructorSignUp() {
                 <InputComponent
                   type="password"
                   placeholder="Password"
-                  className="bg-base-200"
                   id="password"
                   value={formData.password}
                   handleChange={onMutate}
@@ -136,9 +133,9 @@ function InstructorSignUp() {
               </div>
             </div>
             <div className=" flex gap-2 my-4 text-sm ">
-              <p>Not a member yet?</p>
-              <Link to="/signup2">
-                <p className="text-green-500 font-bold">Sign up</p>
+              <p>Already having an account?</p>
+              <Link to="/instructor-login">
+                <p className="text-green-500 font-bold">Login</p>
               </Link>
             </div>
           </div>
