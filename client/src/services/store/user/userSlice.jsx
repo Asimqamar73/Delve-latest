@@ -1,22 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { authFetch } from "../../../lib/axios/authFetch";
+// import { authFetch } from "../../../lib/axios/authFetch";
 
 const userInfo = localStorage.getItem("user");
 const JWToken = localStorage.getItem("token");
+const initialState = {
+  user: userInfo ? JSON.parse(userInfo) : null,
+  token: JWToken || "",
+  loading: false,
+  error: "",
+};
 
 export const userSlice = createSlice({
   name: "user",
-  initialState: {
-    user: userInfo ? JSON.parse(userInfo) : null,
-    token: JWToken ? JWToken : null,
-    loading: false,
-    error: "",
-  },
+  initialState,
   reducers: {
     setUser: (state, action) => {
+    
       state.user = action.payload.student;
       localStorage.setItem("user", JSON.stringify(action.payload.student));
-      localStorage.setItem("token", JSON.stringify(action.payload.token));
+      if (action.payload.token) {
+        localStorage.setItem("token", action.payload.token);
+      }
     },
     logout: (state) => {
       state.user = null;
@@ -41,11 +47,7 @@ export default userSlice.reducer;
 export function loginUser(userCredentials) {
   return async function loginUserThunk(dispatch, getState) {
     try {
-      const { data } = await axios.post(
-        "api/v1/student/login",
-        userCredentials
-      );
-      console.log(data);
+      const { data } = await axios.post("/api/v1/student/login", userCredentials);
       dispatch(setUser(data));
     } catch (error) {
       dispatch(setError(error.response.data.msg));
@@ -59,11 +61,13 @@ export function loginUser(userCredentials) {
 export function createAccount(userCredentials) {
   return async function createAccountThunk(dispatch, getState) {
     try {
-      const { data } = await axios.post(
-        "api/v1/student/createAccount",
+      const { data } = await authFetch.post(
+        "/student/createAccount",
         userCredentials
       );
       dispatch(setUser(data));
+    
+    
     } catch (error) {
       dispatch(setError(error.response.data.msg));
       setTimeout(() => {
@@ -72,3 +76,21 @@ export function createAccount(userCredentials) {
     }
   };
 }
+
+export function changeAvatar(avatarInfo) {
+  return async function changeAvatarThunk(dispatch, getState) {
+    dispatch(setLoading(true));
+    try {
+      const { data } = await authFetch.patch(
+        "/student/changeAvatar",
+        avatarInfo
+      );
+    
+      dispatch(setUser(data));
+      dispatch(setLoading(false));
+    } catch (error) {
+      dispatch(setLoading(false));
+    }
+  };
+}
+

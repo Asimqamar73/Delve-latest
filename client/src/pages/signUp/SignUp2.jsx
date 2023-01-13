@@ -27,7 +27,7 @@ function SignUp2() {
 
   useEffect(() => {
     if (user) {
-      navigate("/instructor/dashboard");
+      navigate("/");
     }
     if (error !== "") {
       toast.error(error);
@@ -49,15 +49,6 @@ function SignUp2() {
       <div className="fixed w-full px-16 py-4">
         <Logo />
       </div>
-      {/* <div>
-        {user && (
-          <div>
-            <button className="btn" onClick={() => dispatch(logout())}>
-              Logout
-            </button>
-          </div>
-        )}
-      </div> */}
       <div className="grid grid-cols-3 h-full">
         <div className="col-span-1 flex flex-col items-center justify-center ">
           <div>
@@ -65,27 +56,6 @@ function SignUp2() {
               <p className="font-bold text-3xl  font-sans">Sign up</p>
               <p className="text-sm">Get started by creating your account.</p>
             </div>
-            {/* <div className="flex justify-center gap-2"> */}
-            {/* <div> */}
-            {/* <button className="btn btn-ghost border-slate-400 border-[1px] rounded-md"> */}
-            {/* <FaFacebook size={24} color="#3b5999" /> */}
-            {/* </button> */}
-            {/* </div> */}
-            {/* <div> */}
-            {/* <button className="btn btn-ghost border-slate-400 border-[1px] rounded-md"> */}
-            {/* <FcGoogle size={24} /> */}
-            {/* </button> */}
-            {/* </div> */}
-            {/*  */}
-            {/* <div> */}
-            {/* <button className="btn btn-ghost border-slate-400 border-[1px] rounded-md"> */}
-            {/* <FaLinkedinIn size={24} color="#0072b1" /> */}
-            {/* </button> */}
-            {/* </div> */}
-            {/* </div> */}
-            {/* <div className="divider before:bg-base-300 before:h-[1px] after:bg-base-300 after:h-[1px] text-slate-600 text-sm  "> */}
-            {/* Or continue with */}
-            {/* </div> */}
             <form onSubmit={handleSubmit}>
               <div className="my-4 relative">
                 <InputComponent
@@ -94,6 +64,7 @@ function SignUp2() {
                   id="name"
                   value={formData.name}
                   handleChange={onMutate}
+                  className="w-full"
                 />
                 <div className="absolute right-0 top-0 bg-green-400 h-full flex items-center w-10 justify-center rounded-md ">
                   <BiUser className="text-white text-xl" />
@@ -104,6 +75,7 @@ function SignUp2() {
                   type="email"
                   placeholder="Email"
                   id="email"
+                  className="w-full"
                   value={formData.email}
                   handleChange={onMutate}
                 />
@@ -116,6 +88,7 @@ function SignUp2() {
                   type="password"
                   placeholder="Password"
                   id="password"
+                  className="w-full"
                   value={formData.password}
                   handleChange={onMutate}
                 />

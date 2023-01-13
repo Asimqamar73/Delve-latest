@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, Navigate, NavLink } from "react-router-dom";
 import Logo from "../../components/commonComponents/Logo";
 import ButtonComponent from "../../components/commonComponents/ButtonComponent";
 import { BsCart4, BsSearch } from "react-icons/bs";
@@ -11,18 +11,18 @@ import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../services/store/user/userSlice";
 import { useState } from "react";
 import InputComponent from "../../components/commonComponents/InputComponent";
+import UserProfileIcon from "../../components/commonComponents/UserProfileIcon";
 
 function Navbar() {
   const user = useSelector((state) => state.user.user);
   const [isVisableSearchBar, setIsVisableSearchBar] = useState(false);
   const dispatch = useDispatch();
   return (
-    <header>
-      <nav className="fixed w-full top-0 flex items-center px-8 py-2 bg-base-300  ">
+    <header className=" top-0">
+      <nav className="w-full flex items-center px-16 py-2 bg-base-200  ">
         <div>
           <Logo />
         </div>
-
         <div className="flex flex-1 justify-end items-center gap-x-4 ">
           <div className="flex h-full py-2 items-center hover:cursor-pointer">
             <BsSearch
@@ -65,21 +65,22 @@ function Navbar() {
           {user ? (
             <div>
               <div className="relative flex h-full rounded items-center group">
-                <div class="avatar">
-                  <div class="w-12 rounded">
-                    <img src={profileImg} />
-                  </div>
-                </div>
+                <UserProfileIcon user={user} />
                 <div className="group-hover:block hidden bg-base-300 absolute whitespace-nowrap rounded-md p-4 top-full right-0">
-                  <div className="flex items-center hover:cursor-pointer hover:text-slate-600 ">
-                    <div className="rounded-md w-12 mr-2">
-                      <img src={profileImg} className="rounded" />
+                  <Link to="/student/dashboard">
+                    <div className="flex items-center hover:cursor-pointer hover:text-slate-600">
+                      <div className="rounded-md w-12 mr-2">
+                        <img
+                          src={user.avatar ? user.avatar : profileImg}
+                          className="rounded"
+                        />
+                      </div>
+                      <div className="text-sm ">
+                        <p className="font-bold">{user.name}</p>
+                        <p>{user.email}</p>
+                      </div>
                     </div>
-                    <div className="text-sm ">
-                      <p className="font-bold">{user.name}</p>
-                      <p>{user.email}</p>
-                    </div>
-                  </div>
+                  </Link>
                   <div className="divider m-0 p-0 before:m-0 after:m-0 before:p-0 after:p-0" />
                   <div className="flex items-center hover:cursor-pointer hover:text-gray-500">
                     <AiOutlineSetting />

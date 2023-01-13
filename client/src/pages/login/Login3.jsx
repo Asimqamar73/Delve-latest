@@ -70,6 +70,7 @@ function Login3() {
                   type="email"
                   placeholder="Email"
                   id="email"
+                  className="w-full"
                   value={formData.email}
                   handleChange={onMutate}
                 />
@@ -82,6 +83,7 @@ function Login3() {
                   type="password"
                   placeholder="Password"
                   id="password"
+                  className="w-full"
                   value={formData.password}
                   handleChange={onMutate}
                 />

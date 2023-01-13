@@ -7,10 +7,25 @@ import InstructorReviewRouter from "./routes/InstructorReviewRoute.js";
 import notFoundMiddleware from "./middlewares/notFoundMiddleware.js";
 import connectDB from "./db/connection.js";
 import errorHandlerMiddleware from "./middlewares/errorHandler.js";
+import fileUpload from "express-fileupload";
+import auth from "./middlewares/auth.js";
+import * as Cloudinary from "cloudinary";
 
 dotenv.config();
 const app = express();
+
+Cloudinary.v2.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
 app.use(express.json());
+app.use(
+  fileUpload({
+    useTempFiles: true,
+  })
+);
 
 const fun = (req, res) => {
   const name = "Asim";
@@ -24,7 +39,7 @@ const fun = (req, res) => {
 
 app.use("/api/v1", StudentRouter);
 app.use("/api/v1", InstructorRouter);
-app.use("/api/v1", CourseRoute);
+app.use("/api/v1", auth, CourseRoute);
 app.use("/api/v1", InstructorReviewRouter);
 
 app.use("/*", notFoundMiddleware);
@@ -39,7 +54,7 @@ const startServer = async () => {
       console.log(`Server is listening on port ${PORT}`);
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 };
 

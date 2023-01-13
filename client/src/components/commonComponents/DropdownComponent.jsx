@@ -14,10 +14,10 @@ const DropdownComponent = ({
       id={id}
       value={value}
       onChange={handleChange}
-      className={`${variant} rounded`}
+      className={`${variant} rounded bg-base-200`}
     >
-      {options.map((option) => (
-        <option value={option}>{option}</option>
+      {options.map((option,index) => (
+        <option value={option} key={index}>{option}</option>
       ))}
     </select>
   );

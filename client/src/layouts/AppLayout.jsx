@@ -5,9 +5,12 @@ import Navbar from "./navbar/Navbar";
 
 function AppLayout() {
   return (
-    <div>
+    <div className="">
       <Navbar />
-      <Outlet />
+      <div className="">
+        <Outlet />
+      </div>
+      {/* <Footer/> */}
     </div>
   );
 }

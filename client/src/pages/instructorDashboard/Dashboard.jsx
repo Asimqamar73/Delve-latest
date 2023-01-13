@@ -6,11 +6,13 @@ import { NavLink, Outlet } from "react-router-dom";
 import { MdOndemandVideo } from "react-icons/md";
 import { HiOutlineChatBubbleLeft } from "react-icons/hi2";
 import { TfiStatsUp } from "react-icons/tfi";
+import { FaSortDown } from "react-icons/fa";
+import UserProfileIcon from "../../components/commonComponents/UserProfileIcon";
 
 function Dashboard() {
   const user = useSelector((state) => state.user.user);
   return (
-    <div className="">
+    <div>
       <div className="grid grid-cols-6 min-h-screen">
         <div className="col-span-1 py-2 px-8 bg-base-200 top-0 ">
           <div>
@@ -39,11 +41,7 @@ function Dashboard() {
         </div>
         <div className="col-span-5">
           <div className="flex justify-end py-2 px-8">
-            <div className="avatar">
-              <div className="w-12 rounded">
-                <img src={profileImg} alt="" />
-              </div>
-            </div>
+            <UserProfileIcon user={user} />
           </div>
           <div className="mx-8 my-2 ">
             <Outlet />

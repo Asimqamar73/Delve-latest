@@ -26,6 +26,14 @@ const studentSchema = new mongoose.Schema(
       required: [true, "Please provide password."],
       select: false,
     },
+    avatar: {
+      type: String,
+      default: null,
+    },
+    avatarCloudinayId: {
+      type: String,
+      default: null,
+    },
   },
   {
     timestamps: true,
@@ -43,7 +51,7 @@ studentSchema.pre("save", async function () {
   // console.log("Pre hook triggered... student schema")
 });
 studentSchema.methods.createJWT = function () {
-  return jwt.sign({ userId: this._id }, process.env.JWT_SECRET, {
+  return jwt.sign({ userID: this._id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_LIFETIME,
   });
 };

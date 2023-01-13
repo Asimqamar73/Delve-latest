@@ -15,6 +15,13 @@ import Dashboard from "../pages/instructorDashboard/Dashboard";
 import Courses from "../pages/instructorDashboard/Courses";
 import Communication from "../pages/instructorDashboard/Communication";
 import Performance from "../pages/instructorDashboard/Performance";
+import StudentDashboard from "../pages/studentDashboard/StudentDashboard";
+import Profile from "../pages/studentDashboard/Profile";
+import Security from "../pages/studentDashboard/Security";
+import ManageCourse from "../pages/course/ManageCourse";
+import Audience from "../pages/course/Audience";
+import Curriculum from "../pages/course/Curriculum";
+import CourseLandingPageInfo from "../pages/course/CourseLandingPageInfo";
 
 function AppRoutes() {
   return (
@@ -47,8 +54,31 @@ function AppRoutes() {
             </InstructorPrivateRoute>
           }
         />
+        <Route
+          path="/instructor/dashboard/manage-course/:id"
+          element={
+            <InstructorPrivateRoute>
+              <ManageCourse />
+            </InstructorPrivateRoute>
+          }
+        >
+          <Route path="audience" element={<Audience />} />
+          <Route path="curriculum" element={<Curriculum />} />
+          <Route path="basics" element={<CourseLandingPageInfo />} />
+        </Route>
         <Route path="/" element={<AppLayout />}>
           <Route index element={<Home />} />
+          <Route
+            path="student/dashboard"
+            element={
+              <InstructorPrivateRoute>
+                <StudentDashboard />
+              </InstructorPrivateRoute>
+            }
+          >
+            <Route index element={<Profile />} />
+            <Route path="security" element={<Security />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

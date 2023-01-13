@@ -47,7 +47,7 @@ function InstructorSignUp() {
 
   return (
     <div className="h-screen">
-      <div className="fixed w-full px-16 py-4">
+      <div className="fixed w-full px-16 py-2">
         <Logo />
       </div>
       <div>
