@@ -67,8 +67,8 @@ function Audience() {
     courseEssentials.courseObjectives = goals;
     courseEssentials.courseRequirements = requirements;
     courseEssentials.id = course._id;
-    console.log(courseEssentials)
-    // dispatch(modifyCourse(courseEssentials));
+    // console.log(courseEssentials)
+    dispatch(modifyCourse(courseEssentials));
   };
   return (
     <div>

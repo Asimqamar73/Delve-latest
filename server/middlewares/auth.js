@@ -12,7 +12,7 @@ const auth = async (req, res, next) => {
     req.user = payload;
     next();
   } catch (error) {
-    throw new UnauthenticatedError("Authentication");
+    throw new UnauthenticatedError("Authentication Invalid");
   }
 };
 

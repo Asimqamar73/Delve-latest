@@ -8,7 +8,6 @@ import notFoundMiddleware from "./middlewares/notFoundMiddleware.js";
 import connectDB from "./db/connection.js";
 import errorHandlerMiddleware from "./middlewares/errorHandler.js";
 import fileUpload from "express-fileupload";
-import auth from "./middlewares/auth.js";
 import * as Cloudinary from "cloudinary";
 
 dotenv.config();
@@ -39,7 +38,7 @@ const fun = (req, res) => {
 
 app.use("/api/v1", StudentRouter);
 app.use("/api/v1", InstructorRouter);
-app.use("/api/v1", auth, CourseRoute);
+app.use("/api/v1", CourseRoute);
 app.use("/api/v1", InstructorReviewRouter);
 
 app.use("/*", notFoundMiddleware);

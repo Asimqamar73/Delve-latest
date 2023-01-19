@@ -45,7 +45,6 @@ studentSchema.pre("save", async function () {
   // console.log(this.isModified("password")) // return value will be boolean
   // console.log(this.modifiedPaths()) // return value will be an array filled with field names for ex: username password or email etc
   if (!this.isModified("password")) return;
-
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
   // console.log("Pre hook triggered... student schema")

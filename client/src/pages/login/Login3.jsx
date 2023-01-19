@@ -5,7 +5,7 @@ import loginPageImg from "../../assets/images/loginPageImg.svg";
 import { MdAlternateEmail } from "react-icons/md";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook, FaLinkedinIn } from "react-icons/fa";
-import { IoLockClosedOutline } from "react-icons/io5";
+import { IoEar, IoEye, IoLockClosedOutline } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -13,6 +13,8 @@ import { useEffect } from "react";
 import { logout, loginUser } from "../../services/store/user/userSlice";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
+import { FiEye } from "react-icons/fi";
+import { BsEye, BsEyeSlash } from "react-icons/bs";
 
 function Login3() {
   const navigate = useNavigate();
@@ -87,6 +89,9 @@ function Login3() {
                   value={formData.password}
                   handleChange={onMutate}
                 />
+                <div className="absolute right-10 top-0 h-full text-slate-700  text-xl flex items-center w-10 justify-center rounded-md ">
+                  <BsEyeSlash className="  " />
+                </div>
                 <div className="absolute right-0 top-0 bg-green-400 h-full flex items-center w-10 justify-center rounded-md ">
                   <IoLockClosedOutline className=" text-white text-xl" />
                 </div>

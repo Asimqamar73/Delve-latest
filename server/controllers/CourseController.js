@@ -66,4 +66,19 @@ const getOwnCourses = async (req, res) => {
   res.status(StatusCodes.OK).json(courses);
 };
 
-export { createCourse, editCourse, editCourse2, courseDetails, getOwnCourses };
+const fetchAllPublishedCourses = async (req, res) => {
+  const courses = await Course.find({}).populate("courseInstructor");
+  if(!courseDetails){
+    BadRequest("Something went wrong, Please try again later.")
+  }
+  res.send(courses);
+};
+
+export {
+  createCourse,
+  editCourse,
+  editCourse2,
+  courseDetails,
+  getOwnCourses,
+  fetchAllPublishedCourses,
+};

@@ -13,7 +13,7 @@ function Dashboard() {
   const user = useSelector((state) => state.user.user);
   return (
     <div>
-      <div className="grid grid-cols-6 min-h-screen">
+      <div className="grid grid-cols-6 h-screen">
         <div className="col-span-1 py-2 px-8 bg-base-200 top-0 ">
           <div>
             <Logo />
