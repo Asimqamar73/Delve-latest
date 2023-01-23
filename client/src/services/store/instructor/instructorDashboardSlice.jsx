@@ -76,7 +76,7 @@ export function manageCourse(courseId) {
     //*  dispatch(setCourse(null)) here or use below loading approach.
     dispatch(setLoading(true));
     try {
-      const { data } = await authFetch.get(`/course/courseDetails/${courseId}`);
+      const { data } = await authFetch.get(`/course/ownCourseDetails/${courseId}`);
       dispatch(setCourse(data));
       dispatch(setLoading(false));
     } catch (error) {

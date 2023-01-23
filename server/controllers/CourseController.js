@@ -50,10 +50,13 @@ const editCourse2 = async (req, res) => {
 const manageCourseCurriculumSection = async (req, res) => {
   const courseId = req.body.id;
   delete req.body.id;
-  const course = await Course.findByIdAndUpdate(courseId, {
-    $push: { courseCurriculum: req.body },
-  },
-  { new: true });
+  const course = await Course.findByIdAndUpdate(
+    courseId,
+    {
+      $push: { courseCurriculum: req.body },
+    },
+    { new: true }
+  );
   res.send(course);
 };
 const manageCourseCurriculumContent = async (req, res) => {
@@ -74,7 +77,7 @@ const manageCourseCurriculumContent = async (req, res) => {
       }
     );
     // const updatedCourse = await Course.updateOne(
-      console.log(req.body)
+    console.log(req.body);
     const updatedCourse = await Course.findOneAndUpdate(
       {
         _id: req.body.courseId,
@@ -106,7 +109,7 @@ const manageCourseCurriculumContent = async (req, res) => {
   // res.send(course);
 };
 
-const courseDetails = async (req, res) => {
+const ownCourseDetails = async (req, res) => {
   const { id } = req.params;
   const course = await Course.findById(id);
 
@@ -127,10 +130,17 @@ const getOwnCourses = async (req, res) => {
 
 const fetchAllPublishedCourses = async (req, res) => {
   const courses = await Course.find({}).populate("courseInstructor");
-  if (!courseDetails) {
-    BadRequest("Something went wrong, Please try again later.");
-  }
+  // if (!courseDetails) {
+  //   BadRequest("Something went wrong, Please try again later.");
+  // }
   res.send(courses);
+};
+const fetchCourseDetails = async (req, res) => {
+  console.log(req.params);
+  const course = await Course.findById({ _id: req.params.courseId });
+  console.log(course);
+
+  res.status(StatusCodes.OK).json(course);
 };
 
 export {
@@ -139,7 +149,8 @@ export {
   editCourse2,
   manageCourseCurriculumSection,
   manageCourseCurriculumContent,
-  courseDetails,
+  fetchCourseDetails,
+  ownCourseDetails,
   getOwnCourses,
   fetchAllPublishedCourses,
 };

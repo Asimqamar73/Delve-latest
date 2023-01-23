@@ -2,9 +2,6 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AppLayout from "../layouts/AppLayout";
 import Home from "../pages/home/Home";
-import Login from "../pages/login/Login";
-import Login2 from "../pages/login/Login2";
-import SignUp from "../pages/signUp/SignUp";
 import SignUp2 from "../pages/signUp/SignUp2";
 import Login3 from "../pages/login/Login3";
 import InstructorSignUp from "../pages/signUp/InstructorSignUp";
@@ -22,14 +19,12 @@ import ManageCourse from "../pages/course/ManageCourse";
 import Audience from "../pages/course/Audience";
 import Curriculum from "../pages/course/Curriculum";
 import CourseLandingPageInfo from "../pages/course/CourseLandingPageInfo";
+import CourseDetails from "../pages/home/CourseDetails";
 
 function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* <Route path="/login" element={<Login />} /> */}
-        {/* <Route path="/login2" element={<Login2 />} /> */}
-        {/* <Route path="/signup" element={<SignUp />} /> */}
         <Route path="/login3" element={<Login3 />} />
         <Route path="/instructor-login" element={<InstructorLogin />} />
         <Route path="/signup2" element={<SignUp2 />} />
@@ -68,6 +63,7 @@ function AppRoutes() {
         </Route>
         <Route path="/" element={<AppLayout />}>
           <Route index element={<Home />} />
+          <Route path="course-details/:courseId" element={<CourseDetails />} />
           <Route
             path="student/dashboard"
             element={

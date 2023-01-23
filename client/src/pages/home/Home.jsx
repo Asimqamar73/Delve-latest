@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import banner from "../../assets/images/banner9.jpg";
+import { Link } from "react-router-dom";
 import { fetchAllCourses } from "../../services/store/courses/coursesSlice";
 
 function Home() {
@@ -44,21 +45,23 @@ function Home() {
         <div className="grid grid-cols-5 gap-4">
           {courses &&
             courses.map((course, index) => (
-              <div key={index} className="text-slate-700">
-                <div className="my-2">
-                  <img
-                    src={course.courseThumbnail}
-                    alt="course thumbnail"
-                    className=" h-36 w-full object-cover "
-                  />
+              <Link to={`/course-details/${course._id}`}>
+                <div key={index} className="text-slate-700">
+                  <div className="my-2">
+                    <img
+                      src={course.courseThumbnail}
+                      alt="course thumbnail"
+                      className=" h-36 w-full object-cover "
+                    />
+                  </div>
+                  <div>
+                    <p className="font-bold ">{course.courseTitle}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm">{course.courseInstructor.name}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="font-bold ">{course.courseTitle}</p>
-                </div>
-                <div>
-                  <p className="text-sm">{course.courseInstructor.name}</p>
-                </div>
-              </div>
+              </Link>
             ))}
         </div>
       </div>
