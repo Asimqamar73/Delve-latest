@@ -70,10 +70,10 @@ export function manageCourse(courseId) {
   return async function courseDetailsThunk(dispatch, getState) {
     // This is used because when we logout out an account and login to  other account
     //we get courses of previous logged in account
-    //(Only when we not refresh page by oueself after logged out from 1st account.)
-    // Thats why we set couuse at initially null
+    //(Only when we not refresh page by ourself after logged out from 1st account.)
+    // Thats why we set course at initially null
     // We can achieve it by putting loading state in here.
-    //  dispatch(setCourse(null))
+    //*  dispatch(setCourse(null)) here or use below loading approach.
     dispatch(setLoading(true));
     try {
       const { data } = await authFetch.get(`/course/courseDetails/${courseId}`);
@@ -93,6 +93,41 @@ export function modifyCourse(updatedData) {
       dispatch(setCourse(data));
     } catch (error) {
       console.log(error);
+    }
+  };
+}
+
+export function manageCourseCurriculumSection(courseData) {
+  return async function updateCourseCurriculumSectionThunk(dispatch, getState) {
+    dispatch(setLoading(true));
+    try {
+      const { data } = await authFetch.patch(
+        "/course/manageCourseCurriculumSection",
+        courseData
+      );
+      dispatch(setCourse(data));
+      dispatch(setLoading(false));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function manageCourseCurriculumContent(courseData) {
+  return async function updateCourseCurriculumContentThunk(dispatch, getState) {
+    dispatch(setLoading(true));
+    try {
+      // console.log(courseData);
+      const { data } = await authFetch.patch(
+        "/course/manageCourseCurriculumContent",
+        courseData
+      );
+      // console.log(data);
+      dispatch(setCourse(data));
+      dispatch(setLoading(false));
+    } catch (error) {
+      console.log(error);
+      dispatch(setLoading(false));
     }
   };
 }

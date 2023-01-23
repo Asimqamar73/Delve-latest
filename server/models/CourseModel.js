@@ -1,5 +1,24 @@
 import mongoose, { Schema } from "mongoose";
 
+const sectionVideosSchema = new mongoose.Schema({
+  videoTitle: {
+    type: String,
+  },
+  content: {
+    type: String,
+  },
+  contentCloudinaryId: {
+    type: String,
+  },
+});
+
+const courseCurriculumSchema = new mongoose.Schema({
+  sectionTitle: {
+    type: String,
+  },
+  sectionVideos: [sectionVideosSchema],
+});
+
 const courseSchema = new mongoose.Schema(
   {
     courseTitle: {
@@ -32,9 +51,9 @@ const courseSchema = new mongoose.Schema(
       ],
       default: "All Level",
     },
-    courseLanguage:{
-      type:String,
-      default:"English"
+    courseLanguage: {
+      type: String,
+      default: "English",
     },
     courseInstructor: {
       type: Schema.Types.ObjectId,
@@ -48,6 +67,39 @@ const courseSchema = new mongoose.Schema(
     courseRequirements: {
       type: Array,
     },
+    courseCurriculum: [courseCurriculumSchema],
+    // courseCurriculum: {
+
+    // type: [
+    // {
+    // sectionTitle: {
+    // type: String,
+    // default: "Section title",
+    // required: true,
+    // },
+    // sectionContent: [
+    // {
+    // videoTitle: {
+    // type: String,
+    // required: true,
+    // default: "Video title",
+    // },
+    // videoUrlCloudinary: {
+    // type: String,
+    // default: "Video Url",
+    // },
+    // cloudinaryVideoId: {
+    // type: String,
+    // default: "Video Id",
+    // },
+    // },
+    // ],
+    // },
+    // ],
+    // },
+    // courseCurriculum: {
+    //   type: Array,
+    // },
     isPublished: {
       type: Boolean,
       default: false,

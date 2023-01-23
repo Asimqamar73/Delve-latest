@@ -5,6 +5,8 @@ import UserProfileIcon from "../../components/commonComponents/UserProfileIcon";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { manageCourse } from "../../services/store/instructor/instructorDashboardSlice";
+import LoadingIcons from "react-loading-icons";
+import Logo from "../../components/commonComponents/Logo"
 
 function ManageCourse() {
   const course = useSelector((state) => state.instructor.course);
@@ -18,7 +20,13 @@ function ManageCourse() {
   }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex flex-col justify-center items-center h-screen">
+        <LoadingIcons.Puff stroke="green"/>
+        {/* <Logo /> */}
+      </div>
+    );
+    // <div>Loading...</div>;
   }
   return (
     <div className="flex flex-col h-screen">

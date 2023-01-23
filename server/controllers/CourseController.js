@@ -47,6 +47,65 @@ const editCourse2 = async (req, res) => {
   res.send(course);
 };
 
+const manageCourseCurriculumSection = async (req, res) => {
+  const courseId = req.body.id;
+  delete req.body.id;
+  const course = await Course.findByIdAndUpdate(courseId, {
+    $push: { courseCurriculum: req.body },
+  },
+  { new: true });
+  res.send(course);
+};
+const manageCourseCurriculumContent = async (req, res) => {
+  // console.log(req.body);
+  // console.log(req.files);
+  // const course = await Course.findById({
+  // _id: req.body.courseId,
+  // courseCurriculum: { $elemMatch: { _id: req.body.sectionId } },
+  // });
+
+  if (req.files && req.files.content.mimetype.startsWith("video")) {
+    const courseVideoToCloud = await Cloudniary.v2.uploader.upload(
+      req.files.content.tempFilePath,
+      {
+        resource_type: "video",
+        use_filename: true,
+        folder: `Courses-Content`,
+      }
+    );
+    // const updatedCourse = await Course.updateOne(
+      console.log(req.body)
+    const updatedCourse = await Course.findOneAndUpdate(
+      {
+        _id: req.body.courseId,
+        "courseCurriculum._id": req.body.sectionId,
+        // courseCurriculum: { $elemMatch: { _id: req.body.sectionId } },
+      },
+      {
+        $push: {
+          "courseCurriculum.$.sectionVideos": {
+            videoTitle: req.body.videoTitle,
+            content: courseVideoToCloud.secure_url,
+            contentCloudinaryId: courseVideoToCloud.public_id,
+          },
+        },
+      },
+
+      { new: true }
+    );
+
+    res.send(updatedCourse);
+  }
+
+  // const courseId = req.body.id;
+  // delete req.body.id;
+  // const course = await Course.findByIdAndUpdate(courseId, {
+  //   $push: { courseCurriculum: req.body },
+  // });
+  // res.send(updatedCourse);
+  // res.send(course);
+};
+
 const courseDetails = async (req, res) => {
   const { id } = req.params;
   const course = await Course.findById(id);
@@ -68,8 +127,8 @@ const getOwnCourses = async (req, res) => {
 
 const fetchAllPublishedCourses = async (req, res) => {
   const courses = await Course.find({}).populate("courseInstructor");
-  if(!courseDetails){
-    BadRequest("Something went wrong, Please try again later.")
+  if (!courseDetails) {
+    BadRequest("Something went wrong, Please try again later.");
   }
   res.send(courses);
 };
@@ -78,6 +137,8 @@ export {
   createCourse,
   editCourse,
   editCourse2,
+  manageCourseCurriculumSection,
+  manageCourseCurriculumContent,
   courseDetails,
   getOwnCourses,
   fetchAllPublishedCourses,

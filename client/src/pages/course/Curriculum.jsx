@@ -6,14 +6,22 @@ import { GrStatusGood } from "react-icons/gr";
 import { TbNewSection } from "react-icons/tb";
 import DeleteIcon from "./components/DeleteIcon";
 
-// import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import ButtonComponent from "../../components/commonComponents/ButtonComponent";
 import Divider from "../../components/commonComponents/Divider";
 import InputComponent from "../../components/commonComponents/InputComponent";
 import PageHeading from "../../components/commonComponents/PageHeading";
+import {
+  manageCourseCurriculumContent,
+  manageCourseCurriculumSection,
+} from "../../services/store/instructor/instructorDashboardSlice";
+import { useEffect } from "react";
 
 function Curriculum() {
-  // const course = useSelector((state) => state.instructor.course);
+  const dispatch = useDispatch();
+  const course = useSelector((state) => state.instructor.course);
+  const isLoading = useSelector((state) => state.instructor.isLoading);
+
   const [isEditSection, setIsEditSection] = useState({
     isEdit: false,
     index: null,
@@ -23,7 +31,19 @@ function Curriculum() {
     index: null,
     sectionIndex: null,
   });
-  const [sections, setSections] = useState([]);
+  // const [sections, setSections] = useState([
+  // {
+  // sectionTitle: "Introduction",
+  // sectionVideos: [],
+  // },
+  // ]);
+  // const data = course.courseCurriculum
+  const [sections, setSections] = useState(course.courseCurriculum);
+  // useEffect(() => {
+  //   console.log(course);
+  //   console.log(sections);
+  // }, [course]);
+  // *Section related functions
   const handleSectionCreation = () => {
     setIsEditSection({ index: sections.length, isEdit: true });
     setSections((prevState) => [
@@ -44,36 +64,41 @@ function Curriculum() {
 
   const handleSectionTitleSubmition = (position) => {
     setIsEditSection({ isEdit: false, index: null });
+
+    dispatch(
+      manageCourseCurriculumSection({ ...sections[position], id: course._id })
+    );
   };
   const onSectionMutate = (value, position) => {
     const values = [...sections];
     values[position].sectionTitle = value;
     setSections(values);
-    console.log(sections);
   };
-  const onVideoMutate = (value, sectionIndex, videoIndex) => {
-    const allData = [...sections];
-    allData[sectionIndex].sectionVideos[videoIndex].videoTitle = value;
-    setSections(allData);
 
-    // setSections((prevState)=>(
-    // [
-    // ...prevState,
-    // ]
-    // ))
-    // console.log("Value", value);
-    // console.log("Section", sectionIndex);
-    // console.log("Video", videoIndex);
-  };
+  // * Functions belongs to videos inside sections
   const handleVideoAddition = (position) => {
     setIsEditContent({
       isEdit: true,
       index: sections[position].sectionVideos.length,
       sectionIndex: position,
     });
-    const allSections = [...sections];
-    allSections[position].sectionVideos.push({ videoTitle: "", content: "" });
-    setSections(allSections);
+    const modifiedData = sections.map((section, index) => {
+      // console.log(section);
+      if (index === position) {
+        return {
+          ...section,
+          sectionVideos: [
+            ...section.sectionVideos,
+            { videoTitle: "", content: null },
+          ],
+        };
+      } else {
+        return section;
+      }
+    });
+
+    setSections(modifiedData);
+    // console.log(sections);
   };
   const cancelVideoAddition = (sectionIndex, videoIndex) => {
     const allSections = [...sections];
@@ -81,14 +106,62 @@ function Curriculum() {
     setSections(allSections);
     setIsEditContent({ isEdit: false, index: null, sectionIndex: null });
   };
-  const handleVideoSubmition = () => {
+  const handleVideoSubmition = (
+    sectionIndex,
+    videoIndex,
+    sectionMongodDbId,
+    courseId
+  ) => {
     setIsEditContent({
       isEdit: false,
       index: null,
       sectionIndex: null,
     });
+    // console.log(
+    //   "sectionIndex: ",
+    //   sectionIndex,
+    //   "videoIndex: ",
+    //   videoIndex,
+    //   "sectionMongodDbId: ",
+    //   sectionMongodDbId
+    // );
+
+    const videoData = new FormData();
+    videoData.append(
+      "videoTitle",
+      sections[sectionIndex].sectionVideos[videoIndex].videoTitle
+    );
+    videoData.append(
+      "content",
+      sections[sectionIndex].sectionVideos[videoIndex].content
+    );
+    videoData.append("sectionId", sectionMongodDbId);
+    videoData.append("courseId", courseId);
+
+    dispatch(manageCourseCurriculumContent(videoData));
+
+    // console.log(sections[sectionIndex].sectionVideos[videoIndex]);
   };
 
+  const onVideoMutate = (event, sectionIndex, videoIndex) => {
+    if (event.target.files) {
+      // console.log(event.target.files[0]);
+      const allData = [...sections];
+      allData[sectionIndex].sectionVideos[videoIndex].content =
+        event.target.files[0];
+      setSections(allData);
+    }
+    if (!event.target.files) {
+      const allData = [...sections];
+      allData[sectionIndex].sectionVideos[videoIndex].videoTitle =
+        event.target.value;
+      setSections(allData);
+    }
+  };
+
+  // if (isLoading) {
+  //   return <div>Loading...</div>;
+  // }
   return (
     <div>
       <PageHeading title="Curriculum" />
@@ -100,6 +173,7 @@ function Curriculum() {
           sections and lectures clearly.{" "}
         </p>
       </div>
+
       <div>
         {sections.map((section, parentIndex) => (
           <div
@@ -111,7 +185,7 @@ function Curriculum() {
                 <p className="font-bold">Section title</p>
                 <InputComponent
                   type="text"
-                  placeholder="Section title here..."
+                  placeholder="Section title here. Note: section must have a name."
                   className="p-4 w-full"
                   name={parentIndex}
                   id={parentIndex}
@@ -120,19 +194,18 @@ function Curriculum() {
                     onSectionMutate(event.target.value, parentIndex)
                   }
                 />
-                <div className="flex justify-end my-[2px]">
-                  <button
-                    className="btn btn-ghost"
-                    onClick={() => cancelSectionCreation(parentIndex)}
-                  >
-                    cancel
-                  </button>
-                  <button
-                    className="btn btn-ghost"
-                    onClick={() => handleSectionTitleSubmition(parentIndex)}
-                  >
-                    Add section
-                  </button>
+                <div className="flex justify-end gap-2 mt-2 ">
+                  <ButtonComponent
+                    name={"cancel"}
+                    className="btn-sm bg-transparent "
+                    click={() => cancelSectionCreation(parentIndex)}
+                  />
+
+                  <ButtonComponent
+                    name={"Add section"}
+                    className="btn-sm"
+                    click={() => handleSectionTitleSubmition(parentIndex)}
+                  />
                 </div>
               </div>
             ) : (
@@ -150,11 +223,11 @@ function Curriculum() {
                   <div className="border-[1px] border-green-400 p-4">
                     <ul>
                       {section.sectionVideos.map((video, videoIndex) => (
-                        <div>
+                        <div key={videoIndex}>
                           {isEditContent.isEdit &&
                           isEditContent.index === videoIndex &&
                           isEditContent.sectionIndex == parentIndex ? (
-                            <div className="border-[1px] border-green-400 rounded p-4">
+                            <div className="border-[1px] border-green-400 bg-base-300 rounded p-4">
                               <div className="my-2">
                                 <p className="font-bold">Lecture title</p>
                                 <InputComponent
@@ -166,7 +239,7 @@ function Curriculum() {
                                   value={video.videoTitle}
                                   handleChange={(event) =>
                                     onVideoMutate(
-                                      event.target.value,
+                                      event,
                                       parentIndex,
                                       videoIndex
                                     )
@@ -174,7 +247,18 @@ function Curriculum() {
                                 />
                               </div>
                               <div className="my-2">
-                                <input type="file" name="" id="" />
+                                <input
+                                  type="file"
+                                  name=""
+                                  id=""
+                                  onChange={(event) =>
+                                    onVideoMutate(
+                                      event,
+                                      parentIndex,
+                                      videoIndex
+                                    )
+                                  }
+                                />
                               </div>
                               <div className="flex justify-end gap-2">
                                 <ButtonComponent
@@ -187,7 +271,14 @@ function Curriculum() {
                                 <ButtonComponent
                                   name="add lecture"
                                   className="btn-sm bg-green-400 text-slate-700 border-none"
-                                  click={handleVideoSubmition}
+                                  click={() =>
+                                    handleVideoSubmition(
+                                      parentIndex,
+                                      videoIndex,
+                                      section._id,
+                                      course._id
+                                    )
+                                  }
                                 />
                               </div>
                             </div>
@@ -211,11 +302,11 @@ function Curriculum() {
                   </div>
                 )}
 
-                <div className="my-2 ">
+                <div className="my-2">
                   {!isEditContent.isEdit && (
                     <div>
                       <button
-                        className="btn capitalize text-slate-700 border-[1px] border-green-400 bg-transparent"
+                        className="btn capitalize text-slate-700 border-[1px] border-green-400 bg-transparent hover:bg-green-400 hover:border-green-400"
                         onClick={() => handleVideoAddition(parentIndex)}
                       >
                         <FaVideo size={18} className="mr-[4px]" />
@@ -229,6 +320,7 @@ function Curriculum() {
           </div>
         ))}
       </div>
+
       <div>
         {!isEditSection.isEdit && (
           <button
