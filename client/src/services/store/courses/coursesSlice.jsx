@@ -6,13 +6,17 @@ export const coursesSlice = createSlice({
   initialState: {
     courses: null,
     course: null,
+    isLoading: false,
   },
   reducers: {
     setCourses: (state, action) => {
       state.courses = action.payload;
     },
     setCourse: (state, action) => {
-      state.courses = action.payload;
+      state.course = action.payload;
+    },
+    setLoading: (state, action) => {
+      state.isLoading = action.payload;
     },
   },
 });
@@ -26,7 +30,6 @@ export function fetchAllCourses() {
   return async function (dispatch, getState) {
     try {
       const { data } = await authFetch.get("/courses/publishedCourses");
-      console.log(data);
       dispatch(setCourses(data));
     } catch (error) {
       console.log(error);
@@ -39,7 +42,7 @@ export function fetchCourseDetails(courseId) {
     console.log(courseId);
     try {
       const { data } = await authFetch.get(`/course/courseDetails/${courseId}`);
-      console.log(data);
+      // console.log(data);
       dispatch(setCourse(data));
     } catch (error) {
       console.log(error);

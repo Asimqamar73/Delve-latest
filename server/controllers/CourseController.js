@@ -136,9 +136,9 @@ const fetchAllPublishedCourses = async (req, res) => {
   res.send(courses);
 };
 const fetchCourseDetails = async (req, res) => {
-  console.log(req.params);
-  const course = await Course.findById({ _id: req.params.courseId });
-  console.log(course);
+  // console.log(req.params);
+  const course = await Course.findById({ _id: req.params.courseId }).populate("courseInstructor");
+  // console.log(course);
 
   res.status(StatusCodes.OK).json(course);
 };
