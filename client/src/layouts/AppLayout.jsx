@@ -7,10 +7,10 @@ function AppLayout() {
   return (
     <div className="">
       <Navbar />
-      <div className="">
+      <div className="flex flex-col justify-between min-h-screen">
         <Outlet />
+        <Footer />
       </div>
-      <Footer/>
     </div>
   );
 }

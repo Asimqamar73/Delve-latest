@@ -26,7 +26,7 @@ function Home() {
         <div>
           <img src={banner} alt="" className="w-full  object-cover h-[480px]" />
         </div>
-        <div className="absolute top-32 left-24 p-12 bg-base-100 rounded-md shadow-md shadow-slate-400">
+        <div className="absolute top-32 left-24 p-12 bg-base-100 rounded-md shadow-md shadow-slate-500">
           {/* <div className="absolute top-32 left-24 p-8 bg-base-100 rounded-md shadow-md shadow-slate-700"> */}
           {/* 3 */}
 

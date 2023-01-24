@@ -21,7 +21,7 @@ export const coursesSlice = createSlice({
   },
 });
 
-export const { setCourses, setCourse } = coursesSlice.actions;
+export const { setCourses, setCourse, setLoading } = coursesSlice.actions;
 export default coursesSlice.reducer;
 
 // Thunks
@@ -39,13 +39,15 @@ export function fetchAllCourses() {
 
 export function fetchCourseDetails(courseId) {
   return async function fetchCourseDetailsThunk(dispatch, getState) {
-    console.log(courseId);
+    dispatch(setLoading(true));
     try {
       const { data } = await authFetch.get(`/course/courseDetails/${courseId}`);
       // console.log(data);
+      dispatch(setLoading(false));
       dispatch(setCourse(data));
     } catch (error) {
       console.log(error);
+      dispatch(setLoading(false));
     }
   };
 }

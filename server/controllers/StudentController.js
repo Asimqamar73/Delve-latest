@@ -8,7 +8,9 @@ const login = async (req, res, err) => {
   if (!email || !password) {
     throw new BadRequest("Please provide all values.");
   }
-  const student = await Student.findOne({ email: email }).select("+password");
+  const student = await Student.findOne({ email: email })
+    .select("+password")
+    .populate("enrolledCourses.courseId");
   if (!student) {
     throw new BadRequest("Invalid credentials.");
   }
@@ -31,7 +33,7 @@ const register = async (req, res) => {
 };
 const changeAvatar = async (req, res) => {
   // console.log(req.files)
-  console.log(req.user.userID)
+  console.log(req.user.userID);
   const student = await Student.findById(req.user.userID);
   if (req.files && req.files.avatar.mimetype.startsWith("image")) {
     if (student.avatarCloudinayId) {
@@ -51,4 +53,16 @@ const changeAvatar = async (req, res) => {
   res.status(StatusCodes.OK).json({ student });
 };
 
-export { login, register, changeAvatar };
+const courseEnrollment = async (req, res) => {
+  console.log(req.user.userID), console.log(req.body);
+  const student = await Student.findByIdAndUpdate(
+    req.user.userID,
+    {
+      $push: { enrolledCourses: req.body },
+    },
+    { new: true }
+  ).populate("enrolledCourses.courseId")
+  res.status(StatusCodes.OK).json({ student });
+};
+
+export { login, register, changeAvatar, courseEnrollment };

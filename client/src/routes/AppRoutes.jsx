@@ -20,6 +20,7 @@ import Audience from "../pages/course/Audience";
 import Curriculum from "../pages/course/Curriculum";
 import CourseLandingPageInfo from "../pages/course/CourseLandingPageInfo";
 import CourseDetails from "../pages/home/CourseDetails";
+import EnrolledCourses from "../pages/home/EnrolledCourses";
 
 function AppRoutes() {
   return (
@@ -64,6 +65,14 @@ function AppRoutes() {
         <Route path="/" element={<AppLayout />}>
           <Route index element={<Home />} />
           <Route path="course-details/:courseId" element={<CourseDetails />} />
+          <Route
+            path="course/enrolledCourses"
+            element={
+              <InstructorPrivateRoute>
+                <EnrolledCourses />
+              </InstructorPrivateRoute>
+            }
+          />
           <Route
             path="student/dashboard"
             element={

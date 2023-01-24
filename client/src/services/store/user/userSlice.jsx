@@ -10,6 +10,7 @@ const initialState = {
   token: JWToken || "",
   loading: false,
   error: "",
+  courses: null,
 };
 
 export const userSlice = createSlice({
@@ -17,7 +18,6 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-    
       state.user = action.payload.student;
       localStorage.setItem("user", JSON.stringify(action.payload.student));
       if (action.payload.token) {
@@ -47,7 +47,10 @@ export default userSlice.reducer;
 export function loginUser(userCredentials) {
   return async function loginUserThunk(dispatch, getState) {
     try {
-      const { data } = await axios.post("/api/v1/student/login", userCredentials);
+      const { data } = await axios.post(
+        "/api/v1/student/login",
+        userCredentials
+      );
       dispatch(setUser(data));
     } catch (error) {
       dispatch(setError(error.response.data.msg));
@@ -66,8 +69,6 @@ export function createAccount(userCredentials) {
         userCredentials
       );
       dispatch(setUser(data));
-    
-    
     } catch (error) {
       dispatch(setError(error.response.data.msg));
       setTimeout(() => {
@@ -85,7 +86,7 @@ export function changeAvatar(avatarInfo) {
         "/student/changeAvatar",
         avatarInfo
       );
-    
+
       dispatch(setUser(data));
       dispatch(setLoading(false));
     } catch (error) {
@@ -93,4 +94,30 @@ export function changeAvatar(avatarInfo) {
     }
   };
 }
+export function enrollCourse(courseId) {
+  return async function enrollCourseThunk(dispatch, getState) {
+    console.log(courseId)
+    try {
+      const { data } = await authFetch.patch(
+        "/student/courseEnrollment",
+        {courseId}
+      );
+      console.log(data)
+      dispatch(setUser(data));
+      dispatch(setLoading(false));
+    } catch (error) {
+      dispatch(setLoading(false));
+      console.log(error);
+    }
+  };
+}
 
+export function fetchEnrolledCourses(studentId) {
+  return async function fetchEnrolledCoursesThunk(dispatch, getState) {
+    try {
+      const { data } = await authFetch.get(
+        `/student/enrolledCourses/${studentId}`
+      );
+    } catch (error) {}
+  };
+}

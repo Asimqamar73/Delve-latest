@@ -1,8 +1,15 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import bcrypt from "bcrypt";
 import validator from "validator";
 import jwt from "jsonwebtoken";
 
+const enrolledCoursesSchema = new mongoose.Schema({
+  courseId: {
+    type: Schema.Types.ObjectId,
+    ref: "Course",
+    required: true,
+  },
+});
 const studentSchema = new mongoose.Schema(
   {
     name: {
@@ -34,6 +41,7 @@ const studentSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
+    enrolledCourses: [enrolledCoursesSchema],
   },
   {
     timestamps: true,
