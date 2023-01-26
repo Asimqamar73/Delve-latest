@@ -136,10 +136,16 @@ const fetchAllPublishedCourses = async (req, res) => {
   res.send(courses);
 };
 const fetchCourseDetails = async (req, res) => {
-  // console.log(req.params);
-  const course = await Course.findById({ _id: req.params.courseId }).populate("courseInstructor");
-  // console.log(course);
+  const course = await Course.findById({ _id: req.params.courseId }).populate(
+    "courseInstructor"
+  );
 
+  res.status(StatusCodes.OK).json(course);
+};
+const fetchCourse = async (req, res) => {
+  const course = await Course.findById({ _id: req.params.courseId }).populate(
+    "courseInstructor"
+  );
   res.status(StatusCodes.OK).json(course);
 };
 
@@ -151,6 +157,7 @@ export {
   manageCourseCurriculumContent,
   fetchCourseDetails,
   ownCourseDetails,
+  fetchCourse,
   getOwnCourses,
   fetchAllPublishedCourses,
 };

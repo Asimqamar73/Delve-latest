@@ -8,9 +8,10 @@ const JWToken = localStorage.getItem("token");
 const initialState = {
   user: userInfo ? JSON.parse(userInfo) : null,
   token: JWToken || "",
-  loading: false,
+  isLoading: false,
   error: "",
-  courses: null,
+  // courses: null,
+  course: null,
 };
 
 export const userSlice = createSlice({
@@ -24,6 +25,9 @@ export const userSlice = createSlice({
         localStorage.setItem("token", action.payload.token);
       }
     },
+    setCourse: (state, action) => {
+      state.course = action.payload;
+    },
     logout: (state) => {
       state.user = null;
       state.token = null;
@@ -34,12 +38,12 @@ export const userSlice = createSlice({
       state.error = action.payload;
     },
     setLoading: (state, action) => {
-      state.loading = action.payload;
+      state.isLoading = action.payload;
     },
   },
 });
 
-export const { setUser, logout, signup, setError, setLoading } =
+export const { setUser, setCourse, logout, signup, setError, setLoading } =
   userSlice.actions;
 export default userSlice.reducer;
 
@@ -96,13 +100,12 @@ export function changeAvatar(avatarInfo) {
 }
 export function enrollCourse(courseId) {
   return async function enrollCourseThunk(dispatch, getState) {
-    console.log(courseId)
+    console.log(courseId);
     try {
-      const { data } = await authFetch.patch(
-        "/student/courseEnrollment",
-        {courseId}
-      );
-      console.log(data)
+      const { data } = await authFetch.patch("/student/courseEnrollment", {
+        courseId,
+      });
+      console.log(data);
       dispatch(setUser(data));
       dispatch(setLoading(false));
     } catch (error) {
@@ -112,12 +115,27 @@ export function enrollCourse(courseId) {
   };
 }
 
-export function fetchEnrolledCourses(studentId) {
-  return async function fetchEnrolledCoursesThunk(dispatch, getState) {
+export function learnCourse(courseId) {
+  return async function learnCourseThunk(dispatch, getState) {
+    dispatch(setLoading(true));
     try {
-      const { data } = await authFetch.get(
-        `/student/enrolledCourses/${studentId}`
-      );
-    } catch (error) {}
+      const { data } = await authFetch.get(`course/learnCourse/${courseId}`);
+      dispatch(setCourse(data));
+      dispatch(setLoading(false));
+    } catch (error) {
+      dispatch(setLoading(false));
+
+      console.log(error);
+    }
   };
 }
+
+// export function fetchEnrolledCourses(studentId) {
+//   return async function fetchEnrolledCoursesThunk(dispatch, getState) {
+//     try {
+//       const { data } = await authFetch.get(
+//         `/student/enrolledCourses/${studentId}`
+//       );
+//     } catch (error) {}
+//   };
+// }

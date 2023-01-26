@@ -1,5 +1,5 @@
 import React from "react";
-import { BsCart4, BsSearch } from "react-icons/bs";
+import { BsCart4, BsCollectionPlay, BsSearch } from "react-icons/bs";
 import { FiLogOut, FiSettings } from "react-icons/fi";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
@@ -106,11 +106,18 @@ const LoggedInUser = ({ user }) => {
         </li>
         <div className="divider m-0 p-0" />
         <li>
+          <Link to="/course/enrolledCourses">
+            <BsCollectionPlay />
+            Enrolled courses
+          </Link>
+        </li>
+        <li>
           <Link to="/instructor/dashboard">
             <FaChalkboardTeacher />
             Instructor
           </Link>
         </li>
+
         <li>
           <Link>
             <FiSettings />

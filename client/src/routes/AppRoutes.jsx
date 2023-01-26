@@ -21,71 +21,87 @@ import Curriculum from "../pages/course/Curriculum";
 import CourseLandingPageInfo from "../pages/course/CourseLandingPageInfo";
 import CourseDetails from "../pages/home/CourseDetails";
 import EnrolledCourses from "../pages/home/EnrolledCourses";
+import ScrollToTop from "../lib/scroll/ScrollToTop";
+import LearnCourse from "../pages/home/LearnCourse";
 
 function AppRoutes() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/login3" element={<Login3 />} />
-        <Route path="/instructor-login" element={<InstructorLogin />} />
-        <Route path="/signup2" element={<SignUp2 />} />
-        <Route path="/instructor-signUp" element={<InstructorSignUp />} />
-        <Route
-          path="/instructor/dashboard"
-          element={
-            <InstructorPrivateRoute>
-              <Dashboard />
-            </InstructorPrivateRoute>
-          }
-        >
-          <Route index element={<Courses />} />
-          <Route path="communication" element={<Communication />} />
-          <Route path="performance" element={<Performance />} />
-        </Route>
-        <Route
-          path="instructor/create-course"
-          element={
-            <InstructorPrivateRoute>
-              <AddCourse />
-            </InstructorPrivateRoute>
-          }
-        />
-        <Route
-          path="/instructor/dashboard/manage-course/:id"
-          element={
-            <InstructorPrivateRoute>
-              <ManageCourse />
-            </InstructorPrivateRoute>
-          }
-        >
-          <Route path="audience" element={<Audience />} />
-          <Route path="curriculum" element={<Curriculum />} />
-          <Route path="basics" element={<CourseLandingPageInfo />} />
-        </Route>
-        <Route path="/" element={<AppLayout />}>
-          <Route index element={<Home />} />
-          <Route path="course-details/:courseId" element={<CourseDetails />} />
+      <ScrollToTop>
+        <Routes>
+          <Route path="/login3" element={<Login3 />} />
+          <Route path="/instructor-login" element={<InstructorLogin />} />
+          <Route path="/signup2" element={<SignUp2 />} />
+          <Route path="/instructor-signUp" element={<InstructorSignUp />} />
           <Route
-            path="course/enrolledCourses"
+            path="/instructor/dashboard"
             element={
               <InstructorPrivateRoute>
-                <EnrolledCourses />
+                <Dashboard />
+              </InstructorPrivateRoute>
+            }
+          >
+            <Route index element={<Courses />} />
+            <Route path="communication" element={<Communication />} />
+            <Route path="performance" element={<Performance />} />
+          </Route>
+          <Route
+            path="instructor/create-course"
+            element={
+              <InstructorPrivateRoute>
+                <AddCourse />
               </InstructorPrivateRoute>
             }
           />
           <Route
-            path="student/dashboard"
+            path="/instructor/dashboard/manage-course/:id"
             element={
               <InstructorPrivateRoute>
-                <StudentDashboard />
+                <ManageCourse />
               </InstructorPrivateRoute>
             }
           >
-            <Route index element={<Profile />} />
-            <Route path="security" element={<Security />} />
+            <Route path="audience" element={<Audience />} />
+            <Route path="curriculum" element={<Curriculum />} />
+            <Route path="basics" element={<CourseLandingPageInfo />} />
           </Route>
-        </Route>
-      </Routes>
+          <Route path="/" element={<AppLayout />}>
+            <Route index element={<Home />} />
+            <Route
+              path="course-details/:courseId"
+              element={<CourseDetails />}
+            />
+            <Route
+              path="course/enrolledCourses"
+              element={
+                <InstructorPrivateRoute>
+                  <EnrolledCourses />
+                </InstructorPrivateRoute>
+              }
+            />
+
+            <Route
+              path="student/dashboard"
+              element={
+                <InstructorPrivateRoute>
+                  <StudentDashboard />
+                </InstructorPrivateRoute>
+              }
+            >
+              <Route index element={<Profile />} />
+              <Route path="security" element={<Security />} />
+            </Route>
+          </Route>
+          <Route
+            path="/course/learnCourse/:courseId"
+            element={
+              <InstructorPrivateRoute>
+                <LearnCourse />
+              </InstructorPrivateRoute>
+            }
+          />
+        </Routes>
+      </ScrollToTop>
     </BrowserRouter>
   );
 }

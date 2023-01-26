@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect } from "react";
 import LoadingIcons from "react-loading-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import parser from "html-react-parser";
 import { ImFilePlay } from "react-icons/im";
 import { FaAngleDown } from "react-icons/fa";
@@ -13,8 +13,10 @@ import { enrollCourse } from "../../services/store/user/userSlice";
 
 function CourseDetails() {
   const params = useParams();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const course = useSelector((state) => state.courses.course);
+  const user = useSelector((state) => state.user.user);
   const isLoading = useSelector((state) => state.courses.isLoading);
 
   useEffect(() => {
@@ -62,7 +64,7 @@ function CourseDetails() {
           <img src={course?.courseThumbnail} alt="" />
         </div>
       </div>
-      <div className="grid grid-cols-3 mx-12 my-4 gap-4">
+      <div className="grid grid-cols-3 mx-12 my-4 gap-8">
         <div className="col-span-2 ">
           <div className="border-[1px] border-slate-400 rounded p-8">
             <p className="font-bold text-2xl">What you will learn.</p>
@@ -75,37 +77,34 @@ function CourseDetails() {
           <div className="my-4">
             <p className="font-bold text-3xl">Course Content</p>
             <p>{course?.courseCurriculum.length} section(s)</p>
-            <table className="table-auto border-collapse border-[1px] border-slate-500 w-full">
-              <tbody>
-                {course?.courseCurriculum.map((section, sectionIndex) => (
-                  <div>
-                    <tr className=" bg-base-200 border-collapse border-[1px] border-slate-500">
-                      <td className="font-bold text-lg p-4 w-full">
-                        <div className="flex items-center gap-2">
-                          <FaAngleDown />
-                          {section.sectionTitle}
-                        </div>
-                      </td>
-                      <td className="flex gap-2 p-4">
-                        <span className="font-bold">
-                          {section.sectionVideos.length}{" "}
-                        </span>
+            {course?.courseCurriculum.map((section, sectionIndex) => (
+              <div class="collapse border-collapse border-[1px] border-gray-400 ">
+                <input type="checkbox" className="peer" />
+                <div className="collapse-title bg-base-100 text-primary-content peer-checked:bg-gray-100 peer-checked:text-secondary-content ">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-bold">
+                        Section {sectionIndex + 1}: {section.sectionTitle}
+                      </p>
+                      <p className="text-xs font-normal">
+                        {section.sectionVideos.length}{" "}
                         {section.sectionVideos.length > 1
                           ? "lectures"
                           : "lecture"}
-                      </td>
-                    </tr>
-                    {section.sectionVideos.map((video) => (
-                      <tr className="">
-                        <td className=" flex items-center gap-2 p-2">
-                          <ImFilePlay /> {video.videoTitle}
-                        </td>
-                      </tr>
-                    ))}
+                      </p>
+                    </div>
+                    <FaAngleDown />
                   </div>
-                ))}
-              </tbody>
-            </table>
+                </div>
+                <div className="collapse-content bg-base-100 text-primary-content peer-checked:bg-base-100 peer-checked:text-secondary-content">
+                  {section.sectionVideos.map((video) => (
+                    <p className="flex items-center gap-2 p-[2px]">
+                      <ImFilePlay /> {video.videoTitle}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
           <div className="my-4">
             <p className="font-bold text-3xl">Course requirements</p>
@@ -143,17 +142,27 @@ function CourseDetails() {
           </div>
         </div>
         <div>
-          <div className="sticky top-20 ">
-            <img
-              src={course?.courseThumbnail}
-              className="mb-2 rounded"
-              alt=""
-            />
-            <ButtonComponent
-              name="Enroll course"
-              className="w-full bg-green-400 text-white border-none"
-              click={()=>dispatch(enrollCourse(course._id))}
-            />
+          <div className="card  bg-base-200 rounded-lg shadow-lg sticky top-20 ">
+            <figure>
+              <img src={course?.courseThumbnail} alt="Course thumbnail" />
+            </figure>
+            <div className="card-body">
+              <div className="card-actions justify-center ">
+                {!isEnrolled(user, course?._id) ? (
+                  <ButtonComponent
+                    name="Enroll course"
+                    className="btn-wide bg-green-400 text-white border-none"
+                    click={() => dispatch(enrollCourse(course._id))}
+                  />
+                ) : (
+                  <ButtonComponent
+                    name="Enrolled"
+                    className="btn-wide bg-slate-900 text-red-600 border-none"
+                    click={() => navigate("/course/enrolledCourses")}
+                  />
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -165,6 +174,12 @@ const dateExtractor = (time) => {
   const newDate = new Date().toISOString().split("T")[0];
 
   return newDate;
+};
+const isEnrolled = (user, courseId) => {
+  const course = user?.enrolledCourses.some((course) => {
+    return course.courseId._id === courseId;
+  });
+  return course;
 };
 
 export default CourseDetails;

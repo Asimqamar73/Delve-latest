@@ -34,8 +34,9 @@ function Home() {
           {/* // 001 */}
           {/* <div className="absolute top-40 right-24 p-12 bg-base-100 rounded-md shadow-md shadow-slate-800"> */}
 
-          <p className="text-4xl font-bold my-[2px]">Dream Big</p>
-          <p>Find a course to help you reach where you want to go. </p>
+          {/* <p className="text-4xl font-bold my-[2px]">Dream Big</p> */}
+          {/* <p>Find a course to help you reach where you want to go. </p> */}
+          <p className="text-xl">There is always something more to learn, even for a master.</p>
         </div>
       </div>
       <div className="m-8">
