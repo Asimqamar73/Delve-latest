@@ -17,7 +17,7 @@ function Courses() {
   }, []);
 
   const handleClick = (courseId)=>{
-    navigate(`/instructor/dashboard/manage-course/${courseId}/audience`)
+    navigate(`/instructor/dashboard/manage-course/${courseId}/requirements-and-objectives`)
   }
   if(isLoading){
     return <div>Loading...</div>

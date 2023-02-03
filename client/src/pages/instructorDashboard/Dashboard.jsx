@@ -8,34 +8,52 @@ import { HiOutlineChatBubbleLeft } from "react-icons/hi2";
 import { TfiStatsUp } from "react-icons/tfi";
 import { FaSortDown } from "react-icons/fa";
 import UserProfileIcon from "../../components/commonComponents/UserProfileIcon";
+import NavItem from "./components/NavItem";
 
 function Dashboard() {
   const user = useSelector((state) => state.user.user);
   return (
     <div>
       <div className="grid grid-cols-6 h-screen">
-        <div className="col-span-1 py-2 px-8 bg-base-200 top-0 ">
-          <div>
+        <div className="col-span-1 bg-base-200 top-0 ">
+          <div className="py-2 px-16 ">
             <Logo />
           </div>
-          <div className="my-8 gap-4">
-            <ul className="font-bold flex flex-col gap-4">
-              <li className="flex items-center gap-2">
+          <div className="my-8">
+            <ul className="font-bold flex flex-col">
+              {/* <NavLink
+                to="/instructor/dashboard/"
+                className={({ isActive }) =>
+                  isActive ? "bg-base-content text-white" : ""
+                }
+              >
+                <li className="flex items-center gap-2">Courses</li>
+              </NavLink> */}
+              <NavItem path={`/instructor/dashboard/`} name="Course">
                 <MdOndemandVideo />
-                <NavLink to="/instructor/dashboard/">Courses</NavLink>
-              </li>
-              <li className="flex items-center gap-2">
-                <HiOutlineChatBubbleLeft />
-                <NavLink to="/instructor/dashboard/communication">
+              </NavItem>
+              <NavLink
+                to="/instructor/dashboard/communication"
+                className={({ isActive }) =>
+                  isActive ? "bg-base-content text-white" : ""
+                }
+              >
+                <li className="flex items-center gap-2">
+                  <HiOutlineChatBubbleLeft />
                   Communication
-                </NavLink>
-              </li>
-              <li className="flex items-center gap-2">
-                <TfiStatsUp />
-                <NavLink to="/instructor/dashboard/performance">
+                </li>
+              </NavLink>
+              <NavLink
+                to="/instructor/dashboard/performance"
+                className={({ isActive }) =>
+                  isActive ? "bg-base-content text-white" : ""
+                }
+              >
+                <li className="flex items-center gap-2">
+                  <TfiStatsUp />
                   Performance
-                </NavLink>
-              </li>
+                </li>
+              </NavLink>
             </ul>
           </div>
         </div>

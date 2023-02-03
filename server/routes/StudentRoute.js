@@ -1,7 +1,9 @@
 import express from "express";
 import {
   changeAvatar,
+  changePassword,
   courseEnrollment,
+  forgotPassword,
   login,
   register,
 } from "../controllers/StudentController.js";
@@ -12,5 +14,7 @@ router.post("/student/login", login);
 router.post("/student/createAccount", register);
 router.patch("/student/courseEnrollment", auth, courseEnrollment);
 router.patch("/student/changeAvatar", auth, changeAvatar);
+router.patch("/student/changePassword", auth, changePassword);
+router.post("/student/forgotPassword", forgotPassword);
 
 export default router;

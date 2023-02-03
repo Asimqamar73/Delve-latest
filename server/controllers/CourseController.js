@@ -93,7 +93,6 @@ const manageCourseCurriculumContent = async (req, res) => {
           },
         },
       },
-
       { new: true }
     );
 
@@ -112,7 +111,6 @@ const manageCourseCurriculumContent = async (req, res) => {
 const ownCourseDetails = async (req, res) => {
   const { id } = req.params;
   const course = await Course.findById(id);
-
   res.send(course);
 };
 // const findCourse = async (req, res) => {
@@ -139,7 +137,6 @@ const fetchCourseDetails = async (req, res) => {
   const course = await Course.findById({ _id: req.params.courseId }).populate(
     "courseInstructor"
   );
-
   res.status(StatusCodes.OK).json(course);
 };
 const fetchCourse = async (req, res) => {
@@ -147,6 +144,29 @@ const fetchCourse = async (req, res) => {
     "courseInstructor"
   );
   res.status(StatusCodes.OK).json(course);
+};
+
+const searchCourse = async (req, res) => {
+  const { search } = req.body;
+  const courses = await Course.find(
+    {
+      courseTitle: { $regex: search, $options: "i" },
+    },
+    {
+      courseTitle: 1,
+      courseLevel: 1,
+      courseCategory: 1,
+      courseInstructor: 1,
+      courseThumbnail: 1,
+    }
+  ).populate("courseInstructor");
+  res.send(courses);
+};
+
+const fetchCoursesByCategory = async (req, res) => {
+  const {category} = req.params;
+  const courses = await Course.find({ courseCategory: category });
+  res.send(courses);
 };
 
 export {
@@ -160,4 +180,6 @@ export {
   fetchCourse,
   getOwnCourses,
   fetchAllPublishedCourses,
+  fetchCoursesByCategory,
+  searchCourse,
 };

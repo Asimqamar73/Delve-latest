@@ -7,7 +7,7 @@ import parser from "html-react-parser";
 import { ImFilePlay } from "react-icons/im";
 import { FaAngleDown } from "react-icons/fa";
 import { fetchCourseDetails } from "../../services/store/courses/coursesSlice";
-import CourseDetailSkeleton from "./component/CourseDetailSkeleton";
+import CourseDetailSkeleton from "./components/CourseDetailSkeleton";
 import ButtonComponent from "../../components/commonComponents/ButtonComponent";
 import { enrollCourse } from "../../services/store/user/userSlice";
 
@@ -21,11 +21,7 @@ function CourseDetails() {
 
   useEffect(() => {
     dispatch(fetchCourseDetails(params.courseId));
-  }, []);
-
-  // const handleCourseEnrollment = (courseId) => {
-  //   console.log(courseId);
-  // };
+  }, [params]);
 
   if (isLoading) {
     return (
@@ -98,7 +94,7 @@ function CourseDetails() {
                 </div>
                 <div className="collapse-content bg-base-100 text-primary-content peer-checked:bg-base-100 peer-checked:text-secondary-content">
                   {section.sectionVideos.map((video) => (
-                    <p className="flex items-center gap-2 p-[2px]">
+                    <p className="flex items-center gap-2 pt-2">
                       <ImFilePlay /> {video.videoTitle}
                     </p>
                   ))}
@@ -171,8 +167,10 @@ function CourseDetails() {
 }
 
 const dateExtractor = (time) => {
-  const newDate = new Date().toISOString().split("T")[0];
-
+  if (!time) {
+    return;
+  }
+  const newDate = new Date(time).toISOString().split("T")[0];
   return newDate;
 };
 const isEnrolled = (user, courseId) => {

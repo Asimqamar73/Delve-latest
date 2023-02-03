@@ -3,8 +3,12 @@ import ButtonComponent from "../../components/commonComponents/ButtonComponent";
 import Logo from "../../components/commonComponents/Logo";
 import loginPageImg from "../../assets/images/signupPageImg3.svg";
 import { MdAlternateEmail } from "react-icons/md";
-import { FcGoogle } from "react-icons/fc";
-import { FaFacebook, FaLinkedinIn } from "react-icons/fa";
+import {
+  FacebookOAuthIcon,
+  GoogleOAuthIcon,
+  LinkinOAuthIcon,
+} from "../../components/OAuthIcons";
+
 import { IoLockClosedOutline } from "react-icons/io5";
 import { BiUser } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
@@ -46,7 +50,7 @@ function SignUp2() {
 
   return (
     <div className="h-screen">
-      <div className="fixed w-full px-16 py-4">
+      <div className="fixed w-full px-16 py-2">
         <Logo />
       </div>
       <div className="grid grid-cols-3 h-full">
@@ -107,22 +111,9 @@ function SignUp2() {
               Or continue with
             </div>
             <div className="flex justify-center gap-2">
-              <div>
-                <button className="btn btn-ghost border-slate-400 border-[1px] rounded-md">
-                  <FaFacebook size={24} color="#3b5999" />
-                </button>
-              </div>
-              <div>
-                <button className="btn btn-ghost border-slate-400 border-[1px] rounded-md">
-                  <FcGoogle size={24} />
-                </button>
-              </div>
-
-              <div>
-                <button className="btn btn-ghost border-slate-400 border-[1px] rounded-md">
-                  <FaLinkedinIn size={24} color="#0072b1" />
-                </button>
-              </div>
+              <GoogleOAuthIcon />
+              <FacebookOAuthIcon />
+              <LinkinOAuthIcon />
             </div>
             <div className=" flex gap-2 my-4 text-sm ">
               <p>Already having an account?</p>

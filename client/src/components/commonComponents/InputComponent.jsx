@@ -7,7 +7,8 @@ function InputComponent({
   className,
   handleChange,
   value,
-  disabled
+  disabled,
+  ref,
 }) {
   return (
     <div>
@@ -15,12 +16,13 @@ function InputComponent({
         type={type}
         placeholder={placeholder}
         id={id}
-        className={`${!disabled? 'bg-base-200 ':'bg-slate-400 hover:cursor-block'} outline-none focus:outline-green-400 outline-[1px] p-2 rounded ${className}`}
-        // className={`border-[1px] border-slate-700 p-2 rounded-lg ${className}`}
-
+        className={`${
+          !disabled ? "bg-base-200 " : "bg-slate-300 hover: cursor-not-allowed"
+        } outline-none focus:outline-green-400 outline-[1px] p-2 rounded ${className}`}
         onChange={handleChange}
         value={value}
         disabled={disabled}
+        ref={ref}
       />
     </div>
   );

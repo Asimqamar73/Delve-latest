@@ -2,12 +2,12 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AppLayout from "../layouts/AppLayout";
 import Home from "../pages/home/Home";
-import SignUp2 from "../pages/signUp/SignUp2";
-import Login3 from "../pages/login/Login3";
+import SignUp from "../pages/signUp/SignUp2";
+import Login from "../pages/login/Login3";
 import InstructorSignUp from "../pages/signUp/InstructorSignUp";
 import InstructorLogin from "../pages/login/InstructorLogin";
 import AddCourse from "../pages/course/AddCourse";
-import InstructorPrivateRoute from "./InstructorPrivateRoute";
+import PrivateRoute from "./PrivateRoute";
 import Dashboard from "../pages/instructorDashboard/Dashboard";
 import Courses from "../pages/instructorDashboard/Courses";
 import Communication from "../pages/instructorDashboard/Communication";
@@ -23,22 +23,25 @@ import CourseDetails from "../pages/home/CourseDetails";
 import EnrolledCourses from "../pages/home/EnrolledCourses";
 import ScrollToTop from "../lib/scroll/ScrollToTop";
 import LearnCourse from "../pages/home/LearnCourse";
+import ForgotPassword from "../pages/forgot password/ForgotPassword";
+import CoursesByCategory from "../pages/home/CoursesByCategory";
 
 function AppRoutes() {
   return (
     <BrowserRouter>
       <ScrollToTop>
         <Routes>
-          <Route path="/login3" element={<Login3 />} />
+          <Route path="/login3" element={<Login />} />
           <Route path="/instructor-login" element={<InstructorLogin />} />
-          <Route path="/signup2" element={<SignUp2 />} />
+          <Route path="/signup2" element={<SignUp />} />
           <Route path="/instructor-signUp" element={<InstructorSignUp />} />
+          <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route
             path="/instructor/dashboard"
             element={
-              <InstructorPrivateRoute>
+              <PrivateRoute>
                 <Dashboard />
-              </InstructorPrivateRoute>
+              </PrivateRoute>
             }
           >
             <Route index element={<Courses />} />
@@ -48,20 +51,20 @@ function AppRoutes() {
           <Route
             path="instructor/create-course"
             element={
-              <InstructorPrivateRoute>
+              <PrivateRoute>
                 <AddCourse />
-              </InstructorPrivateRoute>
+              </PrivateRoute>
             }
           />
           <Route
-            path="/instructor/dashboard/manage-course/:id"
+            path="/instructor/dashboard/manage-course/:id/"
             element={
-              <InstructorPrivateRoute>
+              <PrivateRoute>
                 <ManageCourse />
-              </InstructorPrivateRoute>
+              </PrivateRoute>
             }
           >
-            <Route path="audience" element={<Audience />} />
+            <Route path="requirements-and-objectives" element={<Audience />} />
             <Route path="curriculum" element={<Curriculum />} />
             <Route path="basics" element={<CourseLandingPageInfo />} />
           </Route>
@@ -72,32 +75,35 @@ function AppRoutes() {
               element={<CourseDetails />}
             />
             <Route
+              path="courses/category/:category"
+              element={<CoursesByCategory />}
+            />
+            <Route
               path="course/enrolledCourses"
               element={
-                <InstructorPrivateRoute>
+                <PrivateRoute>
                   <EnrolledCourses />
-                </InstructorPrivateRoute>
+                </PrivateRoute>
               }
             />
-
             <Route
-              path="student/dashboard"
+              path="student/dashboard/"
               element={
-                <InstructorPrivateRoute>
+                <PrivateRoute>
                   <StudentDashboard />
-                </InstructorPrivateRoute>
+                </PrivateRoute>
               }
             >
-              <Route index element={<Profile />} />
+              <Route exact index element={<Profile />} />
               <Route path="security" element={<Security />} />
             </Route>
           </Route>
           <Route
             path="/course/learnCourse/:courseId"
             element={
-              <InstructorPrivateRoute>
+              <PrivateRoute>
                 <LearnCourse />
-              </InstructorPrivateRoute>
+              </PrivateRoute>
             }
           />
         </Routes>

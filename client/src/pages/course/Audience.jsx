@@ -20,24 +20,6 @@ function Audience() {
   const [goals, setGoals] = useState(course.courseObjectives);
   const [requirements, setRequirements] = useState(course.courseRequirements);
 
-  // useEffect(() => {
-  //   // if (course.courseObjectives.length == 0) {
-  //   //   setGoals((currentState) => [...currentState, "", "", ""]);
-  //   // }
-  //   // if (course.courseRequirements.length == 0) {
-  //   //   setRequirements((currentState) => [...currentState, ""]);
-  //   // }
-  // }, []);
-  // function makeEmptyFields(){
-  //    if (course.courseObjectives.length == 0) {
-  //     setGoals((currentState) => [...currentState, "", "", ""]);
-  //   }
-  //   if (course.courseRequirements.length == 0) {
-  //     setRequirements((currentState) => [...currentState, ""]);
-  //   }
-  // }
-  // makeEmptyFields()
-
   const handleInputAddition = () => {
     setGoals((currentState) => [...currentState, ""]);
   };
@@ -60,28 +42,30 @@ function Audience() {
     });
     setGoals(filtered);
   };
-
+  const handleRemoveRequirementInput = (indexTofilter) => {
+    const filtered = requirements.filter((requirement, index) => {
+      return index != indexTofilter;
+    });
+    setRequirements(filtered);
+  };
   const handleSubmit = (event) => {
     event.preventDefault();
     const courseEssentials = {};
     courseEssentials.courseObjectives = goals;
     courseEssentials.courseRequirements = requirements;
     courseEssentials.id = course._id;
-    // console.log(courseEssentials)
     dispatch(modifyCourse(courseEssentials));
   };
   return (
     <div>
-      <PageHeading title="Intended audience" />
+      <PageHeading title="Objectives & requirements" />
       <Divider />
-      <div>
-        <p>
-          The following descriptions will be publicly visible on your Course
-          Landing Page and will have a direct impact on your course performance.
-          These descriptions will help learners decide if your course is right
-          for them.
-        </p>
-      </div>
+      <p>
+        The following descriptions will be publicly visible on your Course
+        Landing Page and will have a direct impact on your course performance.
+        These descriptions will help learners decide if your course is right for
+        them.
+      </p>
       <form onSubmit={handleSubmit}>
         <div className="my-4">
           <p className="text-lg font-bold ">
@@ -155,7 +139,11 @@ function Audience() {
                         handleRequirementsChanges(event.target.value, index)
                       }
                     />
-                    <DeleteIcon />
+                    <DeleteIcon
+                      handleDeleteInput={() =>
+                        handleRemoveRequirementInput(index)
+                      }
+                    />
                   </div>
                 </div>
               </div>

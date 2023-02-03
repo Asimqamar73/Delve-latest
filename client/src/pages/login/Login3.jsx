@@ -3,9 +3,7 @@ import ButtonComponent from "../../components/commonComponents/ButtonComponent";
 import Logo from "../../components/commonComponents/Logo";
 import loginPageImg from "../../assets/images/loginPageImg.svg";
 import { MdAlternateEmail } from "react-icons/md";
-import { FcGoogle } from "react-icons/fc";
-import { FaFacebook, FaLinkedinIn } from "react-icons/fa";
-import { IoEar, IoEye, IoLockClosedOutline } from "react-icons/io5";
+import { IoLockClosedOutline } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -13,8 +11,12 @@ import { useEffect } from "react";
 import { logout, loginUser } from "../../services/store/user/userSlice";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
-import { FiEye } from "react-icons/fi";
-import { BsEye, BsEyeSlash } from "react-icons/bs";
+import { BsEyeSlash } from "react-icons/bs";
+import {
+  FacebookOAuthIcon,
+  GoogleOAuthIcon,
+  LinkinOAuthIcon,
+} from "../../components/OAuthIcons";
 
 function Login3() {
   const navigate = useNavigate();
@@ -47,10 +49,10 @@ function Login3() {
 
   return (
     <div className="h-screen">
-      <div className="fixed px-16 py-4">
+      <div className="fixed px-16 py-2">
         <Logo />
       </div>
-      <div>
+      {/* <div>
         {user && (
           <div>
             <button className="btn" onClick={() => dispatch(logout())}>
@@ -58,7 +60,7 @@ function Login3() {
             </button>
           </div>
         )}
-      </div>
+      </div> */}
       <div className="grid grid-cols-3 h-full">
         <div className="col-span-1 flex flex-col items-center justify-center ">
           <div>
@@ -90,14 +92,14 @@ function Login3() {
                   handleChange={onMutate}
                 />
                 <div className="absolute right-10 top-0 h-full text-slate-700  text-xl flex items-center w-10 justify-center rounded-md ">
-                  <BsEyeSlash className="  " />
+                  <BsEyeSlash />
                 </div>
                 <div className="absolute right-0 top-0 bg-green-400 h-full flex items-center w-10 justify-center rounded-md ">
                   <IoLockClosedOutline className=" text-white text-xl" />
                 </div>
               </div>
               <div className="flex justify-end text-xs">
-                <p>Forgot password?</p>
+                <Link to="/forgotPassword">Forgot password?</Link>
               </div>
               <div className="my-4 flex justify-center">
                 <ButtonComponent
@@ -109,29 +111,10 @@ function Login3() {
             <div className="divider before:bg-base-300 before:h-[1px] after:bg-base-300 after:h-[1px] text-slate-600 text-sm  ">
               Or continue with
             </div>
-            {/* <div className="my-4">
-              <ButtonComponent
-                name="Sign up"
-                className="btn-wide bg-transparent border-green-500 text-green-500 border-[1px] transition-colors ease-in-out hover:bg-green-100/70 hover:border-green-500"
-              />
-            </div> */}
             <div className="flex justify-center gap-2">
-              <div>
-                <button className="btn btn-ghost border-slate-400 border-[1px] rounded-md">
-                  <FaFacebook size={24} color="#3b5999" />
-                </button>
-              </div>
-              <div>
-                <button className="btn btn-ghost border-slate-400 border-[1px] rounded-md">
-                  <FcGoogle size={24} />
-                </button>
-              </div>
-
-              <div>
-                <button className="btn btn-ghost border-slate-400 border-[1px] rounded-md">
-                  <FaLinkedinIn size={24} color="#0072b1" />
-                </button>
-              </div>
+              <GoogleOAuthIcon />
+              <FacebookOAuthIcon />
+              <LinkinOAuthIcon />
             </div>
             <div className=" flex gap-2 my-4 text-sm ">
               <p>Not a member yet?</p>

@@ -105,8 +105,8 @@ function LearnCourse() {
           <div className="col-span-1 bg-base-200 overflow-y-auto h-screen sticky top-0 border-l border-l-gray-300 ">
             {course?.courseCurriculum.map((section, sectionIndex) => (
               <div class="collapse border-collapse border-b-[1px] border-b-gray-400 ">
-                <input type="checkbox" className="peer" />
-                <div className="collapse-title bg-base-300 text-primary-content peer-checked:bg-base-300 peer-checked:text-secondary-content ">
+                <input type="checkbox" className="peer"   />
+                <div className="collapse-title bg-base-300 text-primary-content  peer-checked:bg-base-300 peer-checked:text-secondary-content ">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="font-bold">
@@ -125,7 +125,7 @@ function LearnCourse() {
                 <div className="collapse-content bg-base-300 text-primary-content peer-checked:bg-base-100 peer-checked:text-secondary-content p-0 m-0">
                   {section.sectionVideos.map((video) => (
                     <p
-                      className="flex items-center gap-2 py-2 px-4 hover:bg-base-200 hover:cursor-pointer "
+                      className="flex items-center gap-2 py-2 mt-2 mx-2 px-2 rounded-md hover:bg-base-200 hover:cursor-pointer "
                       onClick={() => setPlay(video.content)}
                     >
                       <BsPlayBtn /> {video.videoTitle}

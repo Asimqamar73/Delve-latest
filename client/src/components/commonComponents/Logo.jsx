@@ -16,7 +16,7 @@ function Logo() {
           {/* <span className="text-red-500">e</span>lve. */}
           {/* Delve<span className="text-red-500">.</span> */}
         </p>
-        <img src={underline} alt="" className="text-white" />
+        {/* <img src={underline} alt="" className="text-white" /> */}
       </Link>
     </div>
   );

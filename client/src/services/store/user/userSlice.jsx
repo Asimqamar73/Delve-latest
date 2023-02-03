@@ -1,7 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { authFetch } from "../../../lib/axios/authFetch";
-// import { authFetch } from "../../../lib/axios/authFetch";
+
+const statuses = Object.freeze({
+  IDLE: "idle",
+  SUCCESS: "success",
+  FAILED: "failed",
+});
 
 const userInfo = localStorage.getItem("user");
 const JWToken = localStorage.getItem("token");
@@ -12,6 +17,11 @@ const initialState = {
   error: "",
   // courses: null,
   course: null,
+  isEmailSend: false,
+  response: {
+    status: statuses.IDLE,
+    message: "",
+  },
 };
 
 export const userSlice = createSlice({
@@ -34,6 +44,10 @@ export const userSlice = createSlice({
       localStorage.removeItem("user");
       localStorage.removeItem("token");
     },
+    setResponse: (state, action) => {
+      state.response.status = action.payload.status;
+      state.response.message = action.payload.message;
+    },
     setError: (state, action) => {
       state.error = action.payload;
     },
@@ -43,8 +57,15 @@ export const userSlice = createSlice({
   },
 });
 
-export const { setUser, setCourse, logout, signup, setError, setLoading } =
-  userSlice.actions;
+export const {
+  setUser,
+  setCourse,
+  setResponse,
+  logout,
+  signup,
+  setError,
+  setLoading,
+} = userSlice.actions;
 export default userSlice.reducer;
 
 //Thunks
@@ -78,6 +99,45 @@ export function createAccount(userCredentials) {
       setTimeout(() => {
         dispatch(setError(""));
       }, 1000);
+    }
+  };
+}
+export function changePassword(userPasswords) {
+  return async function changePasswordThunk(dispatch, getState) {
+    dispatch(setLoading(true));
+    try {
+      const { data } = await authFetch.patch(
+        "/student/changePassword",
+        userPasswords
+      );
+      dispatch(
+        setResponse({
+          message: data.msg,
+          status: statuses.SUCCESS,
+        })
+      );
+      dispatch(setLoading(false));
+    } catch (error) {
+      dispatch(
+        setResponse({
+          message: error.response.data.msg,
+          status: statuses.FAILED,
+        })
+      );
+      dispatch(setLoading(false));
+    }
+  };
+}
+export function forgotPassord(userEmail) {
+  return async function forgotPasswordThunk(dispatch, getState) {
+    try {
+      const { data } = await authFetch.post(
+        "/student/forgotPassword",
+        {userEmail}
+      );
+      console.log(data);
+    } catch (error) {
+      console.log(error);
     }
   };
 }
