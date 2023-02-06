@@ -1,6 +1,6 @@
 import React from "react";
 
-function CourseLanguageFilterComponent({ handleChange, value, id }) {
+function CourseLanguageFilterComponent({ handleChange, selected, id }) {
   const languages = ["English", "Urdu", "Hindi", "Spanish", "German", "French"];
 
   return (
@@ -11,6 +11,7 @@ function CourseLanguageFilterComponent({ handleChange, value, id }) {
           <input
             type="checkbox"
             className="checkbox checkbox-sm rounded-md"
+            checked={selected.includes(language)}
             value={language}
             id={id}
             onChange={handleChange}

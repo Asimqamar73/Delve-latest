@@ -10,6 +10,7 @@ import { fetchCourseDetails } from "../../services/store/courses/coursesSlice";
 import CourseDetailSkeleton from "./components/CourseDetailSkeleton";
 import ButtonComponent from "../../components/commonComponents/ButtonComponent";
 import { enrollCourse } from "../../services/store/user/userSlice";
+import { BsAlarm, BsCheck, BsDot } from "react-icons/bs";
 
 function CourseDetails() {
   const params = useParams();
@@ -62,17 +63,32 @@ function CourseDetails() {
       </div>
       <div className="grid grid-cols-3 mx-12 my-4 gap-8">
         <div className="col-span-2 ">
-          <div className="border-[1px] border-slate-400 rounded p-8">
+          <div className="border-[1px] border-slate-400 p-8">
             <p className="font-bold text-2xl">What you will learn.</p>
-            <ul className="grid grid-cols-2 list-inside">
+            <ul className="grid grid-cols-2 my-2 gap-4">
               {course?.courseObjectives.map((objective) => (
-                <li className="px-2 py-[2px]"> {objective}</li>
+                <li className=" text-justify flex items-start gap-[4px]">
+                  <span>
+                    {" "}
+                    <BsCheck size={24} />
+                  </span>{" "}
+                  {objective}
+                </li>
+                // </div>
               ))}
             </ul>
           </div>
           <div className="my-4">
             <p className="font-bold text-3xl">Course Content</p>
-            <p>{course?.courseCurriculum.length} section(s)</p>
+            <p>
+              <span className="font-bold">
+                {course?.courseCurriculum.length}{" "}
+              </span>
+              {course?.courseCurriculum.length > 1 ? "sections" : "section"}{" "}
+              <span className="font-bold">{course?.totalVideos} </span>
+              {course?.totalVideos > 1 ? "lectures" : "lecture"}{" "}
+            </p>
+
             {course?.courseCurriculum.map((section, sectionIndex) => (
               <div class="collapse border-collapse border-[1px] border-gray-400 ">
                 <input type="checkbox" className="peer" />

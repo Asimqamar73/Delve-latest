@@ -131,10 +131,9 @@ export function changePassword(userPasswords) {
 export function forgotPassord(userEmail) {
   return async function forgotPasswordThunk(dispatch, getState) {
     try {
-      const { data } = await authFetch.post(
-        "/student/forgotPassword",
-        {userEmail}
-      );
+      const { data } = await authFetch.post("/student/forgotPassword", {
+        userEmail,
+      });
       console.log(data);
     } catch (error) {
       console.log(error);
@@ -184,11 +183,12 @@ export function learnCourse(courseId) {
       dispatch(setLoading(false));
     } catch (error) {
       dispatch(setLoading(false));
-
       console.log(error);
     }
   };
 }
+
+
 
 // export function fetchEnrolledCourses(studentId) {
 //   return async function fetchEnrolledCoursesThunk(dispatch, getState) {

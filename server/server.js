@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import StudentRouter from "./routes/StudentRoute.js";
 import InstructorRouter from "./routes/InstructorRoute.js";
 import CourseRoute from "./routes/CourseRoute.js";
-import InstructorReviewRouter from "./routes/InstructorReviewRoute.js";
+import CourseReviewRouter from "./routes/CourseReviewRoute.js";
 import notFoundMiddleware from "./middlewares/notFoundMiddleware.js";
 import connectDB from "./db/connection.js";
 import errorHandlerMiddleware from "./middlewares/errorHandler.js";
@@ -39,7 +39,7 @@ const fun = (req, res) => {
 app.use("/api/v1", StudentRouter);
 app.use("/api/v1", InstructorRouter);
 app.use("/api/v1", CourseRoute);
-app.use("/api/v1", InstructorReviewRouter);
+app.use("/api/v1", CourseReviewRouter);
 
 app.use("/*", notFoundMiddleware);
 app.use(errorHandlerMiddleware);

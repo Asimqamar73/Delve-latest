@@ -6,17 +6,18 @@ import { useParams } from "react-router-dom";
 import Divider from "../../components/commonComponents/Divider";
 import DropdownComponent from "../../components/commonComponents/DropdownComponent";
 import { getCoursesbyCategory } from "../../services/store/courses/coursesSlice";
-import CourseCard from "./components/CourseCard";
-import CourseCardSkeleton from "./components/CourseCardSkeleton";
 import CourseLanguageFilterComponent from "./components/CourseLanguageFilterComponent";
 import CourseLevelFilterComponent from "./components/CourseLevelFilterComponent";
 import RatingFilterComponent from "./components/RatingFilterComponent";
+import LoadingIcon from "react-loading-icons";
 
 function CoursesByCategory() {
   const params = useParams();
   const dispatch = useDispatch();
   const sortBy = ["Newest", "Trending", "Highest rated"];
   const courses = useSelector((state) => state.courses.courses);
+  const totalCourses = useSelector((state) => state.courses.totalCourses);
+  const totalPages = useSelector((state) => state.courses.noOfPages);
   const isLoading = useSelector((state) => state.courses.isLoading);
   const [filters, setFilters] = useState({
     // rating: "",
@@ -25,12 +26,17 @@ function CoursesByCategory() {
   });
 
   useEffect(() => {
-    dispatch(getCoursesbyCategory(params.category));
-  }, [params]);
+    dispatch(getCoursesbyCategory(params.category, filters));
+  }, [params, filters]);
   if (isLoading) {
     return (
-      <div>
-        <CourseCardSkeleton />
+      <div className="min-h-screen flex justify-center items-center">
+        <LoadingIcon.Puff
+          stroke="green"
+          width={60}
+          strokeWidth={1}
+          height={60}
+        />
       </div>
     );
   }
@@ -45,12 +51,13 @@ function CoursesByCategory() {
         ...prevState,
         [event.target.id]: values,
       }));
-      return;
+    } else {
+      setFilters((prevState) => ({
+        ...prevState,
+        [event.target.id]: [...prevState[event.target.id], event.target.value],
+      }));
     }
-    setFilters((prevState) => ({
-      ...prevState,
-      [event.target.id]: [...prevState[event.target.id], event.target.value],
-    }));
+    // dispatch(getCoursesbyCategory(params.category, filters));
   };
 
   return (
@@ -58,7 +65,7 @@ function CoursesByCategory() {
       <p className="font-bold text-3xl my-2">All {params.category} courses</p>
       <div className="grid grid-cols-5 gap-8 ">
         <div className="col-span-1">
-          <div>
+          {/* <div>
             <p className="font-bold">Sort by</p>
             <DropdownComponent
               options={sortBy}
@@ -66,7 +73,7 @@ function CoursesByCategory() {
               variant="p-2 w-full"
             />
           </div>
-          <Divider />
+          <Divider /> */}
           <div>
             <p className="font-bold text-2xl">Ratings</p>
             <RatingFilterComponent handleChange={onMutate} />
@@ -74,19 +81,19 @@ function CoursesByCategory() {
           <Divider />
           <CourseLevelFilterComponent
             id="level"
-            // value={filters.level}
             handleChange={onMutate}
+            selected={filters.level}
           />
           <Divider />
           <CourseLanguageFilterComponent
             id="language"
-            // value={filters.language}
             handleChange={onMutate}
+            selected={filters.language}
           />
         </div>
         <div className="col-span-4">
           <p className="text-right font-bold text-lg">
-            {courses?.length} result(s)
+            {totalCourses} result(s)
           </p>
           {courses?.map((course, index) => (
             <div
@@ -100,9 +107,30 @@ function CoursesByCategory() {
               />
               <div>
                 <p className="font-bold text-lg">{course.courseTitle}</p>
+                <p className="text-sm">{course.courseInstructor.name}</p>
+                <p className="text-sm">
+                  <span>
+                    {course.courseCurriculum.length}{" "}
+                    {course.courseCurriculum.length > 1
+                      ? "sections"
+                      : "section"}{" "}
+                  </span>
+                  <span>
+                    {course.totalVideos}{" "}
+                    {course.totalVideos > 1 ? "lectures" : "lecture"}{" "}
+                  </span>
+                </p>
+                <p className="text-sm">{course.courseLevel}</p>
               </div>
             </div>
           ))}
+          <div class="btn-group flex justify-center my-8">
+          
+            <button class="btn btn-md">1</button>
+            <button class="btn btn-md btn-active">2</button>
+            <button class="btn btn-md">3</button>
+            <button class="btn btn-md">4</button>
+          </div>
         </div>
       </div>
     </div>

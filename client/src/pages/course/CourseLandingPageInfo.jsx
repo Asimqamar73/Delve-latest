@@ -15,10 +15,10 @@ function CourseLandingPageInfo() {
   const languages = ["English", "Urdu", "Hindi", "Spanish", "German", "French"];
   const categories = ["Development", "Business", "IT & Software", "Art"];
   const level = [
-    "Beginner Level",
-    "Intermediate Level",
-    "Expert Level",
-    "All Level",
+    "Beginner",
+    "Intermediate",
+    "Expert",
+    "All Levels",
   ];
   const course = useSelector((state) => state.instructor.course);
   const [value, setValue] = useState(course.courseDescription);

@@ -43,13 +43,8 @@ const courseSchema = new mongoose.Schema(
     },
     courseLevel: {
       type: String,
-      enum: [
-        "Beginner Level",
-        "Intermediate Level",
-        "Expert Level",
-        "All Level",
-      ],
-      default: "All Level",
+      enum: ["Beginner", "Intermediate", "Expert", "All Levels"],
+      default: "All Levels",
     },
     courseLanguage: {
       type: String,
@@ -107,8 +102,23 @@ const courseSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    toObject: {
+      virtuals: true,
+    },
+    toJSON: { virtuals: true },
   }
 );
+
+courseSchema.virtual("totalVideos").get(function () {
+  var countVideos = 0;
+  if (this.courseCurriculum) {
+    this.courseCurriculum.map((section) => {
+      countVideos += section.sectionVideos.length;
+    });
+  }
+
+  return countVideos;
+});
 
 const Course = mongoose.model("Course", courseSchema);
 export default Course;

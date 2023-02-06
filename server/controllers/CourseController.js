@@ -164,9 +164,30 @@ const searchCourse = async (req, res) => {
 };
 
 const fetchCoursesByCategory = async (req, res) => {
-  const {category} = req.params;
-  const courses = await Course.find({ courseCategory: category });
-  res.send(courses);
+  const { category } = req.params;
+  const { courseLanguage, courseLevel } = req.query;
+  const queryObject = { courseCategory: category };
+  if (JSON.parse(courseLanguage).length > 0) {
+    queryObject.courseLanguage = { $in: JSON.parse(courseLanguage) };
+  }
+  if (JSON.parse(courseLevel).length > 0) {
+    queryObject.courseLevel = { $in: JSON.parse(courseLevel) };
+  }
+  const totalCourses = await Course.countDocuments(queryObject);
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 4;
+  const skip = (page - 1) * limit;
+  const totalPages = Math.ceil(totalCourses / limit);
+  const courses = await Course.find(queryObject)
+    .populate("courseInstructor")
+    .sort({
+      createdAt: -1,
+    })
+    .limit(limit)
+    .skip(skip);
+
+  res.send({ courses, totalCourses, totalPages });
+  // res.send({ courses, totalCourses });
 };
 
 export {

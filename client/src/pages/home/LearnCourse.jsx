@@ -6,9 +6,11 @@ import { learnCourse } from "../../services/store/user/userSlice";
 import Logo from "../../components/commonComponents/Logo";
 import UserProfileIcon from "../../components/commonComponents/UserProfileIcon";
 import LoadingIcons from "react-loading-icons";
-import { FaAngleDown, FaRegPlayCircle } from "react-icons/fa";
+import { FaAngleDown } from "react-icons/fa";
 import { BsPlayBtn } from "react-icons/bs";
 import Divider from "../../components/commonComponents/Divider";
+import ReviewModal from "./components/ReviewModal";
+import { reviewCourse } from "../../services/store/courses/coursesSlice";
 
 function LearnCourse() {
   const params = useParams();
@@ -16,6 +18,20 @@ function LearnCourse() {
   const course = useSelector((state) => state.user.course);
   const isLoading = useSelector((state) => state.user.isLoading);
   const [play, setPlay] = useState(null);
+  const [feedback, setFeedback] = useState({
+    rating: 1,
+    review: "",
+  });
+  const onMutate = (event) => {
+    setFeedback((prevState) => ({
+      ...prevState,
+      [event.target.id]: event.target.value,
+    }));
+  };
+  const handleFeedbackSubmition = () => {
+    feedback.courseId = course._id;
+    dispatch(reviewCourse(feedback));
+  };
 
   useEffect(() => {
     dispatch(learnCourse(params.courseId));
@@ -51,9 +67,17 @@ function LearnCourse() {
               ></video>
             </div>
             <div className="p-8">
-              <div>
-                <p className="font-bold text-2xl">About this course</p>
-                Course level: {course?.courseLevel}
+              <div className="flex justify-between items-center">
+                <div>
+                  <p className="font-bold text-2xl">About this course</p>
+                  <p>Course level: {course?.courseLevel}</p>
+                </div>
+                <div>
+                  <ReviewModal
+                    handleChange={onMutate}
+                    submitFeedback={handleFeedbackSubmition}
+                  />
+                </div>
               </div>
               <Divider />
               <div className="grid grid-cols-3">
@@ -105,7 +129,7 @@ function LearnCourse() {
           <div className="col-span-1 bg-base-200 overflow-y-auto h-screen sticky top-0 border-l border-l-gray-300 ">
             {course?.courseCurriculum.map((section, sectionIndex) => (
               <div class="collapse border-collapse border-b-[1px] border-b-gray-400 ">
-                <input type="checkbox" className="peer"   />
+                <input type="checkbox" className="peer" />
                 <div className="collapse-title bg-base-300 text-primary-content  peer-checked:bg-base-300 peer-checked:text-secondary-content ">
                   <div className="flex items-center justify-between">
                     <div>

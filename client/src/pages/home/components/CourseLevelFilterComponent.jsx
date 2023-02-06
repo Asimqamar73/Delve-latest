@@ -1,7 +1,7 @@
 import React from "react";
 
-function CourseLevelFilterComponent({ id, handleChange }) {
-  const courseLevel = ["All levels", "Beginners", "Intermediate", "Advanced"];
+function CourseLevelFilterComponent({ id, handleChange, selected }) {
+  const courseLevel = ["All Levels", "Beginner", "Intermediate", "Expert"];
 
   return (
     <div>
@@ -11,6 +11,7 @@ function CourseLevelFilterComponent({ id, handleChange }) {
           <input
             type="checkbox"
             className="checkbox checkbox-sm rounded-md"
+            checked={selected.includes(level)}
             value={level}
             id={id}
             onChange={handleChange}
