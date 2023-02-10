@@ -96,7 +96,7 @@ function CourseDetails() {
             </ul>
           </div>
           <div className="my-4">
-            <p className="font-bold text-3xl">Course Content</p>
+            <p className="font-bold text-2xl">Course Content</p>
             <p>
               <span className="font-bold">
                 {course?.courseCurriculum.length}{" "}
@@ -136,7 +136,7 @@ function CourseDetails() {
             ))}
           </div>
           <div className="my-4">
-            <p className="font-bold text-3xl">Course requirements</p>
+            <p className="font-bold text-2xl">Course requirements</p>
             <ul className="list-inside list-disc">
               {course?.courseRequirements.map((requirement) => (
                 <li>{requirement}</li>
@@ -144,7 +144,7 @@ function CourseDetails() {
             </ul>
           </div>
           <div className="my-4">
-            <p className="font-bold text-3xl">Course description</p>
+            <p className="font-bold text-2xl">Course description</p>
             {course && (
               <div className="text-justify">
                 {parser(course?.courseDescription)}
@@ -153,7 +153,7 @@ function CourseDetails() {
           </div>
 
           <div className="my-4">
-            <p className="font-bold text-3xl">Course instructor</p>
+            <p className="font-bold text-2xl">Course instructor</p>
             <div>
               <div className="w-36 h-36">
                 <img
@@ -175,7 +175,7 @@ function CourseDetails() {
               <div className="mt-4">
                 <p className="text-2xl font-bold flex items-center">
                   <span className="flex items-center gap-[2px]">
-                    <FaStar className="text-yellow-500" /> {course?.averageRating} course rating
+                    <FaStar className="text-yellow-500" /> {course?.averageRating.toPrecision(2)} course rating
                   </span>
                   <RxDotFilled />
                   <span>
@@ -184,11 +184,8 @@ function CourseDetails() {
                 </p>
               </div>
               <Divider />
-
-
-
               <div className="my-4">
-                <div className="grid grid-cols-2">
+                <div className="grid grid-cols-2 gap-8">
                   {
                     reviews &&
                     reviews.map((review) => (
@@ -196,7 +193,7 @@ function CourseDetails() {
                         <div className="flex gap-4">
                           <div className="avatar placeholder">
                             <div className="bg-neutral-focus text-neutral-content rounded-full w-12">
-                              <span className="text-3xl"> {
+                              <span className="text-2xl"> {
                                 review.reviewerId.name[0]
                               }</span>
                             </div>
@@ -206,7 +203,7 @@ function CourseDetails() {
                               {review.reviewerId.name}
                             </p>
                             <div className="flex items-center gap-[4px]">
-                              <span className="font-bold text-yellow-400"> {review.rating}</span>
+                              <span className="font-bold text-yellow-400"> {review.rating.toPrecision(2)}</span>
                               <FaStar className="text-yellow-400" />
                               <span>{moment(review.createdAt).fromNow()}</span>
                             </div>
@@ -222,10 +219,7 @@ function CourseDetails() {
               </div>
             </div>
           }
-
-
         </div>
-
         <div>
           <div className="card  bg-base-200 rounded-lg shadow-lg sticky top-20 ">
             <figure>

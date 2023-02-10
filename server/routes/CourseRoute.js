@@ -15,11 +15,14 @@ import {
   fetchCourse,
   searchCourse,
   fetchCoursesByCategory,
+  totalCourses,
 } from "../controllers/CourseController.js";
 
 const router = express.Router();
 
 router.get("/course/courseDetails/:courseId", fetchCourseDetails);
+router.get("/course", totalCourses);
+
 router.get("/courses/category/:category", fetchCoursesByCategory);
 router.post("/course/searchCourse", searchCourse);
 router.get("/courses/publishedCourses", fetchAllPublishedCourses);

@@ -58,9 +58,9 @@ const forgotPassword = async (req, res) => {
   }
 
   const n = crypto.randomInt(0, 1000000)
-console.log(n)
+  console.log(n)
   const verificationCode = n.toString().padStart(6, "0");
-console.log(verificationCode)
+  console.log(verificationCode)
   res.send("Email sent");
 };
 
@@ -87,6 +87,11 @@ const changeAvatar = async (req, res) => {
   }
   res.status(StatusCodes.OK).json({ student });
 };
+const studentCount = async (req, res) => {
+  const totalUsers = await Student.estimatedDocumentCount()
+  res.status(StatusCodes.OK).json(totalUsers)
+
+}
 
 const courseEnrollment = async (req, res) => {
   console.log(req.user.userID), console.log(req.body);
@@ -107,4 +112,6 @@ export {
   forgotPassword,
   changeAvatar,
   courseEnrollment,
+  studentCount
+
 };

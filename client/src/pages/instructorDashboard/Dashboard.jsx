@@ -22,28 +22,12 @@ function Dashboard() {
               <NavItem path={`/instructor/dashboard/`} name="Course">
                 <MdOndemandVideo />
               </NavItem>
-              <NavLink
-                to="/instructor/dashboard/communication"
-                className={({ isActive }) =>
-                  isActive ? "bg-base-content text-white" : ""
-                }
-              >
-                <li className="flex items-center gap-2">
-                  <HiOutlineChatBubbleLeft />
-                  Communication
-                </li>
-              </NavLink>
-              <NavLink
-                to="/instructor/dashboard/performance"
-                className={({ isActive }) =>
-                  isActive ? "bg-base-content text-white" : ""
-                }
-              >
-                <li className="flex items-center gap-2">
-                  <TfiStatsUp />
-                  Performance
-                </li>
-              </NavLink>
+              <NavItem path={`/instructor/dashboard/communication`} name="Communication">
+                <HiOutlineChatBubbleLeft />
+              </NavItem>
+              <NavItem path={`/instructor/dashboard/performance`} name="Performance">
+                <TfiStatsUp />
+              </NavItem>
             </ul>
           </div>
         </div>

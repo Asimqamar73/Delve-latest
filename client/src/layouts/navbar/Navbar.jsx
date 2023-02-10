@@ -97,7 +97,7 @@ function Navbar() {
             )}
           </div>
         </div>
-        <Link to="/instructor/dashboard" className="btn btn-ghost capitalize">
+        <Link to="/instructor/dashboard/" className="btn btn-ghost capitalize">
           <div className="indicator">
             {user ? <p> Instructor</p> : <p>Teach on Delve.</p>}
           </div>

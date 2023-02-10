@@ -35,14 +35,14 @@ function AppRoutes() {
           <Route path="/instructor-signUp" element={<InstructorSignUp />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route
-            path="/instructor/dashboard"
+            path="/instructor/dashboard/"
             element={
               <PrivateRoute>
                 <Dashboard />
               </PrivateRoute>
             }
           >
-            <Route index element={<Courses />} />
+            <Route exact index element={<Courses />} />
             <Route path="communication" element={<Communication />} />
             <Route path="performance" element={<Performance />} />
           </Route>

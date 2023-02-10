@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Divider from "../../components/commonComponents/Divider";
 import DropdownComponent from "../../components/commonComponents/DropdownComponent";
 import { getCoursesbyCategory } from "../../services/store/courses/coursesSlice";
@@ -85,7 +85,7 @@ function CoursesByCategory() {
               options={sortBy}
               value={sort}
               handleChange={handleSorting}
-              variant="p-2 w-full"
+              variant="p-2 w-full "
             />
           </div>
           <Divider />
@@ -110,8 +110,10 @@ function CoursesByCategory() {
           <p className="text-right font-bold text-lg">
             {totalCourses} result(s)
           </p>
+
           {courses?.map((course, index) => (
-            <div
+            // <Link to={`/course-details/${course._id}`}>
+            <Link to={`/course-details/${course._id}`}
               className="flex gap-2 py-4 border-b border-b-slate-300 first-of-type:pt-0 last-of-type:border-b-0"
               key={index}
             >
@@ -127,7 +129,7 @@ function CoursesByCategory() {
                   course.averageRating ? <div className="flex items-center gap-[2px]">
                     <span className="text-yellow-400"> <HiStar />
                     </span>
-                    <p className="text-yellow-400 font-bold">{course.averageRating}
+                    <p className="text-yellow-400 font-bold">{course.averageRating.toPrecision(2)}
                     </p>
                     <span className=" text-xs mx-[4px] "> ({course.reviews.length})</span>
                   </div> : <p className="text-sm">Not rated yet.</p>
@@ -146,7 +148,8 @@ function CoursesByCategory() {
                 </p>
                 <p className="text-sm">{course.courseLevel}</p>
               </div>
-            </div>
+            </Link>
+            // </Link>
           ))}
           <div class="btn-group flex justify-center my-8">
 

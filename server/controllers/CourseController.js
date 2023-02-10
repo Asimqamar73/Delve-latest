@@ -234,11 +234,15 @@ const fetchCoursesByCategory = async (req, res) => {
     $sort: sortBy
   },
   ])
-  console.log(result)
   const courses = await Course.populate(result, { path: "courseInstructor" })
   res.send({ courses, totalCourses, totalPages });
   // res.send({ courses, totalCourses });
 };
+
+const totalCourses = async (req, res) => {
+  const coursesCount = await Course.estimatedDocumentCount()
+  res.status(StatusCodes.OK).json(coursesCount)
+}
 
 export {
   createCourse,
@@ -253,4 +257,5 @@ export {
   fetchAllPublishedCourses,
   fetchCoursesByCategory,
   searchCourse,
+  totalCourses
 };

@@ -47,7 +47,7 @@ function LoggedInUser() {
           </Link>
         </li>
         <li>
-          <Link to="/instructor/dashboard">
+          <Link to="/instructor/dashboard/">
             <FaChalkboardTeacher />
             Instructor
           </Link>
