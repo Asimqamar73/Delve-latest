@@ -1,17 +1,15 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import Logo from "../../components/commonComponents/Logo";
-import profileImg from "../../assets/images/profileImg.jpg";
 import { NavLink, Outlet } from "react-router-dom";
 import { MdOndemandVideo } from "react-icons/md";
 import { HiOutlineChatBubbleLeft } from "react-icons/hi2";
 import { TfiStatsUp } from "react-icons/tfi";
-import { FaSortDown } from "react-icons/fa";
 import UserProfileIcon from "../../components/commonComponents/UserProfileIcon";
 import NavItem from "./components/NavItem";
 
 function Dashboard() {
-  const user = useSelector((state) => state.user.user);
+  const { user } = useSelector((state) => state.auth);
   return (
     <div>
       <div className="grid grid-cols-6 h-screen">
@@ -21,14 +19,6 @@ function Dashboard() {
           </div>
           <div className="my-8">
             <ul className="font-bold flex flex-col">
-              {/* <NavLink
-                to="/instructor/dashboard/"
-                className={({ isActive }) =>
-                  isActive ? "bg-base-content text-white" : ""
-                }
-              >
-                <li className="flex items-center gap-2">Courses</li>
-              </NavLink> */}
               <NavItem path={`/instructor/dashboard/`} name="Course">
                 <MdOndemandVideo />
               </NavItem>

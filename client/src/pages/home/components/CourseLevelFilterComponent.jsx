@@ -6,8 +6,8 @@ function CourseLevelFilterComponent({ id, handleChange, selected }) {
   return (
     <div>
       <p className="font-bold text-2xl">Course level</p>
-      {courseLevel.map((level) => (
-        <div className="flex items-center gap-2">
+      {courseLevel.map((level,index) => (
+        <div className="flex items-center gap-2" key={index}>
           <input
             type="checkbox"
             className="checkbox checkbox-sm rounded-md"

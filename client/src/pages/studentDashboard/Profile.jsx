@@ -5,12 +5,12 @@ import ButtonComponent from "../../components/commonComponents/ButtonComponent";
 import InputComponent from "../../components/commonComponents/InputComponent";
 import { MdModeEditOutline } from "react-icons/md";
 import LoadingIcons from "react-loading-icons";
-import { changeAvatar } from "../../services/store/user/userSlice";
+import { changeAvatar } from "../../services/store/auth/authSlice";
+import { STATUSES } from "../../services/requestStatues";
 
 function Profile() {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.user);
-  const isLoading = useSelector((state) => state.user.isLoading);
+  const { user, status } = useSelector((state) => state.auth);
   const handleAvatarChange = (event) => {
     const avatarInfo = new FormData();
     avatarInfo.append("avatar", event.target.files[0]);
@@ -33,7 +33,7 @@ function Profile() {
                 alt="profileImg"
               />
             </div>
-            {isLoading ? (
+            {status === STATUSES.LOADING ? (
               <div className="absolute bottom-0 left-0 w-full">
                 <progress className="progress "></progress>
               </div>
@@ -87,7 +87,7 @@ function Profile() {
                   disabled={true}
                 />
               </div>
-              
+
               <div>
                 <p className="text-sm font-bold">Biography</p>
                 <textarea className="w-full bg-base-200 focus:outline-green-400 focus:outline-1 rounded h-36 p-[4px]" />

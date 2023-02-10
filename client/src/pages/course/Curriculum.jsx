@@ -1,11 +1,9 @@
 import React from "react";
 import { useState } from "react";
-import { FaTrash, FaVideo } from "react-icons/fa";
-import { HiPlus } from "react-icons/hi";
+import { FaVideo } from "react-icons/fa";
 import { GrStatusGood } from "react-icons/gr";
 import { TbNewSection } from "react-icons/tb";
 import DeleteIcon from "./components/DeleteIcon";
-
 import { useSelector, useDispatch } from "react-redux";
 import ButtonComponent from "../../components/commonComponents/ButtonComponent";
 import Divider from "../../components/commonComponents/Divider";
@@ -14,14 +12,23 @@ import PageHeading from "../../components/commonComponents/PageHeading";
 import {
   manageCourseCurriculumContent,
   manageCourseCurriculumSection,
-} from "../../services/store/instructor/instructorDashboardSlice";
+} from "../../services/store/courseListing/courseListingSlice";
 import { useEffect } from "react";
+import { STATUSES } from "../../services/requestStatues";
+import { toast } from "react-toastify";
 
 function Curriculum() {
   const dispatch = useDispatch();
-  const course = useSelector((state) => state.instructor.course);
-  const isLoading = useSelector((state) => state.instructor.isLoading);
+  const { course, status, message } = useSelector((state) => state.courseListing);
 
+  useEffect(() => {
+    if (status === STATUSES.SUCCESS) {
+      toast.success("Course updated successfully.")
+    }
+    if (status === STATUSES.ERROR) {
+      toast.error(message)
+    }
+  })
   const [isEditSection, setIsEditSection] = useState({
     isEdit: false,
     index: null,
@@ -31,19 +38,7 @@ function Curriculum() {
     index: null,
     sectionIndex: null,
   });
-  // const [sections, setSections] = useState([
-  // {
-  // sectionTitle: "Introduction",
-  // sectionVideos: [],
-  // },
-  // ]);
-  // const data = course.courseCurriculum
   const [sections, setSections] = useState(course.courseCurriculum);
-  // useEffect(() => {
-  //   console.log(course);
-  //   console.log(sections);
-  // }, [course]);
-  // *Section related functions
   const handleSectionCreation = () => {
     setIsEditSection({ index: sections.length, isEdit: true });
     setSections((prevState) => [
@@ -117,14 +112,6 @@ function Curriculum() {
       index: null,
       sectionIndex: null,
     });
-    // console.log(
-    //   "sectionIndex: ",
-    //   sectionIndex,
-    //   "videoIndex: ",
-    //   videoIndex,
-    //   "sectionMongodDbId: ",
-    //   sectionMongodDbId
-    // );
 
     const videoData = new FormData();
     videoData.append(
@@ -137,15 +124,11 @@ function Curriculum() {
     );
     videoData.append("sectionId", sectionMongodDbId);
     videoData.append("courseId", courseId);
-
     dispatch(manageCourseCurriculumContent(videoData));
-
-    // console.log(sections[sectionIndex].sectionVideos[videoIndex]);
   };
 
   const onVideoMutate = (event, sectionIndex, videoIndex) => {
     if (event.target.files) {
-      // console.log(event.target.files[0]);
       const allData = [...sections];
       allData[sectionIndex].sectionVideos[videoIndex].content =
         event.target.files[0];
@@ -159,9 +142,6 @@ function Curriculum() {
     }
   };
 
-  // if (isLoading) {
-  //   return <div>Loading...</div>;
-  // }
   return (
     <div>
       <PageHeading title="Curriculum" />
@@ -225,8 +205,8 @@ function Curriculum() {
                       {section.sectionVideos.map((video, videoIndex) => (
                         <div key={videoIndex}>
                           {isEditContent.isEdit &&
-                          isEditContent.index === videoIndex &&
-                          isEditContent.sectionIndex == parentIndex ? (
+                            isEditContent.index === videoIndex &&
+                            isEditContent.sectionIndex == parentIndex ? (
                             <div className="border-[1px] border-green-400 bg-base-300 rounded p-4">
                               <div className="my-2">
                                 <p className="font-bold">Lecture title</p>

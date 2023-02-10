@@ -1,107 +1,131 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import SignUpPageImg from "../../assets/images/signupPageImg.svg";
-import { FcGoogle } from "react-icons/fc";
-import { FaFacebook, FaLinkedinIn } from "react-icons/fa";
+import InputComponent from "../../components/commonComponents/InputComponent";
+import ButtonComponent from "../../components/commonComponents/ButtonComponent";
 import Logo from "../../components/commonComponents/Logo";
+import loginPageImg from "../../assets/images/signupPageImg3.svg";
+import { MdAlternateEmail } from "react-icons/md";
+import {
+  FacebookOAuthIcon,
+  GoogleOAuthIcon,
+  LinkinOAuthIcon,
+} from "../../components/OAuthIcons";
 
-// import LoginPageImg from "../../assets/images/loginPageImg8.svg";
+import { IoLockClosedOutline } from "react-icons/io5";
+import { BiUser } from "react-icons/bi";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { createAccount } from "../../services/store/auth/authSlice";
+import { toast } from "react-toastify";
+import { STATUSES } from "../../services/requestStatues";
 
 function SignUp() {
+  const navigate = useNavigate();
+  const { user, message, status } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+    if (status === STATUSES.ERROR) {
+      toast.error(message);
+    }
+  }, [user, message]);
+  const onMutate = (event) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [event.target.id]: event.target.value,
+    }));
+  };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    dispatch(createAccount(formData));
+  };
+
   return (
-    <div className="xl:h-screen md:min-h-screen  bg-base-300">
-      <div className="py-4 px-16 xl:fixed">
+    <div className="h-screen">
+      <div className="fixed w-full px-16 py-2">
         <Logo />
       </div>
-      <div className="grid xl:grid-cols-2 md:grid-cols-1 h-full">
-        <div className="shadow-lg rounded-lg shadow-slate-700 my-16 mx-32 p-16 xl:flex flex-col items-center  md:hidden">
-          <div className="flex justify-center">
-            <img src={SignUpPageImg} alt="" className=" w-2/3 " />
-          </div>
-          <div className="text-center my-8 text-slate-600">
-            <p className="text-lg font-bold  ">Already having an account?</p>
-            <p className="text-sm">We are happy have you back. </p>
-          </div>
+      <div className="grid grid-cols-3 h-full">
+        <div className="col-span-1 flex flex-col items-center justify-center ">
           <div>
-            <Link to="/login2">
-              <button
-                className="btn btn-wide text-slate-700
-             bg-transparent border-2 rounded border-slate-700"
-              >
-                Login
-              </button>
-            </Link>
+            <div className="my-4 text-slate-700">
+              <p className="font-bold text-3xl  font-sans">Sign up</p>
+              <p className="text-sm">Get started by creating your account.</p>
+            </div>
+            <form onSubmit={handleSubmit}>
+              <div className="my-4 relative">
+                <InputComponent
+                  type="text"
+                  placeholder="Name"
+                  id="name"
+                  value={formData.name}
+                  handleChange={onMutate}
+                  className="w-full"
+                />
+                <div className="absolute right-0 top-0 bg-green-400 h-full flex items-center w-10 justify-center rounded-md ">
+                  <BiUser className="text-white text-xl" />
+                </div>
+              </div>
+              <div className="my-4 relative">
+                <InputComponent
+                  type="email"
+                  placeholder="Email"
+                  id="email"
+                  className="w-full"
+                  value={formData.email}
+                  handleChange={onMutate}
+                />
+                <div className="absolute right-0 top-0 bg-green-400 h-full flex items-center w-10 justify-center rounded-md ">
+                  <MdAlternateEmail className="text-white text-xl" />
+                </div>
+              </div>
+              <div className="my-4 relative">
+                <InputComponent
+                  type="password"
+                  placeholder="Password"
+                  id="password"
+                  className="w-full"
+                  value={formData.password}
+                  handleChange={onMutate}
+                />
+                <div className="absolute right-0 top-0 bg-green-400 h-full flex items-center w-10 justify-center rounded-md ">
+                  <IoLockClosedOutline className=" text-white text-xl" />
+                </div>
+              </div>
+              <div className="my-4 flex justify-center">
+                <ButtonComponent
+                  name="Sign up"
+                  className="btn-wide bg-green-500 hover:bg-green-600 border-none text-white"
+                />
+              </div>
+            </form>
+            <div className="divider before:bg-base-300 before:h-[1px] after:bg-base-300 after:h-[1px] text-slate-600 text-sm  ">
+              Or continue with
+            </div>
+            <div className="flex justify-center gap-2">
+              <GoogleOAuthIcon />
+              <FacebookOAuthIcon />
+              <LinkinOAuthIcon />
+            </div>
+            <div className=" flex gap-2 my-4 text-sm ">
+              <p>Already having an account?</p>
+              <Link to="/login">
+                <p className="text-green-500 font-bold">Login</p>
+              </Link>
+            </div>
           </div>
         </div>
-        <div className="flex flex-col justify-center items-center ">
-          <div>
-            <div className="flex flex-col justify-center items-center text-slate-600 my-4">
-              <p className="text-3xl font-bold">Sign Up</p>
-              <p>Get started by creating your account.</p>
-            </div>
-            <div>
-              <input
-                type="text"
-                name=""
-                id=""
-                placeholder="Username"
-                className="p-2 rounded my-2 outline-none focus:outline-[1px] focus:outline-[#2c365a] "
-              />
-            </div>
-            <div>
-              <input
-                type="email"
-                name=""
-                id=""
-                placeholder="Email"
-                className="p-2 rounded my-2 outline-none focus:outline-[1px] focus:outline-[#2c365a] "
-              />
-            </div>
-            <div>
-              <input
-                type="password"
-                name=""
-                id=""
-                placeholder="Password"
-                className="p-2 rounded my-2 outline-none focus:outline-[1px] focus:outline-[#2c365a] "
-              />
-            </div>
-            <div>
-              <input
-                type="password"
-                name=""
-                id=""
-                placeholder="Confirm password"
-                className="p-2 rounded my-2 outline-none focus:outline-[1px] focus:outline-[#2c365a] "
-              />
-            </div>
-            <div>
-              <button className="btn capitalize w-full  my-4 rounded bg-[#2c365a]">
-                Sign up
-              </button>
-            </div>
-            <div className="divider before:bg-slate-500 after:bg-slate-500 after:h-[1px] before:h-[1px] ">
-              or continue with
-            </div>
-
-            <div className="flex justify-center gap-2">
-              <div>
-                <button className="btn btn-ghost border-white border-[1px] rounded-md">
-                  <FaFacebook size={24} color="#3b5999" />
-                </button>
-              </div>
-              <div>
-                <button className="btn btn-ghost border-white border-[1px] rounded-md">
-                  <FcGoogle size={24} />
-                </button>
-              </div>
-
-              <div>
-                <button className="btn btn-ghost border-white border-[1px] rounded-md">
-                  <FaLinkedinIn size={24} color="#0072b1" />
-                </button>
-              </div>
-            </div>
+        <div className="col-span-2  ">
+          <div className="flex justify-center items-center bg-base-200 h-full">
+            <img src={loginPageImg} alt="Login Page Image" className="h-1/2" />
           </div>
         </div>
       </div>

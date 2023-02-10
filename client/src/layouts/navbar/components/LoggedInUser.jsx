@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import profileImg from "../../../assets/images/profileImg.jpg";
 import UserProfileIcon from "../../../components/commonComponents/UserProfileIcon";
-import { logout } from "../../../services/store/user/userSlice";
+import { logout } from "../../../services/store/auth/authSlice";
 import { BsCollectionPlay } from "react-icons/bs";
 import { FiLogOut } from "react-icons/fi";
 import { FaChalkboardTeacher } from "react-icons/fa";
@@ -11,7 +11,7 @@ import { FaChalkboardTeacher } from "react-icons/fa";
 
 function LoggedInUser() {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.user);
+  const {user} = useSelector((state) => state.auth);
 
   return (
     <div className="dropdown dropdown-end">

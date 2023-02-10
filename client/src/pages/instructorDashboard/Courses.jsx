@@ -2,25 +2,28 @@ import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import noCourse from "../../assets/images/no-course.svg";
-import { getOwnCourses } from "../../services/store/instructor/instructorDashboardSlice";
+import { getOwnCourses } from "../../services/store/courseListing/courseListingSlice";
 import ButtonComponent from "../../components/commonComponents/ButtonComponent";
-import { ImFilm, GiFilmStrip } from "react-icons/im";
+import { ImFilm } from "react-icons/im";
+import { STATUSES } from "../../services/requestStatues";
+import LoadingIcons from "react-loading-icons";
 
 function Courses() {
   const dispatch = useDispatch();
   const navigate = useNavigate()
-  const courses = useSelector((state) => state.instructor.courses);
-  const isLoading = useSelector((state) => state.instructor.isLoading);
-  const user = useSelector((state) => state.user.user);
+  const { courses, status } = useSelector((state) => state.courseListing);
+  const { user } = useSelector((state) => state.auth);
   useEffect(() => {
     dispatch(getOwnCourses(user._id));
   }, []);
 
-  const handleClick = (courseId)=>{
+  const handleClick = (courseId) => {
     navigate(`/instructor/dashboard/manage-course/${courseId}/requirements-and-objectives`)
   }
-  if(isLoading){
-    return <div>Loading...</div>
+  if (status === STATUSES.LOADING) {
+    return <div className="flex justify-center items-center h-screen">
+      <LoadingIcons.Puff stroke="green" />
+    </div>
   }
 
   return (
@@ -50,13 +53,13 @@ function Courses() {
               {courses.map((course) => (
                 <div className="flex justify-between items-center border-[2px] border-green-400 p-4 my-2 rounded ">
                   <div className="flex items-center gap-2">
-                    <ImFilm size={32} className="text-green-500"  />
+                    <ImFilm size={32} className="text-green-500" />
                     <p className="text-lg font-bold">{course.courseTitle}</p>
                   </div>
                   <ButtonComponent
                     name="Edit/Manage course"
                     className="bg-teal-700 text-white font-bold border-none rounded-md"
-                    click={()=>handleClick(course._id)}
+                    click={() => handleClick(course._id)}
                   />
                 </div>
               ))}

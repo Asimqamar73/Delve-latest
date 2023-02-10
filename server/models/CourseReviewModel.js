@@ -22,7 +22,11 @@ const CourseReviewSchema = new mongoose.Schema({
     ref: "Course",
     required: [true, "Please provide course id"],
   },
+}, {
+  timestamps: true,
 });
+
+
 
 const CourseReview = mongoose.model("Course-Review", CourseReviewSchema);
 export default CourseReview;

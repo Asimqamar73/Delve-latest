@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import ButtonComponent from "../../components/commonComponents/ButtonComponent";
 import InputComponent from "../../components/commonComponents/InputComponent";
@@ -6,19 +6,18 @@ import { HiPlus } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import Divider from "../../components/commonComponents/Divider";
 import PageHeading from "../../components/commonComponents/PageHeading";
-import { useEffect } from "react";
 import {
-  manageCourse,
   modifyCourse,
-} from "../../services/store/instructor/instructorDashboardSlice";
-import { BsTrash } from "react-icons/bs";
+} from "../../services/store/courseListing/courseListingSlice";
 import DeleteIcon from "./components/DeleteIcon";
+import { STATUSES } from "../../services/requestStatues";
+import { toast } from "react-toastify";
 
-function Audience() {
+function CourseOutcome() {
   const dispatch = useDispatch();
-  const course = useSelector((state) => state.instructor.course);
-  const [goals, setGoals] = useState(course.courseObjectives);
-  const [requirements, setRequirements] = useState(course.courseRequirements);
+  const { course, status, message } = useSelector((state) => state.courseListing);
+  const [goals, setGoals] = useState(course?.courseObjectives);
+  const [requirements, setRequirements] = useState(course?.courseRequirements);
 
   const handleInputAddition = () => {
     setGoals((currentState) => [...currentState, ""]);
@@ -48,6 +47,16 @@ function Audience() {
     });
     setRequirements(filtered);
   };
+  useEffect(() => {
+    if (status === STATUSES.SUCCESS) {
+      toast.success("Course updated.")
+      console.log("course updated")
+    }
+    if (status === STATUSES.ERROR) {
+      toast.error(message)
+    }
+
+  }, [])
   const handleSubmit = (event) => {
     event.preventDefault();
     const courseEssentials = {};
@@ -79,7 +88,7 @@ function Audience() {
             </span>
           </p>
           <div>
-            {goals.map((goal, index) => (
+            {goals?.map((goal, index) => (
               <div className="flex gap-2 my-2" key={index}>
                 <div className="flex-1 relative">
                   <InputComponent
@@ -124,7 +133,7 @@ function Audience() {
             </p>
           </div>
           <div>
-            {requirements.map((requirement, index) => (
+            {requirements?.map((requirement, index) => (
               <div className="my-2" key={index}>
                 <div className="flex gap-2">
                   <div className="flex-1 relative">
@@ -170,4 +179,4 @@ function Audience() {
   );
 }
 
-export default Audience;
+export default CourseOutcome;

@@ -10,7 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { logout, loginUser } from "../../services/store/user/userSlice";
+import { logout, loginUser } from "../../services/store/auth/authSlice";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 

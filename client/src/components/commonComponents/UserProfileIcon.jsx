@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import profileImg from "../../assets/images/profileImg.jpg";
 
 function UserProfileIcon() {
-  const user = useSelector((state) => state.user.user);
+  const { user } = useSelector((state) => state.auth);
   return (
     <div className="flex items-center gap-2 p-[4px] bg-base-300 rounded-xl">
       <div className="avatar">

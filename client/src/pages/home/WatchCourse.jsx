@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import parser from "html-react-parser";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { learnCourse } from "../../services/store/user/userSlice";
+import { learnCourse } from "../../services/store/courseLearnig/courseLearningSlice";
 import Logo from "../../components/commonComponents/Logo";
 import UserProfileIcon from "../../components/commonComponents/UserProfileIcon";
 import LoadingIcons from "react-loading-icons";
@@ -10,18 +10,24 @@ import { FaAngleDown } from "react-icons/fa";
 import { BsPlayBtn } from "react-icons/bs";
 import Divider from "../../components/commonComponents/Divider";
 import ReviewModal from "./components/ReviewModal";
-import { reviewCourse } from "../../services/store/courses/coursesSlice";
+import { STATUSES } from "../../services/requestStatues";
+import { fetchCourseReviews, reviewCourse } from "../../services/store/courseReview/courseReviewSlice";
+import { toast } from "react-toastify"
 
-function LearnCourse() {
+
+function WatchCourse() {
   const params = useParams();
   const dispatch = useDispatch();
-  const course = useSelector((state) => state.user.course);
-  const isLoading = useSelector((state) => state.user.isLoading);
   const [play, setPlay] = useState(null);
+  const { user } = useSelector((state) => state.auth)
+  const { course, status } = useSelector((state) => state.courseLearning);
+  const { reviews, status: reviewStatus } = useSelector((state) => state.courseReview);
+
   const [feedback, setFeedback] = useState({
-    rating: 1,
+    rating: 5,
     review: "",
   });
+
   const onMutate = (event) => {
     setFeedback((prevState) => ({
       ...prevState,
@@ -33,11 +39,15 @@ function LearnCourse() {
     dispatch(reviewCourse(feedback));
   };
 
+
   useEffect(() => {
-    dispatch(learnCourse(params.courseId));
+    Promise.all([dispatch(learnCourse(params.courseId)),
+    dispatch(fetchCourseReviews(params.courseId))
+    ])
+
   }, []);
 
-  if (isLoading) {
+  if (status === STATUSES.LOADING) {
     return (
       <div className="h-screen flex items-center justify-center">
         <LoadingIcons.Puff stroke="green" />
@@ -56,14 +66,15 @@ function LearnCourse() {
           <div className="col-span-3">
             <div>
               <video
+                // autoPlay
                 src={
                   play
                     ? play
                     : course?.courseCurriculum[0].sectionVideos[0].content
                 }
                 className="w-full h-[520px] bg-current"
-                // autoPlay
                 controls
+                controlsList="nodownload"
               ></video>
             </div>
             <div className="p-8">
@@ -72,12 +83,23 @@ function LearnCourse() {
                   <p className="font-bold text-2xl">About this course</p>
                   <p>Course level: {course?.courseLevel}</p>
                 </div>
-                <div>
-                  <ReviewModal
-                    handleChange={onMutate}
-                    submitFeedback={handleFeedbackSubmition}
-                  />
-                </div>
+                {
+                  reviewStatus === STATUSES.IDLE && reviews && < div >
+                    {
+                      !isReviewed(reviews, user._id) && <div>
+                        <ReviewModal
+                          handleChange={onMutate}
+                          submitFeedback={handleFeedbackSubmition}
+                        />
+                      </div>
+                    }
+                  </div>
+                }
+                {/* <ReviewModal
+                  handleChange={onMutate}
+                  submitFeedback={handleFeedbackSubmition}
+                /> */}
+
               </div>
               <Divider />
               <div className="grid grid-cols-3">
@@ -95,8 +117,8 @@ function LearnCourse() {
                   <div className="my-4">
                     <p className="font-bold text-lg">What you will learn?</p>
                     <ul className="list-inside list-disc">
-                      {course?.courseObjectives.map((objective) => (
-                        <li>{objective}</li>
+                      {course?.courseObjectives.map((objective, index) => (
+                        <li key={index}>{objective}</li>
                       ))}
                     </ul>
                   </div>
@@ -128,7 +150,7 @@ function LearnCourse() {
           </div>
           <div className="col-span-1 bg-base-200 overflow-y-auto h-screen sticky top-0 border-l border-l-gray-300 ">
             {course?.courseCurriculum.map((section, sectionIndex) => (
-              <div class="collapse border-collapse border-b-[1px] border-b-gray-400 ">
+              <div class="collapse border-collapse border-b-[1px] border-b-gray-400 " key={sectionIndex}>
                 <input type="checkbox" className="peer" />
                 <div className="collapse-title bg-base-300 text-primary-content  peer-checked:bg-base-300 peer-checked:text-secondary-content ">
                   <div className="flex items-center justify-between">
@@ -147,10 +169,11 @@ function LearnCourse() {
                   </div>
                 </div>
                 <div className="collapse-content bg-base-300 text-primary-content peer-checked:bg-base-100 peer-checked:text-secondary-content p-0 m-0">
-                  {section.sectionVideos.map((video) => (
+                  {section.sectionVideos.map((video, videoIndex) => (
                     <p
                       className="flex items-center gap-2 py-2 mt-2 mx-2 px-2 rounded-md hover:bg-base-200 hover:cursor-pointer "
                       onClick={() => setPlay(video.content)}
+                      key={videoIndex}
                     >
                       <BsPlayBtn /> {video.videoTitle}
                     </p>
@@ -161,8 +184,15 @@ function LearnCourse() {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 }
 
-export default LearnCourse;
+const isReviewed = (array, value) => {
+  // console.log(array, value)
+  return array.some((el) => (
+    el.reviewerId._id === value
+  ))
+}
+
+export default WatchCourse;

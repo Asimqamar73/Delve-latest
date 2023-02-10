@@ -5,8 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "server":"nodemon server.js",
-    "client":"cd .. && npm start --prefix client",
+    "server": "nodemon server.js",
+    "client": "cd .. && npm start --prefix client",
     "start": "concurrently --kill-others-on-fail \"npm run client\" \"npm run server\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

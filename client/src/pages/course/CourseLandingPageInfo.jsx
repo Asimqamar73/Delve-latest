@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Divider from "../../components/commonComponents/Divider";
@@ -8,19 +8,17 @@ import PageHeading from "../../components/commonComponents/PageHeading";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import ButtonComponent from "../../components/commonComponents/ButtonComponent";
-import { modifyCourse } from "../../services/store/instructor/instructorDashboardSlice";
+import { modifyCourse } from "../../services/store/courseListing/courseListingSlice";
+import { categories } from "../../services/store/courseListing/courseCategories";
+import { languages } from "../../services/store/courseListing/courseLanguages";
+import { levels } from "../../services/store/courseListing/courseLevels";
+import { STATUSES } from "../../services/requestStatues";
+import { toast } from "react-toastify";
+
 
 function CourseLandingPageInfo() {
   const dispatch = useDispatch();
-  const languages = ["English", "Urdu", "Hindi", "Spanish", "German", "French"];
-  const categories = ["Development", "Business", "IT & Software", "Art"];
-  const level = [
-    "Beginner",
-    "Intermediate",
-    "Expert",
-    "All Levels",
-  ];
-  const course = useSelector((state) => state.instructor.course);
+  const { course, status, message } = useSelector((state) => state.courseListing);
   const [value, setValue] = useState(course.courseDescription);
   const [courseInfo, setCourseInfo] = useState({
     courseTitle: course.courseTitle,
@@ -36,6 +34,14 @@ function CourseLandingPageInfo() {
       [event.target.id]: event.target.value,
     }));
   };
+  useEffect(() => {
+    if (status === STATUSES.SUCCESS) {
+      toast.success("Course updated.")
+    }
+    if (status === STATUSES.ERROR) {
+      toast.error(message)
+    }
+  }, [])
   const handleSubmit = (event) => {
     event.preventDefault();
     courseInfo.courseDescription = value;
@@ -94,7 +100,7 @@ function CourseLandingPageInfo() {
           <div>
             <p className="font-bold">Level</p>
             <DropdownComponent
-              options={level}
+              options={levels}
               name="courseLevel"
               id="courseLevel"
               variant="p-4 bg-base-200 w-full border-2"

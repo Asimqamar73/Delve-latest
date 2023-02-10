@@ -6,8 +6,8 @@ function CourseLanguageFilterComponent({ handleChange, selected, id }) {
   return (
     <div>
       <p className="font-bold text-2xl">Course language</p>
-      {languages.map((language) => (
-        <div className="flex items-center gap-2">
+      {languages.map((language, index) => (
+        <div className="flex items-center gap-2" key={index}>
           <input
             type="checkbox"
             className="checkbox checkbox-sm rounded-md"

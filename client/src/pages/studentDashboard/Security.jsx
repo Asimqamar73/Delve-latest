@@ -4,12 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import ButtonComponent from "../../components/commonComponents/ButtonComponent";
 import InputComponent from "../../components/commonComponents/InputComponent";
 import { toast } from "react-toastify";
-import { changePassword } from "../../services/store/user/userSlice";
+import { changePassword } from "../../services/store/auth/authSlice";
 import { useEffect } from "react";
+import { STATUSES } from "../../services/requestStatues";
 
 function Security() {
   const dispatch = useDispatch();
-  const response = useSelector((state) => state.user.response);
+  const { status, message } = useSelector((state) => state.auth);
   const [passwords, setPassowrds] = useState({
     currentPassword: "",
     newPassword: "",
@@ -17,14 +18,13 @@ function Security() {
   });
 
   useEffect(() => {
-    if (response.status === "success") {
-      toast.success(response.message);
+    if (status === STATUSES.SUCCESS) {
+      toast.success("Password updated successfully.");
     }
-    if (response.status === "failed") {
-      toast.error(response.message);
+    if (status === STATUSES.ERROR) {
+      toast.error(message);
     }
-    console.log(response.status);
-  }, [response]);
+  }, []);
   const onMutate = (event) => {
     setPassowrds((prevState) => ({
       ...prevState,

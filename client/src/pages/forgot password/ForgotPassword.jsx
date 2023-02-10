@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { MdAlternateEmail } from "react-icons/md";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { forgotPassord } from "../../services/store/user/userSlice";
+import { forgotPassord } from "../../services/store/auth/authSlice";
 
 function ForgotPassword() {
   const [email, setEmail] = useState("");

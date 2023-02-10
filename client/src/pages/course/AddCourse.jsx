@@ -9,16 +9,18 @@ import { MdCameraEnhance } from "react-icons/md";
 import { useState } from "react";
 import UserProfileIcon from "../../components/commonComponents/UserProfileIcon";
 import { useSelector, useDispatch } from "react-redux";
-import { publishCourse } from "../../services/store/instructor/instructorDashboardSlice";
+import { publishCourse, resetState } from "../../services/store/courseListing/courseListingSlice";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
+import { STATUSES } from "../../services/requestStatues";
+import { categories } from "../../services/store/courseListing/courseCategories";
 
 function AddCourse() {
   const dispatch = useDispatch();
   const navigate = useNavigate()
-  const status = useSelector((state) => state.instructor.status);
+  const { status, message } = useSelector((state) => state.courseListing);
 
-  const categories = ["Development", "Business", "IT & Software", "Art"];
+  
   const [courseInfo, setCourseInfo] = useState({
     courseTitle: "",
     courseCategory: "",
@@ -26,16 +28,16 @@ function AddCourse() {
     courseThumbnail: null,
   });
 
-  useEffect(()=>{
-    console.log(status)
-    if(status==="success"){
+  useEffect(() => {
+    if (status === STATUSES.SUCCESS) {
       toast.success("Course created successfully")
       navigate("/instructor/dashboard")
+      dispatch(resetState())
     }
-    if(status==="failed"){
-      toast.error("Something went wrong please try again.")
+    if (status === STATUSES.ERROR) {
+      toast.error(message)
     }
-  },[status])
+  }, [status, message])
   const onMutate = (event) => {
     if (event.target.files) {
       setCourseInfo((prevState) => ({
@@ -108,7 +110,7 @@ function AddCourse() {
                 <textarea
                   className="bg-base-100 p-2 rounded outline-none focus:outline-green-400 outline-[1px] w-full"
                   rows={8}
-                  
+
                   id="courseDescription"
                   value={courseInfo.courseDescription}
                   onChange={onMutate}
@@ -144,10 +146,10 @@ function AddCourse() {
               </div>
             </form>
           </div>
-          <div className="col-span-2">  
-          <div className="flex justify-center items-center h-full bg-base-100">
-            <img src={addCourseImg} alt="" className="w-3/5 "  />
-          </div>
+          <div className="col-span-2">
+            <div className="flex justify-center items-center h-full bg-base-100">
+              <img src={addCourseImg} alt="" className="w-3/5 " />
+            </div>
 
 
           </div>

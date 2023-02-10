@@ -55,7 +55,6 @@ export function fetchAllCourses() {
       dispatch(setLoading(false));
     } catch (error) {
       dispatch(setLoading(false));
-
       console.log(error);
     }
   };
@@ -67,7 +66,8 @@ export function fetchCourseDetails(courseId) {
     try {
       const { data } = await authFetch.get(`/course/courseDetails/${courseId}`);
       dispatch(setLoading(false));
-      dispatch(setCourse(data));
+      dispatch(setCourse(data[0]));
+      console.log(data[0])
     } catch (error) {
       console.log(error);
       dispatch(setLoading(false));
@@ -77,28 +77,32 @@ export function fetchCourseDetails(courseId) {
 
 export function searchCourse(search) {
   return async function searchCourseThunk(dispatch, getState) {
+    dispatch(setLoading(true));
+
     try {
       const { data } = await authFetch.post("/course/searchCourse", { search });
       dispatch(setSearchResult(data));
+      dispatch(setLoading(false));
+
       console.log(data);
     } catch (error) {
       console.log(error);
+      dispatch(setLoading(false));
+
     }
   };
 }
 
-export function getCoursesbyCategory(category, filter) {
+export function getCoursesbyCategory(category, filter, sort) {
   return async function getCoursesByCategoryThunk(dispatch, getSatate) {
     dispatch(setLoading(true));
-    const { language, level } = filter;
-    console.log(language);
-    // console.log(level);
-
+    const { language, level, rating } = filter;
+    // console.log(sort)
     try {
       const { data } = await authFetch.get(
         `/courses/category/${category}?courseLanguage=${JSON.stringify(
           language
-        )}&courseLevel=${JSON.stringify(level)}`
+        )}&courseLevel=${JSON.stringify(level)}&rating=${rating}&sort=${sort}`
       );
 
       // console.log(data);
@@ -119,20 +123,4 @@ export function getCoursesbyCategory(category, filter) {
   };
 }
 
-export function reviewCourse(feedback) {
-  return async function reviewCourseThunk(dispatch, getState) {
-    console.log(feedback);
-    dispatch(setLoading(true));
-    try {
-      const { data } = await authFetch.post(
-        "/courseReview/postFeedback",
-        feedback
-      );
-      console.log(data);
-      dispatch(setLoading(false));
-    } catch (error) {
-      console.log(error);
-      dispatch(setLoading(false));
-    }
-  };
-}
+

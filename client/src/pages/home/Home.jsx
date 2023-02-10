@@ -8,10 +8,8 @@ import CourseCardSkeleton from "./components/CourseCardSkeleton";
 import EnrolledCourseCard from "./components/EnrolledCourseCard";
 
 function Home() {
-  const courses = useSelector((state) => state.courses.courses);
-  const isLoading = useSelector((state) => state.courses.isLoading);
-
-  const user = useSelector((state) => state.user.user);
+  const {courses,isLoading} = useSelector((state) => state.courses);
+  const {user} = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {

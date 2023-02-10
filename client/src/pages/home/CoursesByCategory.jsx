@@ -10,6 +10,7 @@ import CourseLanguageFilterComponent from "./components/CourseLanguageFilterComp
 import CourseLevelFilterComponent from "./components/CourseLevelFilterComponent";
 import RatingFilterComponent from "./components/RatingFilterComponent";
 import LoadingIcon from "react-loading-icons";
+import { HiStar } from "react-icons/hi";
 
 function CoursesByCategory() {
   const params = useParams();
@@ -19,15 +20,16 @@ function CoursesByCategory() {
   const totalCourses = useSelector((state) => state.courses.totalCourses);
   const totalPages = useSelector((state) => state.courses.noOfPages);
   const isLoading = useSelector((state) => state.courses.isLoading);
+  const [sort, setSort] = useState("Newest")
   const [filters, setFilters] = useState({
-    // rating: "",
+    rating: null,
     language: [],
     level: [],
   });
 
   useEffect(() => {
-    dispatch(getCoursesbyCategory(params.category, filters));
-  }, [params, filters]);
+    dispatch(getCoursesbyCategory(params.category, filters, sort));
+  }, [params, filters, sort]);
   if (isLoading) {
     return (
       <div className="min-h-screen flex justify-center items-center">
@@ -42,41 +44,54 @@ function CoursesByCategory() {
   }
 
   const onMutate = (event) => {
-    if (filters[event.target.id].includes(event.target.value)) {
-      const values = filters[event.target.id].filter((value, index) => {
-        return value !== event.target.value;
-      });
-      console.log(values);
+    if (event.target.id === "rating") {
       setFilters((prevState) => ({
         ...prevState,
-        [event.target.id]: values,
-      }));
-    } else {
-      setFilters((prevState) => ({
-        ...prevState,
-        [event.target.id]: [...prevState[event.target.id], event.target.value],
+        rating: event.target.value,
       }));
     }
-    // dispatch(getCoursesbyCategory(params.category, filters));
+    else {
+      if (filters[event.target.id].includes(event.target.value)) {
+        const values = filters[event.target.id].filter((value, index) => {
+          return value !== event.target.value;
+        });
+        console.log(values);
+        setFilters((prevState) => ({
+          ...prevState,
+          [event.target.id]: values,
+        }));
+      } else {
+        setFilters((prevState) => ({
+          ...prevState,
+          [event.target.id]: [...prevState[event.target.id], event.target.value],
+        }));
+      }
+
+    }
   };
+  const handleSorting = (event) => {
+    // console.log(event.target.value)
+    setSort(event.target.value)
+  }
 
   return (
     <div className="mx-16 my-8">
       <p className="font-bold text-3xl my-2">All {params.category} courses</p>
       <div className="grid grid-cols-5 gap-8 ">
         <div className="col-span-1">
-          {/* <div>
+          <div>
             <p className="font-bold">Sort by</p>
             <DropdownComponent
               options={sortBy}
-              value={sortBy}
+              value={sort}
+              handleChange={handleSorting}
               variant="p-2 w-full"
             />
           </div>
-          <Divider /> */}
+          <Divider />
           <div>
             <p className="font-bold text-2xl">Ratings</p>
-            <RatingFilterComponent handleChange={onMutate} />
+            <RatingFilterComponent handleChange={onMutate} value={filters.rating} />
           </div>
           <Divider />
           <CourseLevelFilterComponent
@@ -108,6 +123,15 @@ function CoursesByCategory() {
               <div>
                 <p className="font-bold text-lg">{course.courseTitle}</p>
                 <p className="text-sm">{course.courseInstructor.name}</p>
+                {
+                  course.averageRating ? <div className="flex items-center gap-[2px]">
+                    <span className="text-yellow-400"> <HiStar />
+                    </span>
+                    <p className="text-yellow-400 font-bold">{course.averageRating}
+                    </p>
+                    <span className=" text-xs mx-[4px] "> ({course.reviews.length})</span>
+                  </div> : <p className="text-sm">Not rated yet.</p>
+                }
                 <p className="text-sm">
                   <span>
                     {course.courseCurriculum.length}{" "}
@@ -115,17 +139,17 @@ function CoursesByCategory() {
                       ? "sections"
                       : "section"}{" "}
                   </span>
-                  <span>
+                  {/* <span>
                     {course.totalVideos}{" "}
                     {course.totalVideos > 1 ? "lectures" : "lecture"}{" "}
-                  </span>
+                  </span> */}
                 </p>
                 <p className="text-sm">{course.courseLevel}</p>
               </div>
             </div>
           ))}
           <div class="btn-group flex justify-center my-8">
-          
+
             <button class="btn btn-md">1</button>
             <button class="btn btn-md btn-active">2</button>
             <button class="btn btn-md">3</button>

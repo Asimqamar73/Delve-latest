@@ -1,13 +1,18 @@
 import { configureStore } from "@reduxjs/toolkit";
-import userReducer from "../store/user/userSlice";
-import instructorReducer from "../store/instructor/instructorDashboardSlice";
+import authReducer from "../store/auth/authSlice";
 import coursesReducer from "../store/courses/coursesSlice";
+import courseListingReducer from "../store/courseListing/courseListingSlice";
+import courseLearningReducer from "../store/courseLearnig/courseLearningSlice"
+import courseReviewsReducer from "../store/courseReview/courseReviewSlice"
+
 
 const store = configureStore({
   reducer: {
-    user: userReducer,
-    instructor: instructorReducer,
+    auth: authReducer,
+    courseListing: courseListingReducer,
     courses: coursesReducer,
+    courseLearning: courseLearningReducer,
+    courseReview: courseReviewsReducer
   },
 });
 

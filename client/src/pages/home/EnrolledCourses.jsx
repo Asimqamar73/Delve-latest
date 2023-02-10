@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import noCourse from "../../assets/images/no-course.svg"
 
 function EnrolledCourses() {
-  const user = useSelector((state) => state.user.user);
+  const {user} = useSelector((state) => state.auth);
   return (
     <div>
       <div className="px-16 py-8 bg-current">
@@ -14,7 +14,7 @@ function EnrolledCourses() {
         <div className="px-16 py-4">
           <div className="grid grid-cols-4 gap-4">
             {user.enrolledCourses.map((course, index) => (
-              <Link to={`/course/learnCourse/${course.courseId._id}`}>
+              <Link to={`/course/watchCourse/${course.courseId._id}`}>
                 <div key={index} className="hover:cursor-pointer">
                   <div className="my-2 group">
                     <img

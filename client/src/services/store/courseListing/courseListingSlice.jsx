@@ -1,21 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { authFetch } from "../../../lib/axios/authFetch";
-
-const statuses = Object.freeze({
-  IDLE: "idle",
-  SUCCESS: "success",
-  FAILED: "failed",
-});
+import { STATUSES } from "../../requestStatues";
+import { setMessage } from "../auth/authSlice";
 
 const initialState = {
-  instructor: null,
-  isLoading: false,
-  status: statuses.IDLE,
+  status: STATUSES.IDLE,
+  message: "",
   courses: [],
   course: null,
 };
 
-export const instructorDashboardSlice = createSlice({
+export const courseListingSlice = createSlice({
   name: "instructorDashboard",
   initialState,
   reducers: {
@@ -25,43 +20,48 @@ export const instructorDashboardSlice = createSlice({
     setCourse: (state, action) => {
       state.course = action.payload;
     },
-    setLoading: (state, action) => {
-      state.isLoading = action.payload;
-    },
     setStatus: (state, action) => {
       state.status = action.payload;
     },
+    setMessage: (state, action) => {
+      state.message = action.payload
+    },
+    resetState: (state) => {
+      state.status = STATUSES.IDLE
+      state.message = ""
+
+    }
   },
 });
-export const { setLoading, setStatus, setCourses, setCourse } =
-  instructorDashboardSlice.actions;
-export default instructorDashboardSlice.reducer;
+export const { setStatus, setCourses, setCourse, resetState } =
+  courseListingSlice.actions;
+export default courseListingSlice.reducer;
 
 //Thunks
 export function publishCourse(courseDetails) {
   return async function publishCourseThunk(dispatch, getState) {
-    dispatch(setLoading(true));
+    dispatch(setStatus(STATUSES.LOADING));
     try {
       await authFetch.post("/course/createCourse", courseDetails);
-      dispatch(setLoading(false));
-      dispatch(setStatus(statuses.SUCCESS));
+      dispatch(setStatus(STATUSES.SUCCESS));
     } catch (error) {
-      dispatch(setLoading(false));
-      dispatch(setStatus(statuses.FAILED));
+      setMessage(error.response.data.msg)
+      dispatch(setStatus(STATUSES.ERROR));
     }
   };
 }
 
 export function getOwnCourses(id) {
   return async function getOwnCoursesThunk(dispatch, getState) {
-    dispatch(setLoading(true));
+    dispatch(setStatus(STATUSES.LOADING));
     try {
       const { data } = await authFetch.get(`/course/getOwnCourses/${id}`);
       dispatch(setCourses(data));
-      dispatch(setLoading(false));
+      dispatch(setStatus(STATUSES.SUCCESS));
     } catch (error) {
       console.log(error);
-      dispatch(setLoading(false));
+      setMessage(error.response.data.msg)
+      dispatch(setStatus(STATUSES.ERROR));
     }
   };
 }
@@ -74,48 +74,54 @@ export function manageCourse(courseId) {
     // Thats why we set course at initially null
     // We can achieve it by putting loading state in here.
     //*  dispatch(setCourse(null)) here or use below loading approach.
-    dispatch(setLoading(true));
+    dispatch(setStatus(STATUSES.LOADING));
     try {
       const { data } = await authFetch.get(`/course/ownCourseDetails/${courseId}`);
       dispatch(setCourse(data));
-      dispatch(setLoading(false));
+      dispatch(setStatus(STATUSES.IDLE));
     } catch (error) {
       console.log(error);
-      dispatch(setLoading(false));
+      dispatch(setStatus(STATUSES.ERROR));
     }
   };
 }
 
 export function modifyCourse(updatedData) {
   return async function manageCourseThunk(dispatch, getState) {
+    dispatch(setStatus(STATUSES.LOADING));
     try {
       const { data } = await authFetch.post("/course/editCourse2", updatedData);
       dispatch(setCourse(data));
+      dispatch(setStatus(STATUSES.SUCCESS));
     } catch (error) {
       console.log(error);
+      dispatch(setStatus(STATUSES.ERROR));
+
     }
   };
 }
 
 export function manageCourseCurriculumSection(courseData) {
   return async function updateCourseCurriculumSectionThunk(dispatch, getState) {
-    dispatch(setLoading(true));
+    dispatch(setStatus(STATUSES.LOADING));
     try {
       const { data } = await authFetch.patch(
         "/course/manageCourseCurriculumSection",
         courseData
       );
       dispatch(setCourse(data));
-      dispatch(setLoading(false));
+      dispatch(setStatus(STATUSES.SUCCESS));
     } catch (error) {
       console.log(error);
+      dispatch(setStatus(STATUSES.ERROR));
+
     }
   };
 }
 
 export function manageCourseCurriculumContent(courseData) {
   return async function updateCourseCurriculumContentThunk(dispatch, getState) {
-    dispatch(setLoading(true));
+    dispatch(setStatus(STATUSES.LOADING));
     try {
       // console.log(courseData);
       const { data } = await authFetch.patch(
@@ -124,10 +130,10 @@ export function manageCourseCurriculumContent(courseData) {
       );
       // console.log(data);
       dispatch(setCourse(data));
-      dispatch(setLoading(false));
+      dispatch(setStatus(STATUSES.SUCCESS));
     } catch (error) {
       console.log(error);
-      dispatch(setLoading(false));
+      dispatch(setStatus(STATUSES.ERROR));
     }
   };
 }

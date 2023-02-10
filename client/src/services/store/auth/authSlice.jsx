@@ -1,31 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { authFetch } from "../../../lib/axios/authFetch";
+import { STATUSES } from "../../requestStatues"
 
-const statuses = Object.freeze({
-  IDLE: "idle",
-  SUCCESS: "success",
-  FAILED: "failed",
-});
 
 const userInfo = localStorage.getItem("user");
 const JWToken = localStorage.getItem("token");
 const initialState = {
   user: userInfo ? JSON.parse(userInfo) : null,
   token: JWToken || "",
-  isLoading: false,
-  error: "",
-  // courses: null,
+  message: "",
   course: null,
   isEmailSend: false,
-  response: {
-    status: statuses.IDLE,
-    message: "",
-  },
+  status: STATUSES.IDLE
 };
 
-export const userSlice = createSlice({
-  name: "user",
+export const authSlice = createSlice({
+  name: "auth",
   initialState,
   reducers: {
     setUser: (state, action) => {
@@ -44,44 +35,44 @@ export const userSlice = createSlice({
       localStorage.removeItem("user");
       localStorage.removeItem("token");
     },
-    setResponse: (state, action) => {
-      state.response.status = action.payload.status;
-      state.response.message = action.payload.message;
+    setStatus: (state, action) => {
+      state.status = action.payload
     },
-    setError: (state, action) => {
-      state.error = action.payload;
+    setMessage: (state, action) => {
+      state.message = action.payload;
     },
-    setLoading: (state, action) => {
-      state.isLoading = action.payload;
-    },
+    resetState: (state) => {
+      state.status = STATUSES.IDLE;
+      state.message = ""
+    }
   },
 });
 
 export const {
   setUser,
   setCourse,
-  setResponse,
+  setStatus,
   logout,
   signup,
-  setError,
-  setLoading,
-} = userSlice.actions;
-export default userSlice.reducer;
+  setMessage,
+  resetState
+} = authSlice.actions;
+export default authSlice.reducer;
 
 //Thunks
 export function loginUser(userCredentials) {
   return async function loginUserThunk(dispatch, getState) {
+    dispatch(setStatus(STATUSES.LOADING))
     try {
       const { data } = await axios.post(
         "/api/v1/student/login",
         userCredentials
       );
       dispatch(setUser(data));
+      dispatch(setStatus(STATUSES.IDLE))
     } catch (error) {
-      dispatch(setError(error.response.data.msg));
-      setTimeout(() => {
-        dispatch(setError(""));
-      }, 1000);
+      dispatch(setMessage(error.response.data.msg));
+      dispatch(setStatus(STATUSES.ERROR))
     }
   };
 }
@@ -95,36 +86,23 @@ export function createAccount(userCredentials) {
       );
       dispatch(setUser(data));
     } catch (error) {
-      dispatch(setError(error.response.data.msg));
-      setTimeout(() => {
-        dispatch(setError(""));
-      }, 1000);
+      dispatch(setMessage(error.response.data.msg));
+      dispatch(setStatus(STATUSES.ERROR))
     }
   };
 }
 export function changePassword(userPasswords) {
   return async function changePasswordThunk(dispatch, getState) {
-    dispatch(setLoading(true));
+    dispatch(setStatus(STATUSES.LOADING));
     try {
-      const { data } = await authFetch.patch(
+      await authFetch.patch(
         "/student/changePassword",
         userPasswords
       );
-      dispatch(
-        setResponse({
-          message: data.msg,
-          status: statuses.SUCCESS,
-        })
-      );
-      dispatch(setLoading(false));
+      dispatch(setStatus(STATUSES.IDLE));
     } catch (error) {
-      dispatch(
-        setResponse({
-          message: error.response.data.msg,
-          status: statuses.FAILED,
-        })
-      );
-      dispatch(setLoading(false));
+      dispatch(setStatus(STATUSES.ERROR));
+
     }
   };
 }
@@ -143,20 +121,20 @@ export function forgotPassord(userEmail) {
 
 export function changeAvatar(avatarInfo) {
   return async function changeAvatarThunk(dispatch, getState) {
-    dispatch(setLoading(true));
+    dispatch(setStatus(STATUSES.LOADING));
     try {
       const { data } = await authFetch.patch(
         "/student/changeAvatar",
         avatarInfo
       );
-
       dispatch(setUser(data));
-      dispatch(setLoading(false));
+      dispatch(setStatus(STATUSES.IDLE));
     } catch (error) {
-      dispatch(setLoading(false));
+      dispatch(setStatus(STATUSES.ERROR));
     }
   };
 }
+
 export function enrollCourse(courseId) {
   return async function enrollCourseThunk(dispatch, getState) {
     console.log(courseId);
@@ -164,29 +142,16 @@ export function enrollCourse(courseId) {
       const { data } = await authFetch.patch("/student/courseEnrollment", {
         courseId,
       });
-      console.log(data);
       dispatch(setUser(data));
-      dispatch(setLoading(false));
+      dispatch(setStatus(STATUSES.IDLE));
     } catch (error) {
-      dispatch(setLoading(false));
+      dispatch(setStatus(STATUSES.ERROR));
       console.log(error);
     }
   };
 }
 
-export function learnCourse(courseId) {
-  return async function learnCourseThunk(dispatch, getState) {
-    dispatch(setLoading(true));
-    try {
-      const { data } = await authFetch.get(`course/learnCourse/${courseId}`);
-      dispatch(setCourse(data));
-      dispatch(setLoading(false));
-    } catch (error) {
-      dispatch(setLoading(false));
-      console.log(error);
-    }
-  };
-}
+
 
 
 

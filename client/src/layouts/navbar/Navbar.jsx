@@ -23,7 +23,7 @@ function Navbar() {
   const refTwo = useRef(null);
 
   const searchResult = useSelector((state) => state.courses.searchResult);
-  const user = useSelector((state) => state.user.user);
+  const { user } = useSelector((state) => state.auth);
   const [showSerachbar, setShowSerchbar] = useState(false);
   const [search, setSearch] = useState("");
 
@@ -78,9 +78,8 @@ function Navbar() {
           </label>
           <div
             tabIndex={0}
-            className={`mt-3 rounded-none absolute left-0 w-full bg-slate-900 ${
-              showSerachbar ? "block" : "hidden"
-            }`}
+            className={`mt-3 rounded-none absolute left-0 w-full bg-slate-900 ${showSerachbar ? "block" : "hidden"
+              }`}
             ref={refOne}
           >
             <Searchbar

@@ -2,8 +2,8 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AppLayout from "../layouts/AppLayout";
 import Home from "../pages/home/Home";
-import SignUp from "../pages/signUp/SignUp2";
-import Login from "../pages/login/Login3";
+import SignUp from "../pages/signUp/SignUp";
+import Login from "../pages/login/Login";
 import InstructorSignUp from "../pages/signUp/InstructorSignUp";
 import InstructorLogin from "../pages/login/InstructorLogin";
 import AddCourse from "../pages/course/AddCourse";
@@ -16,24 +16,22 @@ import StudentDashboard from "../pages/studentDashboard/StudentDashboard";
 import Profile from "../pages/studentDashboard/Profile";
 import Security from "../pages/studentDashboard/Security";
 import ManageCourse from "../pages/course/ManageCourse";
-import Audience from "../pages/course/Audience";
-import Curriculum from "../pages/course/Curriculum";
-import CourseLandingPageInfo from "../pages/course/CourseLandingPageInfo";
 import CourseDetails from "../pages/home/CourseDetails";
 import EnrolledCourses from "../pages/home/EnrolledCourses";
 import ScrollToTop from "../lib/scroll/ScrollToTop";
-import LearnCourse from "../pages/home/LearnCourse";
+import WatchCourse from "../pages/home/WatchCourse";
 import ForgotPassword from "../pages/forgot password/ForgotPassword";
 import CoursesByCategory from "../pages/home/CoursesByCategory";
+import { CourseLandingPageInfo, CourseOutcome, Curriculum } from "../pages/course";
 
 function AppRoutes() {
   return (
     <BrowserRouter>
       <ScrollToTop>
         <Routes>
-          <Route path="/login3" element={<Login />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/instructor-login" element={<InstructorLogin />} />
-          <Route path="/signup2" element={<SignUp />} />
+          <Route path="/signup" element={<SignUp />} />
           <Route path="/instructor-signUp" element={<InstructorSignUp />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route
@@ -64,7 +62,7 @@ function AppRoutes() {
               </PrivateRoute>
             }
           >
-            <Route path="requirements-and-objectives" element={<Audience />} />
+            <Route path="requirements-and-objectives" element={<CourseOutcome />} />
             <Route path="curriculum" element={<Curriculum />} />
             <Route path="basics" element={<CourseLandingPageInfo />} />
           </Route>
@@ -99,10 +97,10 @@ function AppRoutes() {
             </Route>
           </Route>
           <Route
-            path="/course/learnCourse/:courseId"
+            path="/course/watchCourse/:courseId"
             element={
               <PrivateRoute>
-                <LearnCourse />
+                <WatchCourse />
               </PrivateRoute>
             }
           />

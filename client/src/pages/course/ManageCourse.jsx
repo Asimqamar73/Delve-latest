@@ -1,17 +1,18 @@
 import React from "react";
-import { Link, NavLink, Outlet, useParams } from "react-router-dom";
+import { Link, Outlet, useParams } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";
 import UserProfileIcon from "../../components/commonComponents/UserProfileIcon";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { manageCourse } from "../../services/store/instructor/instructorDashboardSlice";
+import { manageCourse } from "../../services/store/courseListing/courseListingSlice";
 import LoadingIcons from "react-loading-icons";
-import Logo from "../../components/commonComponents/Logo";
 import NavItem from "./components/NavItem";
+import { STATUSES } from "../../services/requestStatues";
+import { toast } from "react-toastify";
+
 
 function ManageCourse() {
-  const course = useSelector((state) => state.instructor.course);
-  const isLoading = useSelector((state) => state.instructor.isLoading);
+  const { course, status } = useSelector((state) => state.courseListing);
 
   const dispatch = useDispatch();
   const params = useParams();
@@ -20,13 +21,13 @@ function ManageCourse() {
     dispatch(manageCourse(params.id));
   }, []);
 
-  if (isLoading) {
-    return (
-      <div className="flex flex-col justify-center items-center h-screen">
-        <LoadingIcons.Puff stroke="green" />
-      </div>
-    );
-  }
+  // if (status === STATUSES.LOADING && !course) {
+  //   return (
+  //     <div className="flex flex-col justify-center items-center h-screen">
+  //       <LoadingIcons.Puff stroke="green" />
+  //     </div>
+  //   );
+  // }
   return (
     <div className="flex flex-col h-screen">
       <div className="block">
