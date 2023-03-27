@@ -9,9 +9,15 @@ import connectDB from "./db/connection.js";
 import errorHandlerMiddleware from "./middlewares/errorHandler.js";
 import fileUpload from "express-fileupload";
 import * as Cloudinary from "cloudinary";
+import http from "http";
+import { Server } from "socket.io";
+import Message from "./models/MessageModel.js";
 
 dotenv.config();
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
+const PORT = process.env.PORT || 5000;
 
 Cloudinary.v2.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -26,31 +32,34 @@ app.use(
   })
 );
 
-const fun = (req, res) => {
-  const name = "Asim";
-  if (name == "Asim") {
-    res.send("Asim route.");
-  } else if (name == "hasnain") {
-    res.send("hasnain route.");
-  }
-};
-// app.use("/", fun)
-
+io.on("connection", (socket) => {
+  console.log(`User connected ${socket.id}`);
+  // app.use("/api/v1/messages/sendMessage", async(req,res)=>{
+  //   const messages = await fin
+  // })
+  socket.on("sendMessage", (message) => {
+    Message.create;
+    // console.log(message);
+    io.emit("displayMessage", message);
+  });
+  //Server.engine.clientsCount
+  console.log("connected users: ", io.engine.clientsCount);
+  socket.on("disconnect", () => {
+    console.log(`User disconnected ${socket.id}`);
+  });
+});
 app.use("/api/v1", StudentRouter);
 app.use("/api/v1", InstructorRouter);
 app.use("/api/v1", CourseRoute);
 app.use("/api/v1", CourseReviewRouter);
-
 app.use("/*", notFoundMiddleware);
 app.use(errorHandlerMiddleware);
-
-const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
   try {
     await connectDB(process.env.MONGODB_URI);
-    app.listen(PORT, () => {
-      console.log(`Server is listening on port ${PORT}`);
+    server.listen(PORT, () => {
+      console.log(`Server is listening on port ${PORT} 👍`);
     });
   } catch (error) {
     console.log(error);

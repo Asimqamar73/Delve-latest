@@ -31,11 +31,11 @@ function Dashboard() {
             </ul>
           </div>
         </div>
-        <div className="col-span-5">
+        <div className="col-span-5 flex flex-col">
           <div className="flex justify-end py-2 px-8">
             <UserProfileIcon user={user} />
           </div>
-          <div className="mx-8 my-2 ">
+          <div className="flex-1 m-2 ">
             <Outlet />
           </div>
         </div>

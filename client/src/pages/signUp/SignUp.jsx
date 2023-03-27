@@ -50,7 +50,7 @@ function SignUp() {
 
   return (
     <div className="h-screen">
-      <div className="fixed w-full px-16 py-2">
+      <div className="fixed w-full px-16 py-4">
         <Logo />
       </div>
       <div className="grid grid-cols-3 h-full">

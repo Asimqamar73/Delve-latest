@@ -66,7 +66,7 @@ function WatchCourse() {
           <div className="col-span-3">
             <div>
               <video
-                // autoPlay
+                autoPlay
                 src={
                   play
                     ? play

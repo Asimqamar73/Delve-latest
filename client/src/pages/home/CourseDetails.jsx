@@ -203,7 +203,7 @@ function CourseDetails() {
                               {review.reviewerId.name}
                             </p>
                             <div className="flex items-center gap-[4px]">
-                              <span className="font-bold text-yellow-400"> {review.rating.toPrecision(2)}</span>
+                              <span className="font-bold text-yellow-400"> {review?.rating.toPrecision(2)}</span>
                               <FaStar className="text-yellow-400" />
                               <span>{moment(review.createdAt).fromNow()}</span>
                             </div>

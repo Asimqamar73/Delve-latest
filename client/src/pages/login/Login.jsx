@@ -8,10 +8,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { loginUser, resetState, } from "../../services/store/auth/authSlice";
+import { loginUser, resetState } from "../../services/store/auth/authSlice";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
-import { BsEyeSlash } from "react-icons/bs";
+import { BsEye, BsEyeSlash } from "react-icons/bs";
 import {
   FacebookOAuthIcon,
   GoogleOAuthIcon,
@@ -27,6 +27,7 @@ function Login() {
     email: "",
     password: "",
   });
+  const [passwordVisability, setPasswordVisibality] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -34,8 +35,7 @@ function Login() {
     }
     if (status === STATUSES.ERROR) {
       toast.error(message);
-      dispatch(resetState())
-
+      dispatch(resetState());
     }
   }, [user, message]);
   const onMutate = (event) => {
@@ -51,7 +51,7 @@ function Login() {
 
   return (
     <div className="h-screen">
-      <div className="fixed px-16 py-2">
+      <div className="fixed px-16 py-4">
         <Logo />
       </div>
       <div className="grid grid-cols-3 h-full">
@@ -77,15 +77,18 @@ function Login() {
               </div>
               <div className="my-4 relative">
                 <InputComponent
-                  type="password"
+                  type={`${passwordVisability ? "text" : "password"}`}
                   placeholder="Password"
                   id="password"
                   className="w-full"
                   value={formData.password}
                   handleChange={onMutate}
                 />
-                <div className="absolute right-10 top-0 h-full text-slate-700  text-xl flex items-center w-10 justify-center rounded-md ">
-                  <BsEyeSlash />
+                <div
+                  className="absolute right-10 top-0 h-full text-slate-700  text-xl flex items-center w-10 justify-center rounded-md hover:cursor-pointer "
+                  onClick={() => setPasswordVisibality(!passwordVisability)}
+                >
+                  {!passwordVisability ? <BsEyeSlash /> : <BsEye />}
                 </div>
                 <div className="absolute right-0 top-0 bg-green-400 h-full flex items-center w-10 justify-center rounded-md ">
                   <IoLockClosedOutline className=" text-white text-xl" />

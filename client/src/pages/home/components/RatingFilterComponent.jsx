@@ -4,7 +4,7 @@ function RatingFilterComponent({ value, handleChange }) {
   return (
     <div>
       <div className="flex items-center gap-2 my-[4px]">
-        <input type="radio" name="rating" className="radio radio-sm" id="rating" value={">=4.5"} onChange={handleChange} checked={value === ">=4.5" ? true : false} />
+        <input type="radio" name="rating" className="radio radio-sm" id="rating" value={"4.5"} onChange={handleChange} checked={value === "4.5" ? true : false} />
         <div className="flex items-center gap-[2px]">
           <BsStarFill />
           <BsStarFill />
@@ -15,7 +15,7 @@ function RatingFilterComponent({ value, handleChange }) {
         </div>
       </div>
       <div className="flex items-center gap-2 my-[4px]">
-        <input type="radio" name="rating" className="radio radio-sm" id="rating" value={">=4"} onChange={handleChange} checked={value === ">=4" ? true : false} />
+        <input type="radio" name="rating" className="radio radio-sm" id="rating" value={"4"} onChange={handleChange} checked={value === "4" ? true : false} />
         <div className="flex items-center gap-[2px]">
           <BsStarFill />
           <BsStarFill />
@@ -26,7 +26,7 @@ function RatingFilterComponent({ value, handleChange }) {
         </div>
       </div>
       <div className="flex items-center gap-2 my-[4px]">
-        <input type="radio" name="rating" className="radio radio-sm" id="rating" value={">=3.5"} onChange={handleChange} checked={value === ">=3.5" ? true : false} />
+        <input type="radio" name="rating" className="radio radio-sm" id="rating" value={"3.5"} onChange={handleChange} checked={value === "3.5" ? true : false} />
         <div className="flex items-center gap-[2px]">
           <BsStarFill />
           <BsStarFill />
@@ -37,7 +37,7 @@ function RatingFilterComponent({ value, handleChange }) {
         </div>
       </div>
       <div className="flex items-center gap-2 my-[4px]">
-        <input type="radio" name="rating" className="radio radio-sm" id="rating" value={">=3.0"} onChange={handleChange} checked={value === ">=3" ? true : false} />
+        <input type="radio" name="rating" className="radio radio-sm" id="rating" value={"3"} onChange={handleChange} checked={value === "3" ? true : false} />
         <div className="flex items-center gap-[2px]">
           <BsStarFill />
           <BsStarFill />

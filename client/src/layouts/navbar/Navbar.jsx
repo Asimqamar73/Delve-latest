@@ -1,7 +1,7 @@
 import React from "react";
 import { BsCart4, BsSearch } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../components/commonComponents/Logo";
 
 import { useState } from "react";
@@ -16,13 +16,14 @@ import Searchbar from "./components/Searchbar";
 import LoggedInUser from "./components/LoggedInUser";
 import NoUser from "./components/NoUser";
 import CategoriesDropdown from "./components/CategoriesDropdown";
+import { FaAngleRight } from "react-icons/fa";
 
 function Navbar() {
-  const dispatch = useDispatch();
   const refOne = useRef(null);
   const refTwo = useRef(null);
-
-  const searchResult = useSelector((state) => state.courses.searchResult);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { searchResult } = useSelector((state) => state.courses);
   const { user } = useSelector((state) => state.auth);
   const [showSerachbar, setShowSerchbar] = useState(false);
   const [search, setSearch] = useState("");
@@ -57,6 +58,12 @@ function Navbar() {
       dispatch(clearSearchCourses());
     }
   };
+  const handleMoreCourses = () => {
+    navigate(`courses/searchedCourses/?search=${search}`);
+    setShowSerchbar(false);
+    dispatch(clearSearchCourses());
+    setSearch("");
+  };
 
   return (
     <div className="navbar bg-base-200 px-16 py-2 sticky top-0 z-10">
@@ -78,8 +85,11 @@ function Navbar() {
           </label>
           <div
             tabIndex={0}
-            className={`mt-3 rounded-none absolute left-0 w-full bg-slate-900 ${showSerachbar ? "block" : "hidden"
-              }`}
+            className={`${
+              user && "mt-3"
+            } rounded-none absolute left-0 w-full bg-slate-900 ${
+              showSerachbar ? "block" : "hidden"
+            }`}
             ref={refOne}
           >
             <Searchbar
@@ -91,8 +101,26 @@ function Navbar() {
               <div className=" px-8 py-2">
                 <p className="font-bold text-2xl text-white">Search result</p>
                 {searchResult.map((searchItem) => (
-                  <SearchedCourse course={searchItem} />
+                  <SearchedCourse
+                    course={searchItem}
+                    click={() => {
+                      setSearch("");
+                      setShowSerchbar(false);
+                      dispatch(clearSearchCourses());
+                    }}
+                  />
                 ))}
+                {searchResult?.length >= 2 && (
+                  <p
+                    className="font-bold text-yellow-500 hover:text-yellow-400 hover:cursor-pointer my-2 flex items-center"
+                    onClick={handleMoreCourses}
+                  >
+                    See more courses{" "}
+                    <span>
+                      <FaAngleRight />
+                    </span>
+                  </p>
+                )}
               </div>
             )}
           </div>

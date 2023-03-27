@@ -22,7 +22,12 @@ import ScrollToTop from "../lib/scroll/ScrollToTop";
 import WatchCourse from "../pages/home/WatchCourse";
 import ForgotPassword from "../pages/forgot password/ForgotPassword";
 import CoursesByCategory from "../pages/home/CoursesByCategory";
-import { CourseLandingPageInfo, CourseOutcome, Curriculum } from "../pages/course";
+import {
+  CourseLandingPageInfo,
+  CourseOutcome,
+  Curriculum,
+} from "../pages/course";
+import SearchedCourses from "../pages/home/SearchedCourses";
 
 function AppRoutes() {
   return (
@@ -62,7 +67,10 @@ function AppRoutes() {
               </PrivateRoute>
             }
           >
-            <Route path="requirements-and-objectives" element={<CourseOutcome />} />
+            <Route
+              path="requirements-and-objectives"
+              element={<CourseOutcome />}
+            />
             <Route path="curriculum" element={<Curriculum />} />
             <Route path="basics" element={<CourseLandingPageInfo />} />
           </Route>
@@ -73,8 +81,12 @@ function AppRoutes() {
               element={<CourseDetails />}
             />
             <Route
-              path="courses/category/:category"
+              path="courses/category/"
               element={<CoursesByCategory />}
+            />
+            <Route
+              path="courses/searchedCourses"
+              element={<SearchedCourses />}
             />
             <Route
               path="course/enrolledCourses"

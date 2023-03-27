@@ -45,7 +45,6 @@ export const {
 export default coursesSlice.reducer;
 
 // Thunks
-
 export function fetchAllCourses() {
   return async function (dispatch, getState) {
     dispatch(setLoading(true));
@@ -67,7 +66,7 @@ export function fetchCourseDetails(courseId) {
       const { data } = await authFetch.get(`/course/courseDetails/${courseId}`);
       dispatch(setLoading(false));
       dispatch(setCourse(data[0]));
-      console.log(data[0])
+      console.log(data[0]);
     } catch (error) {
       console.log(error);
       dispatch(setLoading(false));
@@ -78,17 +77,14 @@ export function fetchCourseDetails(courseId) {
 export function searchCourse(search) {
   return async function searchCourseThunk(dispatch, getState) {
     dispatch(setLoading(true));
-
     try {
       const { data } = await authFetch.post("/course/searchCourse", { search });
       dispatch(setSearchResult(data));
       dispatch(setLoading(false));
-
       console.log(data);
     } catch (error) {
       console.log(error);
       dispatch(setLoading(false));
-
     }
   };
 }
@@ -100,7 +96,7 @@ export function getCoursesbyCategory(category, filter, sort) {
     // console.log(sort)
     try {
       const { data } = await authFetch.get(
-        `/courses/category/${category}?courseLanguage=${JSON.stringify(
+        `/courses/category/?category=${category}&courseLanguage=${JSON.stringify(
           language
         )}&courseLevel=${JSON.stringify(level)}&rating=${rating}&sort=${sort}`
       );
@@ -123,4 +119,32 @@ export function getCoursesbyCategory(category, filter, sort) {
   };
 }
 
+export function getSearchedCourses(filter, sort) {
+  return async function getCoursesByCategoryThunk(dispatch, getSatate) {
+    dispatch(setLoading(true));
+    const { search, language, level, rating } = filter;
+    // console.log(sort)
+    try {
+      const { data } = await authFetch.get(
+        `/courses/searchedCourses/?search=${search}&courseLanguage=${JSON.stringify(
+          language
+        )}&courseLevel=${JSON.stringify(level)}&rating=${rating}&sort=${sort}`
+      );
 
+      // console.log(data);
+      console.log(data.courses);
+      dispatch(setCourses(data.courses));
+      dispatch(
+        setPaginationInfo({
+          totalCourses: data.totalCourses,
+          totalPages: data.totalPages,
+        })
+      );
+      dispatch(setLoading(false));
+    } catch (error) {
+      dispatch(setLoading(false));
+
+      console.log(error);
+    }
+  };
+}

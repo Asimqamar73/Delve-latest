@@ -1,12 +1,17 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-function SearchedCourse({ course }) {
+function SearchedCourse({ course, click }) {
   const navigate = useNavigate();
+  const handleClick = (id) => {
+    navigate(`/course-details/${course._id}`);
+    click();
+  };
   return (
     <div
       className="flex items-center gap-4 p-4 w-fit text-slate-300 hover:bg-base-100 hover:text-slate-700 hover:cursor-pointer transition-colors ease-in-out rounded-md  "
-      onClick={() => navigate(`/course-details/${course._id}`)}
+      // onClick={() => navigate(`/course-details/${course._id}`)}
+      onClick={() => handleClick(course._id)}
     >
       <div>
         <img
